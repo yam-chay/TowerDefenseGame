@@ -7,10 +7,9 @@ public class Tower : MonoBehaviour
     public int Damage { get; private set; }
     public float Radius { get; private set; }
 
-
     private void Start()
     {
-
+        
     }
 
     private protected void HelloWorld(string name)

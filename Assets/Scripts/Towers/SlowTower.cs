@@ -7,8 +7,8 @@ public class SlowTower : Tower
     private int damage;
     private int health;
     private float radius;
+    [SerializeField] private GameObject hitEffect;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         this.health = 50;
@@ -32,7 +32,9 @@ public class SlowTower : Tower
         {
             var hitList = OverlapRadius(radius);
             yield return new WaitForSeconds(1f);
-            Attack(hitList, damage);
+            Attack(hitList, damage);  
+            var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
+            hitCircle.transform.localScale = new Vector2(radius,radius);
         }
         while (i > 0);
     }

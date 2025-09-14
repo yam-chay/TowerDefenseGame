@@ -9,8 +9,8 @@ public class Tower : MonoBehaviour
 
     private void Start()
     {
-        
-    }
+        Radius = 3f;
+    }   
 
     private protected void HelloWorld(string name)
     {
@@ -20,25 +20,32 @@ public class Tower : MonoBehaviour
 
     public Collider2D[] OverlapRadius(float radius)
     {
-       Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
+        Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
 
-       foreach (Collider2D hit in hitList)
-       {
-           Debug.Log($"{hit} is in range");
-       }
+        foreach (Collider2D hit in hitList)
+        {
+            Debug.Log($"{hit} is in range");
+        }
 
         return hitList;
     }
 
-    private protected void Attack(Collider2D[] attackList,int damage)
+    private protected void Attack(Collider2D[] attackList, int damage)
     {
         foreach (Collider2D enemy in attackList)
         {
             if (enemy.GetComponent<Enemy>() == true)
             {
                 enemy.GetComponent<IDamagable>().TakeDamage(damage);
+
             }
         }
+    }
+    
+    private protected void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, Radius);
     }
 
 }

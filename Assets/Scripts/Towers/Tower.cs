@@ -36,10 +36,9 @@ namespace TDLogic
         {
             foreach (Collider2D enemy in attackList)
             {
-                if (enemy.GetComponent<Enemy>() == true)
+                if (enemy.GetComponent<Character>() == true)
                 {
                     enemy.GetComponent<IDamagable>().TakeDamage(damage);
-
                 }
             }
         }

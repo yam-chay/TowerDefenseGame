@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class Enemy : MonoBehaviour
+    public class Character : MonoBehaviour
     {
         public int Health { get; private set; }
         public int Damage { get; private set; }

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class SlowEnemy : Enemy, IDamagable
+    public class Enemy : Character, IDamagable
     {
         private string name;
         private int health;

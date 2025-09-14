@@ -5,5 +5,7 @@ namespace TDLogic
     public interface IDamagable
     {
         void TakeDamage(int damage);
+        int Health { get; }
     }
+
 }

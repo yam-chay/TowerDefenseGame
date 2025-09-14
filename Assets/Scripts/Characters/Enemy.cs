@@ -2,34 +2,25 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class Enemy : Character, IDamagable
+    public class Enemy : Character
     {
-        private string name;
-        private int health;
-        private int damage;
 
         private void Start()
         {
-            this.name = "Slow Enemy";
-            this.health = 50;
-            this.damage = 5;
+            SetStats(50, 5, "Enemy");
         }
 
         public void TakeDamage(int damage)
         {
-            health = health - damage;
-            Debug.Log(gameObject.name + " took " + damage + " damage. Remaining: " + health);
-
-            if (health <= 0)
+            void Attack(GameObject target)
             {
-                Die();
+                IDamagable damagable = target.GetComponent<IDamagable>();
+                if (damagable != null)
+                {
+                    damagable.TakeDamage(Damage);
+                }
             }
 
-        }
-        private void Die()
-        {
-            Debug.Log(gameObject.name + " died!");
-            Destroy(gameObject);
         }
     }
 }

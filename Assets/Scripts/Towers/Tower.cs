@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class Tower : MonoBehaviour
+    public class Tower : MonoBehaviour 
     {
         public string Name { get; private set; }
         public int Health { get; private set; }
@@ -34,13 +34,16 @@ namespace TDLogic
 
         private protected void Attack(Collider2D[] attackList, int damage)
         {
-            foreach (Collider2D enemy in attackList)
+            foreach (Collider2D collider in attackList)
             {
-                if (enemy.GetComponent<Character>() == true)
+                IDamagable damagable = collider.GetComponent<IDamagable>();
+                if (damagable != null)
                 {
-                    enemy.GetComponent<IDamagable>().TakeDamage(damage);
+                    damagable.TakeDamage(damage);
                 }
             }
         }
-    }   
+
+
+    }
 }

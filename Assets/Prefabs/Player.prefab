@@ -166,5 +166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58d137d6184cb8f42852ce16d8bd5683, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  health: 100
+  name: 
+  health: 0
+  damage: 0
+  speed: 0
+  jumpHeight: 0

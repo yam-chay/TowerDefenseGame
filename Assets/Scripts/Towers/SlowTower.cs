@@ -1,41 +1,47 @@
 using UnityEngine;
 using System.Collections;
 
-public class SlowTower : Tower
+namespace TDLogic
 {
-    private string name;
-    private int damage;
-    private int health;
-    private float radius;
-    [SerializeField] private GameObject hitEffect;
-
-    void Start()
+    public class SlowTower : Tower
     {
-        this.health = 50;
-        this.damage = 5;
-        this.name = "slow tower";
-        this.radius = 3f;
-        HelloWorld(name);
-        Coroutine damageRoutine = StartCoroutine(DoDamage());
-    }
+        private string name;
+        private int damage;
+        private int health;
+        private float radius;
+        [SerializeField] private GameObject hitEffect;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    private IEnumerator DoDamage()
-    {
-        int i = 15;
-        do
+        void Start()
         {
-            var hitList = OverlapRadius(radius);
-            yield return new WaitForSeconds(1f);
-            Attack(hitList, damage);  
-            var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
-            hitCircle.transform.localScale = new Vector2(radius,radius);
+            this.health = 50;
+            this.damage = 5;
+            this.name = "slow tower";
+            this.radius = 3f;
+            HelloWorld(name);
+            Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
-        while (i > 0);
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+        private IEnumerator DoDamage()
+        {
+            int i = 15;
+            do
+            {
+                var hitList = OverlapRadius(radius);
+                yield return new WaitForSeconds(1f);
+                Attack(hitList, damage);
+                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
+                hitCircle.transform.localScale = new Vector2(radius, radius)*2;
+                yield return new WaitForSeconds(1f);
+                Destroy(hitCircle);
+
+            }
+            while (i > 0);
+        }
     }
 }

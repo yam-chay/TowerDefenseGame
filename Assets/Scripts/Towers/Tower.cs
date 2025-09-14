@@ -1,51 +1,47 @@
 using UnityEngine;
 
-public class Tower : MonoBehaviour
+namespace TDLogic
 {
-    public string Name { get; private set; }
-    public int Health { get; private set; }
-    public int Damage { get; private set; }
-    public float Radius { get; private set; }
-
-    private void Start()
+    public class Tower : MonoBehaviour
     {
-        Radius = 3f;
-    }   
+        public string Name { get; private set; }
+        public int Health { get; private set; }
+        public int Damage { get; private set; }
+        public float Radius { get; private set; }
 
-    private protected void HelloWorld(string name)
-    {
-        Debug.Log($"this is {name} Tower");
-    }
-
-
-    public Collider2D[] OverlapRadius(float radius)
-    {
-        Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
-
-        foreach (Collider2D hit in hitList)
+        private void Start()
         {
-            Debug.Log($"{hit} is in range");
+            Radius = 3f;
         }
 
-        return hitList;
-    }
-
-    private protected void Attack(Collider2D[] attackList, int damage)
-    {
-        foreach (Collider2D enemy in attackList)
+        private protected void HelloWorld(string name)
         {
-            if (enemy.GetComponent<Enemy>() == true)
-            {
-                enemy.GetComponent<IDamagable>().TakeDamage(damage);
+            Debug.Log($"this is {name} Tower");
+        }
 
+
+        public Collider2D[] OverlapRadius(float radius)
+        {
+            Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
+
+            foreach (Collider2D hit in hitList)
+            {
+                Debug.Log($"{hit} is in range");
+            }
+
+            return hitList;
+        }
+
+        private protected void Attack(Collider2D[] attackList, int damage)
+        {
+            foreach (Collider2D enemy in attackList)
+            {
+                if (enemy.GetComponent<Enemy>() == true)
+                {
+                    enemy.GetComponent<IDamagable>().TakeDamage(damage);
+
+                }
             }
         }
-    }
-    
-    private protected void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, Radius);
-    }
-
+    }   
 }

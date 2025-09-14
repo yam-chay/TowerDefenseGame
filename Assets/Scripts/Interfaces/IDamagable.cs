@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface IDamagable
+namespace TDLogic
 {
-    void TakeDamage(int damage);
+    public interface IDamagable
+    {
+        void TakeDamage(int damage);
+    }
 }

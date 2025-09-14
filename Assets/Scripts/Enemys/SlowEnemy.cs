@@ -1,32 +1,35 @@
 using UnityEngine;
 
-public class SlowEnemy : Enemy, IDamagable
+namespace TDLogic
 {
-    private string name;
-    private int health;
-    private int damage;
-
-    private void Start()
+    public class SlowEnemy : Enemy, IDamagable
     {
-        this.name = "Slow Enemy";
-        this.health = 50;
-        this.damage = 5;
-    }
+        private string name;
+        private int health;
+        private int damage;
 
-    public void TakeDamage(int damage)
-    {
-        health = health - damage;
-        Debug.Log(gameObject.name + " took " + damage + " damage. Remaining: " + health);
-
-        if (health <= 0)
+        private void Start()
         {
-            Die();
+            this.name = "Slow Enemy";
+            this.health = 50;
+            this.damage = 5;
         }
 
-    }
-    private void Die()
-    {
-        Debug.Log(gameObject.name + " died!");
-        Destroy(gameObject);
+        public void TakeDamage(int damage)
+        {
+            health = health - damage;
+            Debug.Log(gameObject.name + " took " + damage + " damage. Remaining: " + health);
+
+            if (health <= 0)
+            {
+                Die();
+            }
+
+        }
+        private void Die()
+        {
+            Debug.Log(gameObject.name + " died!");
+            Destroy(gameObject);
+        }
     }
 }

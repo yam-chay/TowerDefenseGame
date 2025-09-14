@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace TDLogic
 {
     public interface IDamagable

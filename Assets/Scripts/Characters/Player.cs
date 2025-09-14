@@ -25,7 +25,7 @@ namespace TDLogic
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, JumpHeight);
             }
         }
-        void Attack(GameObject target)
+        private void Attack(GameObject target)
         {
             IDamagable damagable = target.GetComponent<IDamagable>();
             if (damagable != null)
@@ -33,6 +33,8 @@ namespace TDLogic
                 damagable.TakeDamage(Damage);
             }
         }
+
+
 
 
     }

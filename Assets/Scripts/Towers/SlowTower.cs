@@ -21,12 +21,6 @@ namespace TDLogic
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
-        // Update is called once per frame
-        void Update()
-        {
-
-        }
-
         private IEnumerator DoDamage()
         {
             int i = 15;

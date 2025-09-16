@@ -2,8 +2,9 @@ namespace TDLogic
 {
     public interface IDamagable
     {
-        void TakeDamage(int damage);
         int Health { get; }
+        void TakeDamage(int damage);
+        void Heal(int amount);
     }
 
 }

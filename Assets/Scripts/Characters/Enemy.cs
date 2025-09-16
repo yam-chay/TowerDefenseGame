@@ -14,14 +14,14 @@ namespace TDLogic
         {
             HelloWorld(name);
             attackRadius = 1;
-            SetStats(50, 5, "Enemy");
+            SetStats("Enemy", 50, 5);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
         public void Attack()
         {
-            Collider2D[] hitList = CombatUtils.GetTargetsInRadius(transform.position, attackRadius);
-            CombatUtils.Attack(hitList, Damage, gameObject);
+            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, attackRadius);
+            UtilsClass.Attack(hitList, Damage, gameObject);
         }
 
         //testing damage routine

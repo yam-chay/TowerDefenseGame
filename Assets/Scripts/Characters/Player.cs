@@ -2,41 +2,113 @@ using UnityEngine;
 
 namespace TDLogic
 {
+    [RequireComponent(typeof(Rigidbody2D))]
     public class Player : Character
     {
-        private Rigidbody2D rb;
 
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        [Header("Movement")]
+        private Rigidbody2D rb;
+        public float speed = 8;
+        public float acceleration = 40f;    // smooth horizontal movement
+        public float deceleration = 15f;    // smooth stopping
+
+        [Header("Jump")]
+        public float jumpForce = 8;
+        public float jumpDuration = 0.3f;
+        public float fallingMultiplier = 5f;   //smooth Falling
+        private bool isGrounded;
+        private bool isJumping;
+        private float jumpTime;
+
+
         private void Start()
         {
-            HelloWorld(name);
-            SetStats(100, 5, "The Player", 9 , 7);
+            SetStats("The Player", 100, 5);
             rb = GetComponent<Rigidbody2D>();
         }
 
-        // Update is called once per frame
-        void Update()
+        private void FixedUpdate()
         {
             //horizontal movement
-            rb.linearVelocityX = Input.GetAxis("Horizontal") * Speed;
+            float targetVelX = Input.GetAxisRaw("Horizontal") * speed;
+            float smooth;
 
-            //junp mechanic
-            if (Input.GetKeyDown(KeyCode.Space))
+            //decide if player is accelerating or decelerating
+            if (Mathf.Abs(targetVelX) > 0.01f)
             {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, JumpHeight);
+                smooth = acceleration;
+            }
+            else
+            {
+                smooth = deceleration;
+            }
+
+            //create a smooth float points to move through while accelerating/decelerating 
+            float velX = Mathf.MoveTowards(rb.linearVelocityX, targetVelX, smooth * Time.fixedDeltaTime);
+
+            //move the player to each point 
+            rb.linearVelocity = new Vector2(velX, rb.linearVelocityY);
+
+            //gravity handler
+            if (rb.linearVelocity.y < 0f)
+            {
+                rb.linearVelocity += Vector2.up * rb.gravityScale * -fallingMultiplier * Time.fixedDeltaTime;
             }
         }
-        private void Attack(GameObject target)
+
+        void Update()
         {
-            IDamagable damagable = target.GetComponent<IDamagable>();
-            if (damagable != null)
+            if (Input.GetKeyDown(KeyCode.E) && isGrounded)
             {
-                damagable.TakeDamage(Damage);
+                Heal(10);
+            }
+
+                //jump start
+                if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                isJumping = true;
+                jumpTime = 0f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
+
+            //while jumping
+            if (Input.GetKey(KeyCode.Space) && isJumping)
+            {
+                if (jumpTime < jumpDuration)
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+                    jumpTime += Time.deltaTime;
+                }
+            }
+
+            //jump ends
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
             }
         }
 
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                isGrounded = true;
+                isJumping = false;
+                jumpTime = 0f;
+            }
 
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                isGrounded = true;
+            }
+        }
 
-
+        private void OnCollisionExit2D(Collision2D collision)
+        {
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            {
+                isGrounded = false;
+            }
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace TDLogic
 {
-    public class SlowTower : Tower
+    public class Roundy : Tower
     {
         private string name;
         private int damage;
@@ -15,7 +15,7 @@ namespace TDLogic
         {
             this.health = 50;
             this.damage = 5;
-            this.name = "slow tower";
+            this.name = "Roundy Tower";
             this.radius = 3f;
             HelloWorld(name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
@@ -23,8 +23,8 @@ namespace TDLogic
 
         public void Attack()
         {
-            Collider2D[] hitList = CombatUtils.GetTargetsInRadius(transform.position, radius);
-            CombatUtils.Attack(hitList, damage, gameObject);
+            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, radius);
+            UtilsClass.Attack(hitList, damage, gameObject);
         }
 
         //testing damage routine

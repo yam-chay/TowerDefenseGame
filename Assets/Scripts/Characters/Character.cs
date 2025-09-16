@@ -5,15 +5,13 @@ namespace TDLogic
     /// <summary>
     /// a base class for characters with common properties
     /// </summary>
-    public class Character : MonoBehaviour, IDamagable, IHealth
+    public class Character : MonoBehaviour, IDamagable
     {
+        public string Name { get; protected set; }
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
-        public string Name { get; protected set; }
-        public float Speed { get; protected set; }
-        public float JumpHeight { get; protected set; }
 
-        public int CurrentHealth => Health;
+        public int _Health => Health;
 
 
         //presents the name of the character
@@ -22,20 +20,12 @@ namespace TDLogic
             Debug.Log($"this is {name} Character");
         }
 
-        public virtual void SetStats(int health, int damage, string name)
+        public virtual void SetStats(string name, int health, int damage)
         {
+            Name = name;
             Health = health;
             Damage = damage;
-            Name = name;
         }
-
-        public virtual void SetStats(int health, int damage, string name, float speed, float jumpHeight)
-        {
-            SetStats(health, damage, name);
-            Speed = speed;
-            JumpHeight = jumpHeight;
-        }
-
 
         public virtual void TakeDamage(int amount)
         {

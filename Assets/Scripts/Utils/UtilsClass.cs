@@ -2,7 +2,7 @@ using System.Collections;
 using TDLogic;
 using UnityEngine;
 
-public static class CombatUtils
+public static class UtilsClass
 {
     /// <summary>
     /// provide a list of all colliders in radius from position
@@ -35,7 +35,7 @@ public static class CombatUtils
             }
             else
             {
-
+                continue;
             }
 
         }

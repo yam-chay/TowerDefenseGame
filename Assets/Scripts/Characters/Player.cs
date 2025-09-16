@@ -6,8 +6,9 @@ namespace TDLogic
     public class Player : Character
     {
 
-        [Header("Movement")]
         private Rigidbody2D rb;
+
+        [Header("Movement")]
         public float speed = 8;
         public float acceleration = 40f;    // smooth horizontal movement
         public float deceleration = 15f;    // smooth stopping
@@ -19,6 +20,13 @@ namespace TDLogic
         private bool isGrounded;
         private bool isJumping;
         private float jumpTime;
+
+
+        public static Player Instance { get; private set; }
+        private void Awake()
+        {
+            Instance = this;
+        }
 
 
         private void Start()

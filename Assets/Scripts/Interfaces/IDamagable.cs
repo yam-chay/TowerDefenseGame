@@ -6,5 +6,4 @@ namespace TDLogic
         void TakeDamage(int damage);
         void Heal(int amount);
     }
-
 }

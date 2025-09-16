@@ -11,7 +11,6 @@ namespace TDLogic
 
         private void Start()
         {
-            Radius = 3f;
         }
 
         private protected void HelloWorld(string name)

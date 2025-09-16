@@ -5,18 +5,19 @@ namespace TDLogic
 {
     public class Roundy : Tower
     {
-        private string name;
-        private int damage;
-        private int health;
-        private float radius;
+        [Header("Tower")]
+        [SerializeField] private string name;
+        [SerializeField] private int damage;
+        [SerializeField] private int health;
+        [SerializeField] private float radius;
         [SerializeField] private GameObject hitEffect;
 
         void Start()
         {
-            this.health = 50;
-            this.damage = 5;
-            this.name = "Roundy Tower";
-            this.radius = 3f;
+            this.health = Health;
+            this.damage = Damage;
+            this.name = Name;
+            this.radius = Radius;
             HelloWorld(name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }

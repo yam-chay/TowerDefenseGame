@@ -21,18 +21,27 @@ namespace TDLogic
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
+        public void Attack()
+        {
+            Collider2D[] hitList = CombatUtils.GetTargetsInRadius(transform.position, radius);
+            CombatUtils.Attack(hitList, damage, gameObject);
+        }
+
+        //testing damage routine
         private IEnumerator DoDamage()
         {
             int i = 15;
             do
             {
-                var hitList = OverlapRadius(radius);
-                yield return new WaitForSeconds(1f);
-                Attack(hitList, damage);
+                //attack sequence
+                Attack();
+
+                //visuals sequence
                 var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
-                hitCircle.transform.localScale = new Vector2(radius, radius)*2;
+                hitCircle.transform.localScale = new Vector2(radius, radius) * 2;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);
+                yield return new WaitForSeconds(1f);
 
             }
             while (i > 0);

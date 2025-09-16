@@ -9,6 +9,7 @@ namespace TDLogic
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         private void Start()
         {
+            HelloWorld(name);
             SetStats(100, 5, "The Player", 9 , 7);
             rb = GetComponent<Rigidbody2D>();
         }

@@ -2,7 +2,10 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class Character : MonoBehaviour , IDamagable , IHealth
+    /// <summary>
+    /// a base class for characters with common properties
+    /// </summary>
+    public class Character : MonoBehaviour, IDamagable, IHealth
     {
         public int Health { get; protected set; }
         public int Damage { get; protected set; }
@@ -12,9 +15,11 @@ namespace TDLogic
 
         public int CurrentHealth => Health;
 
+
+        //presents the name of the character
         private protected void HelloWorld(string name)
         {
-            Debug.Log($"this is {name} Enemy");
+            Debug.Log($"this is {name} Character");
         }
 
         public virtual void SetStats(int health, int damage, string name)
@@ -35,7 +40,7 @@ namespace TDLogic
         public virtual void TakeDamage(int amount)
         {
             Health -= amount;
-            Debug.Log($"{Name} took {amount} damage! Current health: {Health}");
+            Debug.Log($"{name} took {amount} damage! Current health: {Health}");
             if (Health <= 0)
             {
                 Die(gameObject);
@@ -45,11 +50,11 @@ namespace TDLogic
         public virtual void Heal(int amount)
         {
             Health += amount;
-            Debug.Log($"{Name} healed {amount}. Current health: {Health}");
+            Debug.Log($"{name} healed {amount}. Current health: {Health}");
         }
         private protected void Die(GameObject gameObject)
         {
-            Debug.Log(gameObject.name + " died!");
+            Debug.Log(name + " died!");
             Destroy(gameObject);
         }
     }

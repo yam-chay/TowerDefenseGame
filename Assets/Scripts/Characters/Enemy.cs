@@ -5,56 +5,40 @@ namespace TDLogic
 {
     public class Enemy : Character
     {
-        private float attackradius = 1;
+
+        private float attackRadius;
         [SerializeField] private GameObject hitEffect;
+
 
         private void Start()
         {
+            HelloWorld(name);
+            attackRadius = 1;
             SetStats(50, 5, "Enemy");
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
-        public Collider2D[] OverlapRadius()
+        public void Attack()
         {
-            Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, attackradius);
-
-            foreach (Collider2D hit in hitList)
-            {
-                Debug.Log($"{hit} is in range");
-            }
-
-            return hitList;
+            Collider2D[] hitList = CombatUtils.GetTargetsInRadius(transform.position, attackRadius);
+            CombatUtils.Attack(hitList, Damage, gameObject);
         }
 
-        private void Attack(Collider2D[] attackList, int damage)
-        {
-            foreach (Collider2D collider in attackList)
-            {
-                IDamagable damagable = collider.GetComponent<IDamagable>();
-                if (damagable != null && collider.gameObject.layer == 8)
-                {
-                    damagable.TakeDamage(damage);
-                }
-
-                else
-                {
-                    break;
-                }
-            }
-        }
-
+        //testing damage routine
         private IEnumerator DoDamage()
         {
             int i = 15;
             do
             {
-                var hitList = OverlapRadius();
-                yield return new WaitForSeconds(1f);
-                Attack(hitList, Damage);
+                //attack sequence
+                Attack();
+
+                //visuals sequence
                 var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
-                hitCircle.transform.localScale = new Vector2(attackradius, attackradius) * 2;
+                hitCircle.transform.localScale = new Vector2(attackRadius, attackRadius) * 2;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);
+                yield return new WaitForSeconds(1f);
 
             }
             while (i > 0);

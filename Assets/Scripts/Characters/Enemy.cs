@@ -10,9 +10,12 @@ namespace TDLogic
         public float breakDistance;
         public float attackRadius;
         public GameObject hitEffect;
-        private Transform target = Player.Instance.transform;
+        private Transform target;
 
-
+        private void Awake()
+        {
+            target = Player.Instance.transform;
+        }
 
         private void Start()
         {

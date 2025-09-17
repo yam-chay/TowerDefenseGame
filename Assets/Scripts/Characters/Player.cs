@@ -110,11 +110,6 @@ namespace TDLogic
             }
         }
 
-        private static void Attack()
-        {
-            ;
-        }
-
         private void Interact()
         {
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, interactRange);

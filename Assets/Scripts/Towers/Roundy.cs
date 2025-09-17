@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace TDLogic
 {
-    public class Roundy : Tower , IInteractable
+    public class Roundy : Tower, IInteractable
     {
         [Header("Tower")]
         [SerializeField] private GameObject hitEffect;
@@ -46,7 +46,7 @@ namespace TDLogic
 
         public void Interact(Transform interactor)
         {
-              upgradeMenu.SetActive(!upgradeMenu.activeSelf);
+            upgradeMenu.SetActive(!upgradeMenu.activeSelf);
         }
     }
 }

@@ -4,7 +4,7 @@ namespace TDLogic
 {
     public class CameraMovement : MonoBehaviour
     {
-        [SerializeField] private Camera camera;
+        [SerializeField] private Camera mainCamera;
         [SerializeField] private GameObject target;
         [SerializeField] private float xOffSet;
         [SerializeField] private float yOffSet;
@@ -16,8 +16,8 @@ namespace TDLogic
         void LateUpdate()
         {
             Vector3 desiredPosition = new Vector3(target.transform.position.x + xOffSet, target.transform.position.y + yOffSet, zOffSet);
-            Vector3 smoothedPosition = Vector3.Lerp(camera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
-            camera.transform.position = smoothedPosition;
+            Vector3 smoothedPosition = Vector3.Lerp(mainCamera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
+            mainCamera.transform.position = smoothedPosition;
 
         }
     }

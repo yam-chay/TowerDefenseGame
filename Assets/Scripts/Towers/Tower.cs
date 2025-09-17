@@ -9,8 +9,12 @@ namespace TDLogic
         public int Damage { get; private set; }
         public float Radius { get; private set; }
 
-        private void Start()
+        public virtual void SetStats(string name, int health, int damage , float radius)
         {
+            Name = name;
+            Health = health;
+            Damage = damage;
+            Radius = radius;
         }
 
         private protected void HelloWorld(string name)

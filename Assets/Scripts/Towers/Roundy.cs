@@ -6,26 +6,19 @@ namespace TDLogic
     public class Roundy : Tower
     {
         [Header("Tower")]
-        [SerializeField] private string name;
-        [SerializeField] private int damage;
-        [SerializeField] private int health;
-        [SerializeField] private float radius;
         [SerializeField] private GameObject hitEffect;
 
         void Start()
         {
-            this.health = Health;
-            this.damage = Damage;
-            this.name = Name;
-            this.radius = Radius;
-            HelloWorld(name);
+            SetStats("Roundy", 100, 10, 3);
+            HelloWorld(Name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
         public void Attack()
         {
-            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, radius);
-            UtilsClass.Attack(hitList, damage, gameObject);
+            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, Radius);
+            UtilsClass.Attack(hitList, Damage, gameObject);
         }
 
         //testing damage routine
@@ -39,7 +32,7 @@ namespace TDLogic
 
                 //visuals sequence
                 var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
-                hitCircle.transform.localScale = new Vector2(radius, radius) * 2;
+                hitCircle.transform.localScale = new Vector2(Radius, Radius) * 2;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);
                 yield return new WaitForSeconds(1f);

@@ -21,6 +21,9 @@ namespace TDLogic
         private bool isJumping;
         private float jumpTime;
 
+        [Header("Interaction")]
+        [SerializeField] private float interactRange;
+
 
         public static Player Instance { get; private set; }
         private void Awake()
@@ -71,6 +74,11 @@ namespace TDLogic
                 Heal(10);
             }
 
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Interact();
+            }
+
                 //jump start
                 if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
@@ -94,6 +102,13 @@ namespace TDLogic
             {
                 isJumping = false;
             }
+        }
+
+        private void Interact()
+        {
+            Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, interactRange);
+            UtilsClass.Interact(interactList, transform);
+            
         }
 
         private void OnCollisionEnter2D(Collision2D collision)

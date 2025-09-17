@@ -7,6 +7,7 @@ namespace TDLogic
     {
         [Header("Enemy Settings")]
         public float moveSpeed;
+        public float breakDistance;
         public float attackRadius;
         public GameObject hitEffect;
         private Transform target = Player.Instance.transform;
@@ -43,6 +44,7 @@ namespace TDLogic
                 //visuals sequence
                 var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
                 hitCircle.transform.localScale = new Vector2(attackRadius, attackRadius) * 2;
+                hitCircle.transform.parent = transform;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);
                 yield return new WaitForSeconds(1f);
@@ -67,7 +69,7 @@ namespace TDLogic
             }
 
             float distanceX = target.position.x - transform.position.x;
-            if (Mathf.Abs(distanceX) < 5f)
+            if (Mathf.Abs(distanceX) < breakDistance)
             {
                 return;
             }

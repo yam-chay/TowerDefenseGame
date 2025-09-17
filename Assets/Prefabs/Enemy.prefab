@@ -102,8 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c4339c455d751546b0ea28951b3f6f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
-  attackRadius: 1
+  moveSpeed: 5
+  breakDistance: 2
+  attackRadius: 2
   hitEffect: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
 --- !u!61 &4544529670630911873
 BoxCollider2D:

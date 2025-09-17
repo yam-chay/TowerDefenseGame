@@ -35,6 +35,7 @@ namespace TDLogic
         private void Start()
         {
             SetStats("The Player", 100, 5);
+            HelloWorld(name);
             rb = GetComponent<Rigidbody2D>();
         }
 
@@ -69,18 +70,23 @@ namespace TDLogic
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.E) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.H) && isGrounded)
             {
                 Heal(10);
             }
-
+            
             if (Input.GetKeyDown(KeyCode.R))
+            {
+                Attack();
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
             {
                 Interact();
             }
 
                 //jump start
-                if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 isJumping = true;
                 jumpTime = 0f;
@@ -102,6 +108,11 @@ namespace TDLogic
             {
                 isJumping = false;
             }
+        }
+
+        private static void Attack()
+        {
+            ;
         }
 
         private void Interact()

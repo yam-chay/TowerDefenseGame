@@ -42,6 +42,12 @@ namespace TDLogic
             Health += amount;
             Debug.Log($"{name} healed {amount}. Current health: {Health}");
         }
+
+        private protected void Attack()
+        {
+
+        }
+
         private protected void Die(GameObject gameObject)
         {
             Debug.Log(name + " died!");

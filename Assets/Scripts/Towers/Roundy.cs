@@ -7,13 +7,16 @@ namespace TDLogic
     {
         [Header("Tower")]
         [SerializeField] private GameObject hitEffect;
+        [SerializeField] GameObject upgradeMenu;
 
         void Start()
         {
+            upgradeMenu.SetActive(false);
             SetStats("Roundy", 100, 10, 3);
             HelloWorld(Name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
+
 
         public void Attack()
         {
@@ -43,7 +46,7 @@ namespace TDLogic
 
         public void Interact(Transform interactor)
         {
-            Debug.Log($"interacting with {name}");
+              upgradeMenu.SetActive(!upgradeMenu.activeSelf);
         }
     }
 }

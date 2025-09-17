@@ -21,31 +21,5 @@ namespace TDLogic
         {
             Debug.Log($"this is {name} Tower");
         }
-
-
-        public Collider2D[] OverlapRadius(float radius)
-        {
-            Collider2D[] hitList = Physics2D.OverlapCircleAll(transform.position, radius);
-
-            foreach (Collider2D hit in hitList)
-            {
-                Debug.Log($"{hit} is in range");
-            }
-
-            return hitList;
-        }
-
-        private protected void Attack(Collider2D[] attackList, int damage)
-        {
-            foreach (Collider2D collider in attackList)
-            {
-                IDamagable damagable = collider.GetComponent<IDamagable>();
-                if (damagable != null)
-                {
-                    damagable.TakeDamage(damage);
-                }
-            }
-        }
-
     }
 }

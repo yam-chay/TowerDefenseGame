@@ -22,7 +22,7 @@ namespace TDLogic
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
-        public void Attack()
+        private void over ()
         {
             Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, attackRadius);
             UtilsClass.Attack(hitList, Damage, gameObject);

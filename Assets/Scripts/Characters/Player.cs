@@ -5,7 +5,7 @@ namespace TDLogic
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : Character
     {
-
+        private Spawner spawner;
         private Rigidbody2D rb;
 
         [Header("Movement")]
@@ -29,6 +29,7 @@ namespace TDLogic
         private void Awake()
         {
             Instance = this;
+            spawner = Spawner.Instance;
         }
 
 
@@ -85,7 +86,12 @@ namespace TDLogic
                 Interact();
             }
 
-                //jump start
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                spawner.Spawn();
+            }
+
+            //jump start
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
             {
                 isJumping = true;

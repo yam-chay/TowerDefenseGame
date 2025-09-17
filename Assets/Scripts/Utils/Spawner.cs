@@ -8,21 +8,18 @@ namespace TDLogic
         public GameObject prefabToSpawn;
         public float spawnInterval = 2f;
         public int maxSpawns = 10;  //optional
+        public int spawnCount = 0;
 
         [Header("Movement options")]
         public GameObject targetToMove; //optional for movement
 
-        private int spawnCount = 0;
-
-        private void Update()
+        public static Spawner Instance { get; private set; }
+        private void Awake()
         {
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                Spawn();
-            }
+            Instance = this;
         }
 
-        private void Spawn()
+        public void Spawn()
         {
             if (spawnCount >= maxSpawns) return;
 

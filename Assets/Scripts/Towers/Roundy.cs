@@ -12,7 +12,7 @@ namespace TDLogic
         void Start()
         {
             upgradeMenu.SetActive(false);
-            SetStats("Roundy", 100, 10, 3);
+            SetStats("Roundy", 100, 50, 3);
             HelloWorld(Name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }

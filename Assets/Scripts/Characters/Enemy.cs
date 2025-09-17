@@ -14,12 +14,14 @@ namespace TDLogic
 
         private void Awake()
         {
-            target = Player.Instance.transform;
+            if (Player.Instance != null)
+            {
+                target = Player.Instance.transform;
+            }
         }
 
         private void Start()
         {
-            target = Player.Instance.transform;
             HelloWorld(name);
             SetStats("Enemy", 50, 5);
             Coroutine damageRoutine = StartCoroutine(DoDamage());

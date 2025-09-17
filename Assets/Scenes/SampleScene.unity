@@ -2834,7 +2834,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5cadfba8590e99d4ca803f4b6129518b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camera: {fileID: 519420031}
+  mainCamera: {fileID: 519420031}
   target: {fileID: 609460616903716875}
   xOffSet: 0
   yOffSet: 2.5

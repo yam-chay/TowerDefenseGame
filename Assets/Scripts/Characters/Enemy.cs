@@ -11,9 +11,9 @@ namespace TDLogic
         public float attackRadius;
         public GameObject hitEffect;
         [SerializeField] private Transform playerTransform;
-        [SerializeField] string _name;
-        [SerializeField] int _health;
-        [SerializeField] int _damage;
+        [SerializeField] private string _name;
+        [SerializeField] private int _health;
+        [SerializeField] private int _damage;
 
         private void Start()
         {
@@ -50,7 +50,7 @@ namespace TDLogic
                 //attack sequence
                 Attack();
                 //visuals sequence
-                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
+                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, this.transform);
                 hitCircle.transform.localScale = new Vector2(attackRadius, attackRadius) * 2;
                 hitCircle.transform.parent = transform;
                 yield return new WaitForSeconds(1f);

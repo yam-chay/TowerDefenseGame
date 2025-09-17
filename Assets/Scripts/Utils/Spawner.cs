@@ -23,7 +23,7 @@ namespace TDLogic
         {
             if (spawnCount >= maxSpawns) return;
 
-            Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
+            Instantiate(prefabToSpawn, transform.position, Quaternion.identity, this.transform);
 
             spawnCount++;
         }

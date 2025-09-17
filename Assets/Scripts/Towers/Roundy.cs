@@ -8,10 +8,10 @@ namespace TDLogic
         [Header("Tower")]
         [SerializeField] private GameObject hitEffect;
         [SerializeField] GameObject upgradeMenu;
-        [SerializeField] string _name;
-        [SerializeField] int _health;
-        [SerializeField] int _damage;
-        [SerializeField] float _range;
+        [SerializeField] private string _name;
+        [SerializeField] private int _health;
+        [SerializeField] private int _damage;
+        [SerializeField] private float _range;
 
         void Start()
         {
@@ -38,7 +38,7 @@ namespace TDLogic
                 Attack();
 
                 //visuals sequence
-                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity);
+                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity.normalized, this.transform);
                 hitCircle.transform.localScale = new Vector2(Radius, Radius) * 2;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);

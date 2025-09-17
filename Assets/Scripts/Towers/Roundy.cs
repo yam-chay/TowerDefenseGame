@@ -8,11 +8,15 @@ namespace TDLogic
         [Header("Tower")]
         [SerializeField] private GameObject hitEffect;
         [SerializeField] GameObject upgradeMenu;
+        [SerializeField] string _name;
+        [SerializeField] int _health;
+        [SerializeField] int _damage;
+        [SerializeField] float _range;
 
         void Start()
         {
             upgradeMenu.SetActive(false);
-            SetStats("Roundy", 100, 50, 3);
+            SetStats(_name, _health, _damage, _range);
             HelloWorld(Name);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }

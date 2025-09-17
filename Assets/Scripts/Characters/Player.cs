@@ -28,13 +28,16 @@ namespace TDLogic
         public static Player Instance { get; private set; }
         private void Awake()
         {
-            Instance = this;
-            spawner = Spawner.Instance;
+            Instance = this;            
         }
 
 
         private void Start()
         {
+            if (Spawner.Instance != null)
+            {
+                spawner = Spawner.Instance;
+            }
             SetStats("The Player", 100, 5);
             HelloWorld(name);
             rb = GetComponent<Rigidbody2D>();

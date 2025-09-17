@@ -10,20 +10,20 @@ namespace TDLogic
         public float breakDistance;
         public float attackRadius;
         public GameObject hitEffect;
-        private Transform target;
-
-        private void Awake()
-        {
-            if (Player.Instance != null)
-            {
-                target = Player.Instance.transform;
-            }
-        }
+        [SerializeField] private Transform playerTransform;
+        [SerializeField] string _name;
+        [SerializeField] int _health;
+        [SerializeField] int _damage;
 
         private void Start()
         {
+            if (Player.Instance != null)
+            {
+                playerTransform = Player.Instance.transform;
+            }
+
             HelloWorld(name);
-            SetStats("Enemy", 50, 5);
+            SetStats(_name, _health, _damage);
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
@@ -35,7 +35,10 @@ namespace TDLogic
 
         private void Update()
         {
-            MoveTo();
+            if (playerTransform != null)
+            {                
+                MoveTo();
+            }
         }
 
         //testing damage routine
@@ -67,13 +70,13 @@ namespace TDLogic
         //move to target
         public void MoveTo()
         {
-            if (target == null)
+            if (playerTransform == null)
             {
                 Debug.LogWarning($"{name} has no target assigned!");
                 return;
             }
 
-            float distanceX = target.position.x - transform.position.x;
+            float distanceX = playerTransform.position.x - transform.position.x;
             if (Mathf.Abs(distanceX) < breakDistance)
             {
                 return;

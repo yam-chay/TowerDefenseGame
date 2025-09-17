@@ -26,7 +26,7 @@ namespace TDLogic
         {
             if (spawnCount >= maxSpawns) return;
 
-            GameObject spawnling = Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
+            Instantiate(prefabToSpawn, transform.position, Quaternion.identity);
 
             spawnCount++;
         }

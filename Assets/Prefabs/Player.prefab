@@ -172,3 +172,4 @@ MonoBehaviour:
   jumpForce: 8
   jumpDuration: 0.3
   fallingMultiplier: 5
+  interactRange: 10

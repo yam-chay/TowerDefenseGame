@@ -14,6 +14,7 @@ namespace TDLogic
         [SerializeField] private string _name;
         [SerializeField] private int _health;
         [SerializeField] private int _damage;
+        [SerializeField] SpriteRenderer sr;
 
         private void Start()
         {
@@ -83,6 +84,15 @@ namespace TDLogic
             }
 
             float direction = Mathf.Sign(distanceX);
+            if (direction <= 0)
+            {
+                 sr.flipX = true;
+            }
+            else
+            {
+                sr.flipX = false;
+            }
+
             transform.position += Vector3.right * direction * moveSpeed * Time.deltaTime;
         }
 

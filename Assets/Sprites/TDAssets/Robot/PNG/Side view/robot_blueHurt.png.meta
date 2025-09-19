@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      robot_blueHurt_0: -6611296979678586598
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

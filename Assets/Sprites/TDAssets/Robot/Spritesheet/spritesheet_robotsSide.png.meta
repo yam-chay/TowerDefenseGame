@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spritesheet_robotsSide_0: 8014139758995018209
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

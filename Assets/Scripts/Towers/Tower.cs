@@ -17,9 +17,10 @@ namespace TDLogic
             Radius = radius;
         }
 
-        private protected void HelloWorld(string name)
+        private protected virtual void HelloWorld(string name)
         {
             Debug.Log($"this is {name} Tower");
         }
+
     }
 }

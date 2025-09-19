@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      shaded_medal1_0: -3251206120268883994
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

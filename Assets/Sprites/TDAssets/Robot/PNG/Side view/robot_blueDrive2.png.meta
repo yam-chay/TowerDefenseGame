@@ -134,7 +134,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      robot_blueDrive2_0: 599643177966682411
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

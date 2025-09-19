@@ -7,6 +7,7 @@ namespace TDLogic
     {
         private Spawner spawner;
         private Rigidbody2D rb;
+        private SpriteRenderer sr;
 
         [Header("Movement")]
         public float speed = 8;
@@ -41,6 +42,7 @@ namespace TDLogic
             SetStats("The Player", 100, 5);
             HelloWorld(name);
             rb = GetComponent<Rigidbody2D>();
+            sr = GetComponent<SpriteRenderer>();
         }
 
         private void FixedUpdate()
@@ -64,10 +66,18 @@ namespace TDLogic
 
             //move the player to each point 
             rb.linearVelocity = new Vector2(velX, rb.linearVelocityY);
+            if (rb.linearVelocityX < 0)
+            {
+                sr.flipX = true;
+            }
+            else
+            {
+                sr.flipX= false;
+            }
 
             //gravity handler
             if (rb.linearVelocity.y < 0f)
-            {
+            {              
                 rb.linearVelocity += Vector2.up * rb.gravityScale * -fallingMultiplier * Time.fixedDeltaTime;
             }
         }

@@ -30,11 +30,6 @@ namespace TDLogic
                 {
                     damagable.TakeDamage(damage);
                 }
-                else
-                {
-                    continue;
-                }
-
             }
         }
 
@@ -45,10 +40,6 @@ namespace TDLogic
                 if (collider.TryGetComponent<IInteractable>(out var interactable))
                 {
                     interactable.Interact(interactor);
-                }
-                else
-                {
-                    continue;
                 }
             }
         }

@@ -6,19 +6,17 @@ namespace TDLogic
     public class Roundy : Tower, IInteractable
     {
         [Header("Tower")]
+        [SerializeField] private TowerData towerData;
         [SerializeField] private GameObject hitEffect;
         [SerializeField] GameObject upgradeMenu;
-        [SerializeField] private string _name;
-        [SerializeField] private int _health;
-        [SerializeField] private int _damage;
-        [SerializeField] private float _range;
+        private Coroutine damageRoutine;
 
         void Start()
         {
             upgradeMenu.SetActive(false);
-            SetStats(_name, _health, _damage, _range);
-            HelloWorld(Name);
-            Coroutine damageRoutine = StartCoroutine(DoDamage());
+            damageRoutine = StartCoroutine(DoDamage());
+            HelloWorld(towerData.name);
+            Init(towerData);
         }
 
 
@@ -38,8 +36,8 @@ namespace TDLogic
                 Attack();
 
                 //visuals sequence
-                var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity.normalized, this.transform);
-                hitCircle.transform.localScale = new Vector2(Radius, Radius) * 2;
+                var hitCircle = Instantiate(towerData.hitEffect, transform.position, Quaternion.identity.normalized, this.transform);
+                hitCircle.transform.localScale = new Vector2(towerData.radius, towerData.radius) * 2;
                 yield return new WaitForSeconds(1f);
                 Destroy(hitCircle);
                 yield return new WaitForSeconds(1f);

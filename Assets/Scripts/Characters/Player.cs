@@ -148,12 +148,18 @@ namespace TDLogic
             else if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
                 isGrounded = true;
+                isJumping = false;
+                jumpTime = 0f;
             }
         }
 
         private void OnCollisionExit2D(Collision2D collision)
         {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground") || collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
+            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+            {
+                isGrounded = false;
+            }
+            else if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
             {
                 isGrounded = false;
             }

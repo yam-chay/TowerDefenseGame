@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3183e3af1e0344a8e62d180375fcfc, type: 3}
+  m_Name: NewTowerData
+  m_EditorClassIdentifier: Assembly::TDLogic.TowerData
+  towerName: Default Tower
+  health: 100
+  damage: 10
+  radius: 2
+  hitEffect: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
+  towerIcon: {fileID: -2228369808784584582, guid: b627ec5df0fd2d348953924896bbbeca, type: 3}
+  upgradeMenu: {fileID: 3094723281709034701, guid: 7ce671101639d93469e6d1494dc6dd85, type: 3}

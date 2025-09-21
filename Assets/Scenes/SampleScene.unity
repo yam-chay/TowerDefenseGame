@@ -7292,9 +7292,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: jumpForce
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: jumpDuration
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: characterData
       value: 
       objectReference: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: fallingMultiplier
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: gravityFallModifier
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: moveRestrictionModifier
+      value: 5.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2951166351008772509, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.6

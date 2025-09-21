@@ -81,29 +81,6 @@ namespace TDLogic
             {
                 rb.linearVelocity += new Vector2(-rb.linearVelocityX * moveRestrictionModifier * Time.fixedDeltaTime, (rb.gravityScale + gravityFallModifier) * -fallingMultiplier * Time.fixedDeltaTime);
             }
-            //jump start
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            {
-                isJumping = true;
-                jumpTime = 0f;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            }
-
-            //while jumping
-            if (Input.GetKey(KeyCode.Space) && isJumping)
-            {
-                if (jumpTime < jumpDuration)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-                    jumpTime += Time.deltaTime;
-                }
-            }
-
-            //jump ends
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                isJumping = false;
-            }
         }
 
         void Update()
@@ -130,6 +107,29 @@ namespace TDLogic
                 spawner.Spawn();
             }
 
+            //jump start
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                isJumping = true;
+                jumpTime = 0f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
+
+            //while jumping
+            if (Input.GetKey(KeyCode.Space) && isJumping)
+            {
+                if (jumpTime < jumpDuration)
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+                    jumpTime += Time.deltaTime;
+                }
+            }
+
+            //jump ends
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
+            }
         }
 
         private void Interact()

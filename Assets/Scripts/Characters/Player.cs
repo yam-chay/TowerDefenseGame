@@ -20,6 +20,8 @@ namespace TDLogic
         public float jumpForce = 8;
         public float jumpDuration = 0.3f;
         public float fallingMultiplier = 5f;   //smooth Falling
+        public float gravityFallModifier = 5f;   
+        public float moveRestrictionModifier = 5f;
         private bool isGrounded;
         private bool isJumping;
         private float jumpTime;
@@ -76,8 +78,31 @@ namespace TDLogic
 
             //gravity handler
             if (rb.linearVelocity.y < 0f)
-            {              
-                rb.linearVelocity += Vector2.up * rb.gravityScale * -fallingMultiplier * Time.fixedDeltaTime;
+            {
+                rb.linearVelocity += new Vector2(-rb.linearVelocityX * moveRestrictionModifier * Time.fixedDeltaTime, (rb.gravityScale + gravityFallModifier) * -fallingMultiplier * Time.fixedDeltaTime);
+            }
+            //jump start
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+            {
+                isJumping = true;
+                jumpTime = 0f;
+                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+            }
+
+            //while jumping
+            if (Input.GetKey(KeyCode.Space) && isJumping)
+            {
+                if (jumpTime < jumpDuration)
+                {
+                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
+                    jumpTime += Time.deltaTime;
+                }
+            }
+
+            //jump ends
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                isJumping = false;
             }
         }
 
@@ -105,29 +130,6 @@ namespace TDLogic
                 spawner.Spawn();
             }
 
-            //jump start
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            {
-                isJumping = true;
-                jumpTime = 0f;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            }
-
-            //while jumping
-            if (Input.GetKey(KeyCode.Space) && isJumping)
-            {
-                if (jumpTime < jumpDuration)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-                    jumpTime += Time.deltaTime;
-                }
-            }
-
-            //jump ends
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                isJumping = false;
-            }
         }
 
         private void Interact()

@@ -9,22 +9,22 @@ namespace TDLogic
     {
         public string Name { get; protected set; }
         public int Health { get; protected set; }
-        public int Damage { get; protected set; }
-
-        public int _Health => Health;
-
+        public int Damage { get;  protected set; }
+        public float Range { get; protected set; }
 
         //presents the name of the character
+
+        public virtual void Init(CharacterData characterData)
+        {
+            Name = characterData.characterName;
+            Health = characterData.health;
+            Damage = characterData.damage;
+            Range = characterData.range;
+        }
+
         private protected void HelloWorld(string name)
         {
             Debug.Log($"this is {name} Character");
-        }
-
-        public virtual void SetStats(string name, int health, int damage)
-        {
-            Name = name;
-            Health = health;
-            Damage = damage;
         }
 
         public virtual void TakeDamage(int amount)
@@ -41,11 +41,6 @@ namespace TDLogic
         {
             Health += amount;
             Debug.Log($"{name} healed {amount}. Current health: {Health}");
-        }
-
-        private protected void Attack()
-        {
-
         }
 
         private protected void Die(GameObject gameObject)

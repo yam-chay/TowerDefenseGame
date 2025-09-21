@@ -5,9 +5,11 @@ namespace TDLogic
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : Character
     {
+        [Header("Data")]
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
+        public CharacterData characterData;
 
         [Header("Movement")]
         public float speed = 8;
@@ -22,10 +24,6 @@ namespace TDLogic
         private bool isJumping;
         private float jumpTime;
 
-        [Header("Interaction")]
-        [SerializeField] private float interactRange;
-
-
         public static Player Instance { get; private set; }
         private void Awake()
         {
@@ -39,8 +37,9 @@ namespace TDLogic
             {
                 spawner = Spawner.Instance;
             }
-            SetStats("The Player", 100, 5);
-            HelloWorld(name);
+
+            Init(characterData);
+            HelloWorld(characterData.characterName);
             rb = GetComponent<Rigidbody2D>();
             sr = GetComponent<SpriteRenderer>();
         }
@@ -91,7 +90,9 @@ namespace TDLogic
             
             if (Input.GetKeyDown(KeyCode.R))
             {
-                Attack();
+                Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
+                UtilsClass.Attack(hitList, characterData.damage, gameObject);
+
             }
 
             if (Input.GetKeyDown(KeyCode.E))
@@ -131,7 +132,7 @@ namespace TDLogic
 
         private void Interact()
         {
-            Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, interactRange);
+            Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
             UtilsClass.Interact(interactList, transform);
             
         }

@@ -11,10 +11,8 @@ namespace TDLogic
         public float attackRadius;
         public GameObject hitEffect;
         [SerializeField] private Transform playerTransform;
-        [SerializeField] private string _name;
-        [SerializeField] private int _health;
-        [SerializeField] private int _damage;
         [SerializeField] SpriteRenderer sr;
+        public CharacterData characterData;
 
         private void Start()
         {
@@ -23,12 +21,16 @@ namespace TDLogic
                 playerTransform = Player.Instance.transform;
             }
 
-            HelloWorld(name);
-            SetStats(_name, _health, _damage);
+            if (characterData != null)
+            {
+                Init(characterData);
+                HelloWorld(characterData.characterName);
+
+            }
             Coroutine damageRoutine = StartCoroutine(DoDamage());
         }
 
-        private void over ()
+        private void Attack()
         {
             Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, attackRadius);
             UtilsClass.Attack(hitList, Damage, gameObject);

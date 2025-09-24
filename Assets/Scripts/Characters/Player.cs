@@ -16,15 +16,6 @@ namespace TDLogic
         public float acceleration = 40f;    // smooth horizontal movement
         public float deceleration = 15f;    // smooth stopping
 
-        [Header("Jump")]
-        public float jumpForce = 8;
-        public float jumpDuration = 0.3f;
-        public float fallingMultiplier = 5f;   //smooth Falling
-        public float gravityFallModifier = 5f;   
-        public float moveRestrictionModifier = 5f;
-        private bool isGrounded;
-        private bool isJumping;
-        private float jumpTime;
 
         public static Player Instance { get; private set; }
         private void Awake()
@@ -75,17 +66,11 @@ namespace TDLogic
             {
                 sr.flipX= false;
             }
-
-            //gravity handler
-            if (rb.linearVelocity.y < 0f)
-            {
-                rb.linearVelocity += new Vector2(-rb.linearVelocityX * moveRestrictionModifier * Time.fixedDeltaTime, (rb.gravityScale + gravityFallModifier) * -fallingMultiplier * Time.fixedDeltaTime);
-            }
         }
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H) && isGrounded)
+            if (Input.GetKeyDown(KeyCode.H))
             {
                 Heal(10);
             }
@@ -106,66 +91,12 @@ namespace TDLogic
             {
                 spawner.Spawn();
             }
-
-            //jump start
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-            {
-                isJumping = true;
-                jumpTime = 0f;
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
-            }
-
-            //while jumping
-            if (Input.GetKey(KeyCode.Space) && isJumping)
-            {
-                if (jumpTime < jumpDuration)
-                {
-                    rb.linearVelocity = new Vector2(rb.linearVelocityX, jumpForce);
-                    jumpTime += Time.deltaTime;
-                }
-            }
-
-            //jump ends
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                isJumping = false;
-            }
         }
 
         private void Interact()
         {
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
             UtilsClass.Interact(interactList, transform);
-            
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            {
-                isGrounded = true;
-                isJumping = false;
-                jumpTime = 0f;
-            }
-
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
-            {
-                isGrounded = true;
-                isJumping = false;
-                jumpTime = 0f;
-            }
-        }
-
-        private void OnCollisionExit2D(Collision2D collision)
-        {
-            if (collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
-            {
-                isGrounded = false;
-            }
-            else if (collision.gameObject.layer == LayerMask.NameToLayer("Platform"))
-            {
-                isGrounded = false;
-            }
         }
     }
 }

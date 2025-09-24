@@ -10,9 +10,6 @@ namespace TDLogic
         public int maxSpawns = 10;  //optional
         public int spawnCount = 0;
 
-        [Header("Movement options")]
-        public GameObject targetToMove; //optional for movement
-
         public static Spawner Instance { get; private set; }
         private void Awake()
         {

@@ -10,9 +10,9 @@ namespace TDLogic
         public float breakDistance;
         public float attackRadius;
         public GameObject hitEffect;
-        [SerializeField] private Transform playerTransform;
-        [SerializeField] SpriteRenderer sr;
         public CharacterData characterData;
+        [SerializeField] SpriteRenderer sr;
+        private Transform playerTransform;
 
         private void Start()
         {

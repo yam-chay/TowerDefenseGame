@@ -3988,10 +3988,6 @@ PrefabInstance:
       value: Roundy
       objectReference: {fileID: 0}
     - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
-      propertyPath: towerData
-      value: 
-      objectReference: {fileID: 11400000, guid: e2d0df289a6bb7a42a8861ba2ddb43be, type: 2}
-    - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: upgradeMenu
       value: 
       objectReference: {fileID: 626913652}
@@ -7291,30 +7287,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: jumpForce
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: jumpDuration
-      value: 0.01
-      objectReference: {fileID: 0}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: characterData
-      value: 
-      objectReference: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: fallingMultiplier
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: gravityFallModifier
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: moveRestrictionModifier
-      value: 5.5
-      objectReference: {fileID: 0}
     - target: {fileID: 2951166351008772509, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: m_LocalPosition.x
       value: -3.6
@@ -11965,10 +11937,6 @@ PrefabInstance:
     - target: {fileID: 1400111003155582271, guid: 866a88a8d4b8081489dff5a117880243, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4230749142915505202, guid: 866a88a8d4b8081489dff5a117880243, type: 3}
-      propertyPath: targetToMove
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 6304375053511073124, guid: 866a88a8d4b8081489dff5a117880243, type: 3}
       propertyPath: m_Name

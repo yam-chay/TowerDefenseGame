@@ -171,12 +171,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
-  speed: 8
+  speed: 4
   acceleration: 40
-  deceleration: 12
-  jumpForce: 8
-  jumpDuration: 0.3
-  fallingMultiplier: 5
+  deceleration: 25
+  runModifier: 2.5
 --- !u!95 &4735415462754544057
 Animator:
   serializedVersion: 7

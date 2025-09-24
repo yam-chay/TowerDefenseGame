@@ -16,7 +16,7 @@ namespace TDLogic
         public float speed = 8;
         public float acceleration = 40f;    // smooth horizontal movement
         public float deceleration = 15f;    // smooth stopping
-        private float runModifier = 1.5f;
+        [SerializeField] private float runModifier = 1.8f;
         private bool isRunning = false;
 
 
@@ -69,7 +69,7 @@ namespace TDLogic
             {
                 sr.flipX = true;
             }
-            else
+            else if (rb.linearVelocityX > 0)
             {
                 sr.flipX = false;
             }

@@ -49,6 +49,14 @@ namespace TDLogic
         public void Interact(Transform interactor)
         {
             upgradeMenu.SetActive(!upgradeMenu.activeSelf);
+            if (upgradeMenu.activeSelf)
+            {
+                Time.timeScale = 0.1f;
+            }
+            else
+            {
+                Time.timeScale = 1f;
+            }    
         }
     }
 }

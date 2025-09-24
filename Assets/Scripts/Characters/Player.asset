@@ -15,4 +15,4 @@ MonoBehaviour:
   characterName: Player
   health: 100
   damage: 10
-  range: 2
+  range: 4

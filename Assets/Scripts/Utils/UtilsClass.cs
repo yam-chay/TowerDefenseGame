@@ -28,7 +28,10 @@ namespace TDLogic
             {
                 if (collider.TryGetComponent<IDamagable>(out var damagable))
                 {
-                    damagable.TakeDamage(damage);
+                    if(collider.gameObject.layer != attacker.layer)
+                    {
+                        damagable.TakeDamage(damage);
+                    }
                 }
             }
         }

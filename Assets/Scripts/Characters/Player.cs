@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TDLogic
 {
@@ -11,6 +12,7 @@ namespace TDLogic
         private Rigidbody2D rb;
         private SpriteRenderer sr;
         private Animator animator;
+        [SerializeField] private Slider slider;
 
         [Header("Movement")]
         public float speed = 8;
@@ -43,6 +45,7 @@ namespace TDLogic
 
         private void FixedUpdate()
         {
+            slider.value = Health;
             isRunning = Input.GetKey(KeyCode.LeftShift);
 
             //horizontal movement
@@ -77,7 +80,7 @@ namespace TDLogic
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H))
+            if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
             {
                 Heal(10);
             }

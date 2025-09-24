@@ -6,21 +6,24 @@ namespace TDLogic
     public class Player : Character
     {
         [Header("Data")]
+        public CharacterData characterData;
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
-        public CharacterData characterData;
+        private Animator animator;
 
         [Header("Movement")]
         public float speed = 8;
         public float acceleration = 40f;    // smooth horizontal movement
         public float deceleration = 15f;    // smooth stopping
+        private float runModifier = 1.5f;
+        private bool isRunning = false;
 
 
         public static Player Instance { get; private set; }
         private void Awake()
         {
-            Instance = this;            
+            Instance = this;
         }
 
 
@@ -35,12 +38,16 @@ namespace TDLogic
             HelloWorld(characterData.characterName);
             rb = GetComponent<Rigidbody2D>();
             sr = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
         }
 
         private void FixedUpdate()
         {
+            isRunning = Input.GetKey(KeyCode.LeftShift);
+
             //horizontal movement
-            float targetVelX = Input.GetAxisRaw("Horizontal") * speed;
+            float targetSpeed = isRunning ? speed * runModifier : speed ; 
+            float targetVelX = Input.GetAxisRaw("Horizontal") * targetSpeed;
             float smooth;
 
             //decide if player is accelerating or decelerating
@@ -64,7 +71,7 @@ namespace TDLogic
             }
             else
             {
-                sr.flipX= false;
+                sr.flipX = false;
             }
         }
 
@@ -74,7 +81,7 @@ namespace TDLogic
             {
                 Heal(10);
             }
-            
+
             if (Input.GetKeyDown(KeyCode.R))
             {
                 Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
@@ -91,6 +98,9 @@ namespace TDLogic
             {
                 spawner.Spawn();
             }
+
+            animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
+
         }
 
         private void Interact()

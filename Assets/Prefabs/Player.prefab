@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4735415462754544057}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -171,9 +171,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
+  slider: {fileID: 0}
   speed: 4
   acceleration: 40
-  deceleration: 25
+  deceleration: 15
   runModifier: 2.5
 --- !u!95 &4735415462754544057
 Animator:

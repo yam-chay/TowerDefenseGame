@@ -13,28 +13,21 @@ namespace TDLogic
     public class Enemy : Character, IMovable
     {
         [Header("Enemy Settings")]
-        [Tooltip("Horizontal move speed while chasing the player.")]
         public float moveSpeed = 2f;
-
-        [Tooltip("Minimum distance to keep from the player before stopping.")]
         public float breakDistance = 1.5f;
-
-        [Tooltip("Attack radius around the enemy.")]
         public float attackRadius = 1f;
-
-        [Tooltip("Prefab for a hit effect spawned on each attack.")]
         public GameObject hitEffect;
-
-        [Tooltip("Character data defining stats such as HP and damage.")]
         public CharacterData characterData;
 
         private SpriteRenderer sr;
         private Transform playerTransform;
         private Animator animator;
         private Rigidbody2D rb;
+        private Coroutine patrolRoutine;
 
-        // True when the enemy is in alert animation state
         private bool isAlert = false;
+        private bool isPatrol = false;
+        private bool isChase = false;
 
         private void Start()
         {
@@ -71,6 +64,7 @@ namespace TDLogic
                     sr.flipX = false;
                 }
             }
+            animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
         }
 
         /// <summary>
@@ -106,8 +100,7 @@ namespace TDLogic
         /// </summary>
         public void Stop()
         {
-            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
+            rb.linearVelocityX = 0;
         }
 
         /// <summary>
@@ -124,22 +117,22 @@ namespace TDLogic
                 if (distance > breakDistance)
                 {
                     // Chase the player
+                    isChase = true;
                     rb.linearVelocity = new Vector2(direction.x * moveSpeed * 2, rb.linearVelocity.y);
-                    animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
 
-                    // Flip sprite to face target
                 }
+
+                //reached attack range
                 else
                 {
                     animator.SetTrigger("isAttacking");
                     Stop();
                 }
             }
+
             else
             {
-                // Simple patrol fallback (walk left)
-                rb.linearVelocity = new Vector2(-moveSpeed, rb.linearVelocity.y);
-                animator.SetFloat("speed", Mathf.Abs(rb.linearVelocity.x));
+                StartPatrol();
             }
         }
 
@@ -149,11 +142,14 @@ namespace TDLogic
         /// </summary>
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player") && Player.Instance != null)
+            if (collision.CompareTag("Player") && isChase == false)
             {
                 animator.SetTrigger("alert");
+                Debug.Log("start alert coroutine");
                 StartCoroutine(AlertRoutine());
                 isAlert = true;
+                Debug.Log("stopped patrol coroutine");
+                StopPatrol();
             }
         }
 
@@ -163,9 +159,12 @@ namespace TDLogic
         /// </summary>
         private void OnTriggerExit2D(Collider2D collision)
         {
-            if (collision.CompareTag("Player") && Player.Instance != null)
+            if (collision.CompareTag("Player") && isChase == true)
             {
+                isChase = false;
                 playerTransform = null;
+                Debug.Log("started patrol coroutine");
+                StartPatrol();
             }
         }
 
@@ -179,6 +178,35 @@ namespace TDLogic
             yield return new WaitForSeconds(1f); // Match alert animation length
             playerTransform = Player.Instance.transform;
             isAlert = false;
+            isChase = true;
+        }
+        private IEnumerator PatrolRoutine()
+        {
+            while (isPatrol == true)
+            {
+                Stop();
+                yield return new WaitForSeconds(Random.Range(0.5f,2));
+                rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), rb.linearVelocity.y);
+                yield return new WaitForSeconds(Random.Range(0.5f, 1));
+            }
+        }
+
+        public void StartPatrol()
+        {
+            isPatrol = true;
+            if (patrolRoutine == null)
+            {
+                patrolRoutine = StartCoroutine(PatrolRoutine());
+            }
+        }
+        public void StopPatrol()
+        {
+            isPatrol = false;
+            if (patrolRoutine != null)
+            {
+                StopCoroutine(patrolRoutine);
+                patrolRoutine = null;
+            }
         }
     }
 }

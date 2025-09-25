@@ -46,7 +46,7 @@ namespace TDLogic
         private protected void Die(GameObject gameObject)
         {
             Debug.Log(name + " died!");
-            Destroy(gameObject);
+            Destroy(gameObject, 0.1f);
         }
     }
 }

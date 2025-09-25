@@ -11,15 +11,16 @@ namespace TDLogic
         public float attackRadius;
         public GameObject hitEffect;
         public CharacterData characterData;
-        [SerializeField] SpriteRenderer sr;
+        private SpriteRenderer sr;
         private Transform playerTransform;
+        private Animator animator;
+        private Rigidbody2D rb;
 
         private void Start()
         {
-            if (Player.Instance != null)
-            {
-                playerTransform = Player.Instance.transform;
-            }
+            sr = GetComponent<SpriteRenderer>();
+            animator = GetComponent<Animator>();
+            rb = GetComponent<Rigidbody2D>();
 
             if (characterData != null)
             {
@@ -36,12 +37,9 @@ namespace TDLogic
             UtilsClass.Attack(hitList, Damage, gameObject);
         }
 
-        private void Update()
+        private void FixedUpdate()
         {
-            if (playerTransform != null)
-            {                
-                MoveTo();
-            }
+            MoveTo();
         }
 
         //testing damage routine
@@ -67,37 +65,68 @@ namespace TDLogic
 
         public void Stop()
         {
-            //stop moving
+            rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            animator.SetFloat("speed", rb.linearVelocityX);
         }
 
         //move to target
         public void MoveTo()
         {
-            if (playerTransform == null)
+            if (playerTransform != null)
             {
-                Debug.LogWarning($"{name} has no target assigned!");
-                return;
+                // Calculate vector from enemy to player
+                Vector2 direction = (playerTransform.position - transform.position).normalized;
+
+                // Distance check
+                float distance = Vector2.Distance(playerTransform.position, transform.position);
+
+                if (distance > breakDistance)
+                {
+                    // Chase player
+                    rb.linearVelocity = new Vector2(direction.x * moveSpeed * 2, rb.linearVelocity.y);
+                    animator.SetFloat("speed", rb.linearVelocityX);
+
+                    // Flip sprite
+                    if (direction.x < 0)
+                        sr.flipX = true;
+                    else if (direction.x > 0)
+                        sr.flipX = false;
+                }
+                else
+                {
+                    Stop();
+                }
             }
 
-            float distanceX = playerTransform.position.x - transform.position.x;
-            if (Mathf.Abs(distanceX) < breakDistance)
-            {
-                return;
-            }
-
-            float direction = Mathf.Sign(distanceX);
-            if (direction <= 0)
-            {
-                 sr.flipX = true;
-            }
             else
             {
-                sr.flipX = false;
+                rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+                animator.SetFloat("speed", rb.linearVelocityX);
             }
+        }
+        //alert methode
 
-            transform.position += Vector3.right * direction * moveSpeed * Time.deltaTime;
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                if (Player.Instance != null)
+                {
+                    playerTransform = Player.Instance.transform;
+                }
+            }
         }
 
-
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player"))
+            {
+                if (Player.Instance != null)
+                {
+                    playerTransform = null;
+                }
+            }
+        }
     }
 }
+

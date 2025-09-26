@@ -27,10 +27,10 @@ namespace TDLogic
             Debug.Log($"this is {name} Character");
         }
 
-        public virtual void TakeDamage(int amount)
+        public virtual void TakeDamage(int damage)
         {
-            Health -= amount;
-            Debug.Log($"{name} took {amount} damage! Current health: {Health}");
+            Health -= damage;
+            Debug.Log($"{name} took {damage} damage! Current health: {Health}");
             if (Health <= 0)
             {
                 Die(gameObject);

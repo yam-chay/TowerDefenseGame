@@ -20,7 +20,7 @@ namespace TDLogic
         public CharacterData characterData;
 
         private SpriteRenderer sr;
-        private Transform playerTransform;
+        private Transform targetTransform;
         private Animator animator;
         private Rigidbody2D rb;
         private Coroutine patrolRoutine;
@@ -80,20 +80,6 @@ namespace TDLogic
         /// <summary>
         /// Periodic attack coroutine (loops while enemy is alive).
         /// </summary>
-        private IEnumerator DoDamage()
-        {
-            while (true)
-            {
-                Attack();
-
-                // Visualize attack radius
-               /* var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
-                hitCircle.transform.localScale = Vector2.one * attackRadius * 2f;
-                Destroy(hitCircle, 0.1f);*/
-
-                yield return new WaitForSeconds(0.5f); // Cooldown between attacks
-            }
-        }
 
         /// <summary>
         /// Stops enemy movement and updates animator speed.
@@ -109,10 +95,10 @@ namespace TDLogic
         /// </summary>
         public void MoveTo()
         {
-            if (playerTransform != null)
+            if (targetTransform != null)
             {
-                Vector2 direction = (playerTransform.position - transform.position).normalized;
-                float distance = Vector2.Distance(playerTransform.position, transform.position);
+                Vector2 direction = (targetTransform.position - transform.position).normalized;
+                float distance = Vector2.Distance(targetTransform.position, transform.position);
 
                 if (distance > breakDistance)
                 {
@@ -146,9 +132,18 @@ namespace TDLogic
             {
                 animator.SetTrigger("alert");
                 Debug.Log("start alert coroutine");
+                targetTransform = collision.transform;
                 StartCoroutine(AlertRoutine());
                 isAlert = true;
                 Debug.Log("stopped patrol coroutine");
+                StopPatrol();
+            }
+
+            if (collision.CompareTag("Tower"))
+            {
+                //tower detected
+                targetTransform = collision.transform;
+                breakDistance = breakDistance * 1.5f;
                 StopPatrol();
             }
         }
@@ -162,8 +157,16 @@ namespace TDLogic
             if (collision.CompareTag("Player") && isChase == true)
             {
                 isChase = false;
-                playerTransform = null;
+                targetTransform = null;
                 Debug.Log("started patrol coroutine");
+                StartPatrol();
+            }
+
+            if (collision.CompareTag("Tower"))
+            {
+                //tower detected
+                targetTransform = null;
+                breakDistance = breakDistance / 1.5f;
                 StartPatrol();
             }
         }
@@ -176,7 +179,6 @@ namespace TDLogic
         {
             Stop();
             yield return new WaitForSeconds(1f); // Match alert animation length
-            playerTransform = Player.Instance.transform;
             isAlert = false;
             isChase = true;
         }
@@ -188,6 +190,20 @@ namespace TDLogic
                 yield return new WaitForSeconds(Random.Range(0.5f,2));
                 rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), rb.linearVelocity.y);
                 yield return new WaitForSeconds(Random.Range(0.5f, 1));
+            }
+        }
+        private IEnumerator DoDamage()
+        {
+            while (true)
+            {
+                Attack();
+
+                // Visualize attack radius
+               /* var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+                hitCircle.transform.localScale = Vector2.one * attackRadius * 2f;
+                Destroy(hitCircle, 0.1f);*/
+
+                yield return new WaitForSeconds(0.7f); // Cooldown between attacks
             }
         }
 

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad3183e3af1e0344a8e62d180375fcfc, type: 3}
+  m_Name: RoundyS
+  m_EditorClassIdentifier: Assembly::TDLogic.TowerData
+  towerName: 'Roundy S '
+  health: 100
+  damage: 20
+  radius: 4
+  hitEffect: {fileID: 5246188739835653494, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
+  towerIcon: {fileID: 732272581476026363, guid: 721cb857bb71ea84a90584aa2991e6c4, type: 3}
+  upgradeMenu: {fileID: 3094723281709034701, guid: 7ce671101639d93469e6d1494dc6dd85, type: 3}

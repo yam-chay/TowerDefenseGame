@@ -101,6 +101,17 @@ namespace TDLogic
             {
                 spawner.Spawn();
             }
+            
+            if (Input.GetKey(KeyCode.Space))
+            {
+                animator.SetBool("attack", true);
+            }
+            
+
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                animator.SetBool("attack", false);
+            }
 
             animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
 

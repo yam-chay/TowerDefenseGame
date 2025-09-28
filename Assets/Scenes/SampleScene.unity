@@ -3798,18 +3798,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
-    - target: {fileID: 1266707459646840621, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
-      propertyPath: detectionRange
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: knockbackForce
-      value: 2.5
+      value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: playerTransform
+      value: 
+      objectReference: {fileID: 1826436898}
     - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: knockbackDuration
       value: 0.3
@@ -7906,7 +7902,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.069000006, y: 0.3112034}
   m_AnchorMax: {x: 0.929, y: 0.76000005}
-  m_AnchoredPosition: {x: -0.000015258789, y: 0}
+  m_AnchoredPosition: {x: -0.000030517578, y: 0}
   m_SizeDelta: {x: -0.000061035, y: -0.000030518}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1403054203
@@ -10467,6 +10463,11 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!4 &1826436898 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2951166351008772509, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+  m_PrefabInstance: {fileID: 1223564359}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1834424375
 GameObject:
   m_ObjectHideFlags: 0

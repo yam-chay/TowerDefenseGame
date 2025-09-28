@@ -23,10 +23,10 @@ namespace TDLogic
         [Header("Combat")]
         public float knockbackForce = 5f;
         public float knockbackDuration = 0.2f;
-        public bool isAttack = false;
 
         [Header("Detection")]
         public float detectionRange = 5f;
+        [SerializeField] private Transform playerTransform;
 
         private SpriteRenderer sr;
         private Transform targetTransform;
@@ -34,23 +34,23 @@ namespace TDLogic
         private Rigidbody2D rb;
         private Coroutine patrolRoutine;
         private Coroutine attackRoutine;
+        private Coroutine alertRoutine;
+        private Coroutine knockbackRoutine;
 
         private EnemyState currentState;
 
         private void Start()
         {
-            currentState = EnemyState.Patrol;
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
+            currentState = EnemyState.Patrol;
 
             if (characterData != null)
             {
                 Init(characterData);
                 HelloWorld(characterData.characterName);
             }
-
-            StartPatrol();
         }
 
         private void FixedUpdate()
@@ -58,29 +58,39 @@ namespace TDLogic
             switch (currentState)
             {
                 case EnemyState.Patrol:
+                    StartPatrol();
                     CheckForPlayer();
                     break;
 
                 case EnemyState.Chase:
+                    StopPatrol();
                     Chase();
+                    CheckForPlayer();
                     CheckAttackRange();
                     break;
 
                 case EnemyState.Attack:
-                    if (!isAttack)
+                    if (attackRoutine == null)
                     {
-                        isAttack = true;
-                        attackRoutine = StartCoroutine(DoDamage());
                         animator.SetTrigger("attack");
+                        attackRoutine = StartCoroutine(DoDamage());
                     }
+                    CheckAttackRange();
                     break;
 
                 case EnemyState.Alert:
-                    AlertRoutine();
+                    if (alertRoutine == null)
+                    {
+                        alertRoutine = StartCoroutine(AlertRoutine());
+                    }
                     break;
 
                 case EnemyState.Knockback:
-                    // During knockback, do nothing
+                    if (knockbackRoutine == null)
+                    {
+                        Vector2 dir = new Vector2(rb.linearVelocityX, 0).normalized;
+                        knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
+                    }
                     break;
             }
 
@@ -96,28 +106,21 @@ namespace TDLogic
         #region Patrol / Chase / Attack
         private void CheckForPlayer()
         {
-            if (targetTransform == null)
-            {
-                return;
-            }
+            float distance = Vector2.Distance(transform.position, playerTransform.position);
 
-            float distance = Vector2.Distance(transform.position, targetTransform.position);
             if (distance <= detectionRange)
             {
-                StopPatrol();
-                currentState = EnemyState.Chase;
+                targetTransform = playerTransform;
+                currentState = EnemyState.Alert;
+            }
+            else
+            {
+                currentState = EnemyState.Patrol;
             }
         }
 
         private void Chase()
         {
-            if (targetTransform == null)
-            {
-                currentState = EnemyState.Patrol;
-                StartPatrol();
-                return;
-            }
-
             Vector2 dir = (targetTransform.position - transform.position).normalized;
             rb.linearVelocity = new Vector2(dir.x * moveSpeed * 2, rb.linearVelocity.y);
         }
@@ -128,30 +131,31 @@ namespace TDLogic
             if (distance <= breakDistance)
             {
                 currentState = EnemyState.Attack;
-                if (attackRoutine == null)
-                {
-                    attackRoutine = StartCoroutine(DoDamage());
-                }
+            }
+            else if (distance >= detectionRange)
+            {
+                currentState = EnemyState.Patrol;
+            }
+            else
+            {
+                currentState = EnemyState.Chase;
             }
         }
 
         private IEnumerator DoDamage()
         {
-            while (isAttack)
-            {
-                Attack();
-                yield return new WaitForSeconds(1.5f);
-                isAttack = false;
-                StopCoroutine(attackRoutine);
-            }
+            Attack();
+            yield return new WaitForSeconds(0.8f);
+            StopCoroutine(attackRoutine);
             attackRoutine = null;
         }
 
         public void StartPatrol()
         {
-            currentState = EnemyState.Patrol;
             if (patrolRoutine == null)
+            {
                 patrolRoutine = StartCoroutine(PatrolRoutine());
+            }
         }
 
         public void StopPatrol()
@@ -166,25 +170,16 @@ namespace TDLogic
 
         private IEnumerator PatrolRoutine()
         {
-            while (currentState == EnemyState.Patrol)
-            {
-                rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-2f, 2f), rb.linearVelocity.y);
-                yield return new WaitForSeconds(Random.Range(0.5f, 2f));
-            }
+            rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), 0);
+            yield return new WaitForSeconds(Random.Range(0.5f, 2f));
             patrolRoutine = null;
         }
         #endregion
 
         #region Knockback
-        public void ApplyKnockback(Vector2 dir)
-        {
-            StopAllCoroutines();
-            StartCoroutine(KnockbackRoutine(dir));
-        }
 
         private IEnumerator KnockbackRoutine(Vector2 dir)
         {
-            currentState = EnemyState.Knockback;
             rb.linearVelocity = Vector2.zero;
             rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
             animator.SetTrigger("isHurt");
@@ -192,56 +187,27 @@ namespace TDLogic
             yield return new WaitForSeconds(knockbackDuration);
 
             rb.linearVelocity = Vector2.zero;
-            currentState = EnemyState.Patrol;
-            StartPatrol();
+            CheckAttackRange();
+            StopCoroutine(knockbackRoutine);
+            knockbackRoutine = null;
         }
         #endregion
 
-        #region TakeDamage
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
 
             Vector2 dir = (transform.position - attacker.position).normalized;
-            ApplyKnockback(dir);
-        }
-        #endregion
-
-        #region TriggerDetection
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Player"))
-            {
-                targetTransform = collision.transform;
-                currentState = EnemyState.Alert;
-                StartCoroutine(AlertRoutine());
-                StopPatrol();
-            }
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Player"))
-            {
-                targetTransform = null;
-                currentState = EnemyState.Patrol;
-                StartPatrol();
-            }
+            currentState = EnemyState.Knockback;
         }
 
         private IEnumerator AlertRoutine()
         {
             animator.SetTrigger("alert");
+            currentState = EnemyState.Chase;
             yield return new WaitForSeconds(1f);
-            if (targetTransform != null)
-            {
-                currentState = EnemyState.Chase;
-            }
-            else
-            {
-                currentState = EnemyState.Patrol;
-            }
+            StopCoroutine(alertRoutine);
+            alertRoutine = null;
         }
-        #endregion
     }
 }

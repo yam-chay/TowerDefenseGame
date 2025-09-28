@@ -30,7 +30,7 @@ namespace TDLogic
                 {
                     if(collider.gameObject.layer != attacker.layer)
                     {
-                        damagable.TakeDamage(damage);
+                        damagable.TakeDamage(damage, attacker.transform);
                     }
                 }
             }

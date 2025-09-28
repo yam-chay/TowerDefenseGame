@@ -19,6 +19,11 @@ namespace TDLogic
         public GameObject hitEffect;
         public CharacterData characterData;
 
+        [Header("KnockBack")]
+        public float knockbackForce = 5f;
+        public float knockbackDuration = 0.2f;
+        private bool isKnockedBack = false;
+
         private SpriteRenderer sr;
         private Transform targetTransform;
         private Animator animator;
@@ -48,6 +53,13 @@ namespace TDLogic
 
         private void FixedUpdate()
         {
+            if (isKnockedBack)
+            {
+                // During knockback, ignore all movement/attack logic
+                animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
+                return;
+            }
+
             if (isAlert)
             {
                 Stop(); // Freeze during alert
@@ -187,7 +199,7 @@ namespace TDLogic
             while (isPatrol == true)
             {
                 Stop();
-                yield return new WaitForSeconds(Random.Range(0.5f,2));
+                yield return new WaitForSeconds(Random.Range(0.5f, 2));
                 rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), rb.linearVelocity.y);
                 yield return new WaitForSeconds(Random.Range(0.5f, 1));
             }
@@ -199,9 +211,9 @@ namespace TDLogic
                 Attack();
 
                 // Visualize attack radius
-               /* var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
-                hitCircle.transform.localScale = Vector2.one * attackRadius * 2f;
-                Destroy(hitCircle, 0.1f);*/
+                /* var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
+                 hitCircle.transform.localScale = Vector2.one * attackRadius * 2f;
+                 Destroy(hitCircle, 0.1f);*/
 
                 yield return new WaitForSeconds(0.7f); // Cooldown between attacks
             }
@@ -223,6 +235,27 @@ namespace TDLogic
                 StopCoroutine(patrolRoutine);
                 patrolRoutine = null;
             }
+        }
+
+        public override void TakeDamage(int damage, Transform attacker)
+        {
+            base.TakeDamage(damage, attacker);
+
+            Vector2 dir = (transform.position - attacker.position);
+            StartCoroutine(KnockbackRoutine(dir));
+        }
+
+        private IEnumerator KnockbackRoutine(Vector2 direction)
+        {
+            isKnockedBack = true;
+
+            rb.linearVelocity = Vector2.zero; // reset
+            rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
+
+            yield return new WaitForSeconds(knockbackDuration);
+
+            rb.linearVelocity = Vector2.zero; // stop sliding
+            isKnockedBack = false;
         }
     }
 }

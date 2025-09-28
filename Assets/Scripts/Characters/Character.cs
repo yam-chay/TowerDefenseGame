@@ -27,7 +27,7 @@ namespace TDLogic
             Debug.Log($"this is {name} Character");
         }
 
-        public virtual void TakeDamage(int damage)
+        public virtual void TakeDamage(int damage, Transform attacker)
         {
             Health -= damage;
             Debug.Log($"{name} took {damage} damage! Current health: {Health}");

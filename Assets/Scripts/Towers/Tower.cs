@@ -22,7 +22,7 @@ namespace TDLogic
             Radius = towerData.radius;
         }
 
-        public void TakeDamage(int damage)
+        public void TakeDamage(int damage, Transform attacker)
         {
             Health -= damage;
             Debug.Log($"{name} took {damage} damage! Current health: {Health}");

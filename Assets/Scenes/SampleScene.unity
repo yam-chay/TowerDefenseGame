@@ -3945,10 +3945,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Roundy
       objectReference: {fileID: 0}
-    - target: {fileID: 2996399899117993920, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
-      propertyPath: m_TagString
-      value: Tower
-      objectReference: {fileID: 0}
+    - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
+      propertyPath: towerData
+      value: 
+      objectReference: {fileID: 11400000, guid: e2d0df289a6bb7a42a8861ba2ddb43be, type: 2}
     - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: upgradeMenu
       value: 
@@ -7286,10 +7286,6 @@ PrefabInstance:
     - target: {fileID: 4964091540521193110, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997099433202934758, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

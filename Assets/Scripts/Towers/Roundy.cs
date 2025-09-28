@@ -36,11 +36,11 @@ namespace TDLogic
                 Attack();
 
                 //visuals sequence
-                var hitCircle = Instantiate(towerData.hitEffect, transform.position, Quaternion.identity.normalized, this.transform);
-                hitCircle.transform.localScale = new Vector2(towerData.radius, towerData.radius) * 2;
-                yield return new WaitForSeconds(1f);
+                var hitCircle = Instantiate(towerData.hitEffect, transform.position + new Vector3(0.5f, 0.5f), Quaternion.identity.normalized, this.transform);
+                hitCircle.transform.localScale = new Vector2(towerData.radius, towerData.radius);
+                yield return new WaitForSeconds(0.2f);
                 Destroy(hitCircle);
-                yield return new WaitForSeconds(1f);
+                yield return new WaitForSeconds(2f);
 
             }
             while (i > 0);

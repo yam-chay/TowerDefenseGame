@@ -10,27 +10,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 174381929783570198, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_Color.b
-      value: 0.9607843
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 174381929783570198, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_Color.g
-      value: 0.5294118
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 174381929783570198, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_Color.r
-      value: 0.63760257
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5156088283276125206, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.074766
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5156088283276125206, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 5.263239
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5156088283276125206, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5156088283276125206, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_LocalRotation.w
@@ -62,7 +62,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246188739835653494, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
       propertyPath: m_Name
-      value: RadiusAttackEffect Variant
+      value: RadiusAttackEffect Variant enemy
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

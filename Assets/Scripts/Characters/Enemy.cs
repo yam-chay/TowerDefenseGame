@@ -3,259 +3,245 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    /// <summary>
-    /// Enemy character logic:
-    /// - Waits in idle until player enters trigger.
-    /// - Plays an alert animation before chasing the player.
-    /// - Moves using Rigidbody2D and flips sprite based on direction.
-    /// - Attacks targets in range periodically with a visual effect.
-    /// </summary>
-    public class Enemy : Character, IMovable
+    public enum EnemyState
+    {
+        Patrol,
+        Alert,
+        Chase,
+        Attack,
+        Knockback
+    }
+
+    public class Enemy : Character
     {
         [Header("Enemy Settings")]
         public float moveSpeed = 2f;
         public float breakDistance = 1.5f;
-        public float attackRadius = 1f;
         public GameObject hitEffect;
         public CharacterData characterData;
 
-        [Header("KnockBack")]
+        [Header("Combat")]
         public float knockbackForce = 5f;
         public float knockbackDuration = 0.2f;
-        private bool isKnockedBack = false;
+        public bool isAttack = false;
+
+        [Header("Detection")]
+        public float detectionRange = 5f;
 
         private SpriteRenderer sr;
         private Transform targetTransform;
         private Animator animator;
         private Rigidbody2D rb;
         private Coroutine patrolRoutine;
+        private Coroutine attackRoutine;
 
-        private bool isAlert = false;
-        private bool isPatrol = false;
-        private bool isChase = false;
+        private EnemyState currentState;
 
         private void Start()
         {
+            currentState = EnemyState.Patrol;
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
 
-            // Initialize stats from data object
             if (characterData != null)
             {
                 Init(characterData);
                 HelloWorld(characterData.characterName);
             }
 
-            // Start damage routine (looped attacks)
-            StartCoroutine(DoDamage());
+            StartPatrol();
         }
 
         private void FixedUpdate()
         {
-            if (isKnockedBack)
+            switch (currentState)
             {
-                // During knockback, ignore all movement/attack logic
-                animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
-                return;
+                case EnemyState.Patrol:
+                    CheckForPlayer();
+                    break;
+
+                case EnemyState.Chase:
+                    Chase();
+                    CheckAttackRange();
+                    break;
+
+                case EnemyState.Attack:
+                    if (!isAttack)
+                    {
+                        isAttack = true;
+                        attackRoutine = StartCoroutine(DoDamage());
+                        animator.SetTrigger("attack");
+                    }
+                    break;
+
+                case EnemyState.Alert:
+                    AlertRoutine();
+                    break;
+
+                case EnemyState.Knockback:
+                    // During knockback, do nothing
+                    break;
             }
 
-            if (isAlert)
+            // Flip sprite based on velocity
+            if (rb.linearVelocityX != 0)
             {
-                Stop(); // Freeze during alert
+                sr.flipX = rb.linearVelocityX < 0;
             }
-            else
-            {
-                MoveTo(); // Normal movement
-                if (rb.linearVelocityX < 0)
-                {
-                    sr.flipX = true;
-                }
-                else if (rb.linearVelocityX > 0)
-                {
-                    sr.flipX = false;
-                }
-            }
+
             animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
         }
 
-        /// <summary>
-        /// Performs an attack on all valid targets in range.
-        /// Spawns a visual effect at the enemy position.
-        /// </summary>
-        private void Attack()
+        #region Patrol / Chase / Attack
+        private void CheckForPlayer()
         {
-            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, attackRadius);
-            UtilsClass.Attack(hitList, Damage, gameObject);
-        }
-
-        /// <summary>
-        /// Periodic attack coroutine (loops while enemy is alive).
-        /// </summary>
-
-        /// <summary>
-        /// Stops enemy movement and updates animator speed.
-        /// </summary>
-        public void Stop()
-        {
-            rb.linearVelocityX = 0;
-        }
-
-        /// <summary>
-        /// Moves the enemy towards the player if detected.
-        /// Patrols in a straight line if no player assigned.
-        /// </summary>
-        public void MoveTo()
-        {
-            if (targetTransform != null)
+            if (targetTransform == null)
             {
-                Vector2 direction = (targetTransform.position - transform.position).normalized;
-                float distance = Vector2.Distance(targetTransform.position, transform.position);
+                return;
+            }
 
-                if (distance > breakDistance)
+            float distance = Vector2.Distance(transform.position, targetTransform.position);
+            if (distance <= detectionRange)
+            {
+                StopPatrol();
+                currentState = EnemyState.Chase;
+            }
+        }
+
+        private void Chase()
+        {
+            if (targetTransform == null)
+            {
+                currentState = EnemyState.Patrol;
+                StartPatrol();
+                return;
+            }
+
+            Vector2 dir = (targetTransform.position - transform.position).normalized;
+            rb.linearVelocity = new Vector2(dir.x * moveSpeed * 2, rb.linearVelocity.y);
+        }
+
+        private void CheckAttackRange()
+        {
+            float distance = Vector2.Distance(transform.position, targetTransform.position);
+            if (distance <= breakDistance)
+            {
+                currentState = EnemyState.Attack;
+                if (attackRoutine == null)
                 {
-                    // Chase the player
-                    isChase = true;
-                    rb.linearVelocity = new Vector2(direction.x * moveSpeed * 2, rb.linearVelocity.y);
-
-                }
-
-                //reached attack range
-                else
-                {
-                    animator.SetTrigger("isAttacking");
-                    Stop();
+                    attackRoutine = StartCoroutine(DoDamage());
                 }
             }
-
-            else
-            {
-                StartPatrol();
-            }
         }
 
-        /// <summary>
-        /// Called when player enters detection trigger.
-        /// Plays alert animation and delays chase.
-        /// </summary>
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Player") && isChase == false)
-            {
-                animator.SetTrigger("alert");
-                Debug.Log("start alert coroutine");
-                targetTransform = collision.transform;
-                StartCoroutine(AlertRoutine());
-                isAlert = true;
-                Debug.Log("stopped patrol coroutine");
-                StopPatrol();
-            }
-
-            if (collision.CompareTag("Tower"))
-            {
-                //tower detected
-                targetTransform = collision.transform;
-                breakDistance = breakDistance * 1.5f;
-                StopPatrol();
-            }
-        }
-
-        /// <summary>
-        /// Called when player leaves detection trigger.
-        /// Clears player target reference.
-        /// </summary>
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            if (collision.CompareTag("Player") && isChase == true)
-            {
-                isChase = false;
-                targetTransform = null;
-                Debug.Log("started patrol coroutine");
-                StartPatrol();
-            }
-
-            if (collision.CompareTag("Tower"))
-            {
-                //tower detected
-                targetTransform = null;
-                breakDistance = breakDistance / 1.5f;
-                StartPatrol();
-            }
-        }
-
-        /// <summary>
-        /// Alert state routine:
-        /// Enemy freezes and plays alert animation before resuming chase.
-        /// </summary>
-        private IEnumerator AlertRoutine()
-        {
-            Stop();
-            yield return new WaitForSeconds(1f); // Match alert animation length
-            isAlert = false;
-            isChase = true;
-        }
-        private IEnumerator PatrolRoutine()
-        {
-            while (isPatrol == true)
-            {
-                Stop();
-                yield return new WaitForSeconds(Random.Range(0.5f, 2));
-                rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), rb.linearVelocity.y);
-                yield return new WaitForSeconds(Random.Range(0.5f, 1));
-            }
-        }
         private IEnumerator DoDamage()
         {
-            while (true)
+            while (isAttack)
             {
                 Attack();
-
-                // Visualize attack radius
-                /* var hitCircle = Instantiate(hitEffect, transform.position, Quaternion.identity, transform);
-                 hitCircle.transform.localScale = Vector2.one * attackRadius * 2f;
-                 Destroy(hitCircle, 0.1f);*/
-
-                yield return new WaitForSeconds(0.7f); // Cooldown between attacks
+                yield return new WaitForSeconds(1.5f);
+                isAttack = false;
+                StopCoroutine(attackRoutine);
             }
+            attackRoutine = null;
         }
 
         public void StartPatrol()
         {
-            isPatrol = true;
+            currentState = EnemyState.Patrol;
             if (patrolRoutine == null)
-            {
                 patrolRoutine = StartCoroutine(PatrolRoutine());
-            }
         }
+
         public void StopPatrol()
         {
-            isPatrol = false;
             if (patrolRoutine != null)
             {
                 StopCoroutine(patrolRoutine);
                 patrolRoutine = null;
             }
+            rb.linearVelocity = Vector2.zero;
         }
 
+        private IEnumerator PatrolRoutine()
+        {
+            while (currentState == EnemyState.Patrol)
+            {
+                rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-2f, 2f), rb.linearVelocity.y);
+                yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+            }
+            patrolRoutine = null;
+        }
+        #endregion
+
+        #region Knockback
+        public void ApplyKnockback(Vector2 dir)
+        {
+            StopAllCoroutines();
+            StartCoroutine(KnockbackRoutine(dir));
+        }
+
+        private IEnumerator KnockbackRoutine(Vector2 dir)
+        {
+            currentState = EnemyState.Knockback;
+            rb.linearVelocity = Vector2.zero;
+            rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
+            animator.SetTrigger("isHurt");
+
+            yield return new WaitForSeconds(knockbackDuration);
+
+            rb.linearVelocity = Vector2.zero;
+            currentState = EnemyState.Patrol;
+            StartPatrol();
+        }
+        #endregion
+
+        #region TakeDamage
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
 
-            Vector2 dir = (transform.position - attacker.position);
-            StartCoroutine(KnockbackRoutine(dir));
+            Vector2 dir = (transform.position - attacker.position).normalized;
+            ApplyKnockback(dir);
         }
+        #endregion
 
-        private IEnumerator KnockbackRoutine(Vector2 direction)
+        #region TriggerDetection
+        private void OnTriggerEnter2D(Collider2D collision)
         {
-            isKnockedBack = true;
-
-            rb.linearVelocity = Vector2.zero; // reset
-            rb.AddForce(direction * knockbackForce, ForceMode2D.Impulse);
-
-            yield return new WaitForSeconds(knockbackDuration);
-
-            rb.linearVelocity = Vector2.zero; // stop sliding
-            isKnockedBack = false;
+            if (collision.CompareTag("Player"))
+            {
+                targetTransform = collision.transform;
+                currentState = EnemyState.Alert;
+                StartCoroutine(AlertRoutine());
+                StopPatrol();
+            }
         }
+
+        private void OnTriggerExit2D(Collider2D collision)
+        {
+            if (collision.CompareTag("Player"))
+            {
+                targetTransform = null;
+                currentState = EnemyState.Patrol;
+                StartPatrol();
+            }
+        }
+
+        private IEnumerator AlertRoutine()
+        {
+            animator.SetTrigger("alert");
+            yield return new WaitForSeconds(1f);
+            if (targetTransform != null)
+            {
+                currentState = EnemyState.Chase;
+            }
+            else
+            {
+                currentState = EnemyState.Patrol;
+            }
+        }
+        #endregion
     }
 }

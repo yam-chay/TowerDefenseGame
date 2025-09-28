@@ -27,6 +27,12 @@ namespace TDLogic
             Debug.Log($"this is {name} Character");
         }
 
+        public virtual void Attack()
+        {
+            Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, Range);
+            UtilsClass.Attack(hitList, Damage, gameObject);
+        }
+
         public virtual void TakeDamage(int damage, Transform attacker)
         {
             Health -= damage;

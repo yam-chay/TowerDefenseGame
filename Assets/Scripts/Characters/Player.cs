@@ -20,6 +20,7 @@ namespace TDLogic
         public float deceleration = 15f;    // smooth stopping
         [SerializeField] private float runModifier = 1.8f;
         private bool isRunning = false;
+        private bool isAttackable;
 
 
         public static Player Instance { get; private set; }
@@ -49,7 +50,7 @@ namespace TDLogic
             isRunning = Input.GetKey(KeyCode.LeftShift);
 
             //horizontal movement
-            float targetSpeed = isRunning ? speed * runModifier : speed ; 
+            float targetSpeed = isRunning ? speed * runModifier : speed;
             float targetVelX = Input.GetAxisRaw("Horizontal") * targetSpeed;
             float smooth;
 
@@ -85,13 +86,6 @@ namespace TDLogic
                 Heal(10);
             }
 
-            if (Input.GetKeyDown(KeyCode.R))
-            {
-                Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
-                UtilsClass.Attack(hitList, characterData.damage, gameObject);
-
-            }
-
             if (Input.GetKeyDown(KeyCode.E))
             {
                 Interact();
@@ -101,12 +95,12 @@ namespace TDLogic
             {
                 spawner.Spawn();
             }
-            
-            if (Input.GetKey(KeyCode.Space))
+
+            if (Input.GetKeyDown(KeyCode.Space))
             {
                 animator.SetBool("attack", true);
             }
-            
+
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
@@ -121,6 +115,12 @@ namespace TDLogic
         {
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
             UtilsClass.Interact(interactList, transform);
+        }
+
+        private void ComboAttack(int hitIndex)
+        {
+            Attack();
+            Debug.Log($"{hitIndex} Attack Landed");
         }
     }
 }

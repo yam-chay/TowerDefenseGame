@@ -75,7 +75,7 @@ namespace TDLogic
                 case EnemyState.Chase:
                     StopPatrol();
                     Chase();
-                    CheckForPlayer();
+                    //CheckForPlayer();
                     CheckAttackRange();
                     break;
 
@@ -213,8 +213,8 @@ namespace TDLogic
 
         private IEnumerator AlertRoutine()
         {
-            currentState = EnemyState.Chase;
             yield return new WaitForSeconds(1f);
+            currentState = EnemyState.Chase;
             StopCoroutine(alertRoutine);
             alertRoutine = null;
         }

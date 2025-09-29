@@ -3,20 +3,23 @@ using System.Collections;
 
 namespace TDLogic
 {
-    public class Roundy : Tower, IInteractable
+    public class Roundy : Tower
     {
         [Header("Tower")]
-        [SerializeField] private TowerData towerData;
+        [SerializeField] public TowerData towerData;
         [SerializeField] private GameObject hitEffect;
-        [SerializeField] GameObject upgradeMenu;
         private Coroutine damageRoutine;
 
         void Start()
         {
-            upgradeMenu.SetActive(false);
             damageRoutine = StartCoroutine(DoDamage());
             HelloWorld(towerData.name);
             Init(towerData);
+        }
+
+        private void Update()
+        {
+            
         }
 
 
@@ -44,19 +47,6 @@ namespace TDLogic
 
             }
             while (i > 0);
-        }
-
-        public void Interact(Transform interactor)
-        {
-            upgradeMenu.SetActive(!upgradeMenu.activeSelf);
-            if (upgradeMenu.activeSelf)
-            {
-                Time.timeScale = 0.1f;
-            }
-            else
-            {
-                Time.timeScale = 1f;
-            }    
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +23,7 @@ namespace TDLogic
         [SerializeField] private float runModifier = 1.8f;
         private bool isRunning = false;
 
+        private Coroutine damageEffect;
 
         public static Player Instance { get; private set; }
         private void Awake()
@@ -111,6 +113,15 @@ namespace TDLogic
 
         }
 
+        public override void TakeDamage(int damage, Transform attacker)
+        {
+            base.TakeDamage(damage, attacker);
+            if (damageEffect == null)
+            {
+                damageEffect = StartCoroutine(DamageEffect());
+            }
+        }
+
         private void Interact()
         {
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
@@ -136,6 +147,15 @@ namespace TDLogic
 
             var offset = new Vector3(transform.position.x + forwardSpace + Random.Range(-offsetRange, offsetRange), transform.position.y + Random.Range(-offsetRange, offsetRange), 0);
             Instantiate(popUpText, offset, Quaternion.identity);
+        }
+
+        private IEnumerator DamageEffect()
+        {
+            sr.color = Color.red;
+            yield return new WaitForSeconds(0.1f);
+            sr.color = Color.white;
+            StopCoroutine(damageEffect);
+            damageEffect = null;
         }
     }
 }

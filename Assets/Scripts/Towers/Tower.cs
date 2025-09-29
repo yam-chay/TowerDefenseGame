@@ -2,20 +2,31 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public class Tower : MonoBehaviour , IDamagable
+    public class Tower : MonoBehaviour , IDamagable, IInteractable
     {
         public string Name { get; private set; }
-        public int Health { get; private set; }
+        public int Health { get; private set; } = 1000000;
         public int Damage { get; private set; }
         public float Radius { get; private set; }
+        public TowerData TowerData { get; set; }
+
+        [SerializeField] GameObject upgradeMenu;
+
+
+        private void Start()
+        {
+            upgradeMenu.SetActive(false);
+        }
 
         public void Heal(int amount)
         {
-            throw new System.NotImplementedException();
+            Health += amount;
+            Debug.Log($"{name} healed {amount}. Current health: {Health}");
         }
 
         public virtual void Init(TowerData towerData)
         {
+            TowerData = towerData; 
             Name = towerData.name;
             Health = towerData.health;
             Damage = towerData.damage;
@@ -43,5 +54,9 @@ namespace TDLogic
             Destroy(gameObject, 0.1f);
         }
 
+        public void Interact(Transform interactor)
+        {
+            upgradeMenu?.SetActive(true);  
+        }
     }
 }

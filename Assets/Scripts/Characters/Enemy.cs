@@ -26,7 +26,7 @@ namespace TDLogic
 
         [Header("Detection")]
         public float detectionRange = 5f;
-        [SerializeField] private Transform playerTransform;
+        private Transform playerTransform;
 
         private SpriteRenderer sr;
         private Transform targetTransform;
@@ -38,6 +38,14 @@ namespace TDLogic
         private Coroutine knockbackRoutine;
 
         private EnemyState currentState;
+
+        private void Awake()
+        {
+            if (Player.Instance != null)
+            {
+                playerTransform = Player.Instance.transform;
+            }
+        }
 
         private void Start()
         {
@@ -88,7 +96,7 @@ namespace TDLogic
                 case EnemyState.Knockback:
                     if (knockbackRoutine == null)
                     {
-                        Vector2 dir = new Vector2(rb.linearVelocityX, 0).normalized;
+                        Vector2 dir = new Vector2(targetTransform.GetComponent<IDamagable>().Damage, 0);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
                     break;
@@ -145,7 +153,7 @@ namespace TDLogic
         private IEnumerator DoDamage()
         {
             Attack();
-            yield return new WaitForSeconds(0.8f);
+            yield return new WaitForSeconds(0.5f);
             StopCoroutine(attackRoutine);
             attackRoutine = null;
         }
@@ -181,7 +189,7 @@ namespace TDLogic
         private IEnumerator KnockbackRoutine(Vector2 dir)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.AddForce(dir * knockbackForce, ForceMode2D.Impulse);
+            rb.AddForce(-dir * knockbackForce, ForceMode2D.Impulse);
             animator.SetTrigger("isHurt");
 
             yield return new WaitForSeconds(knockbackDuration);

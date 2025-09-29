@@ -3800,12 +3800,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: knockbackForce
-      value: 6
+      value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
-      propertyPath: playerTransform
-      value: 
-      objectReference: {fileID: 1826436898}
     - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: knockbackDuration
       value: 0.3
@@ -10463,11 +10459,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!4 &1826436898 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2951166351008772509, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-  m_PrefabInstance: {fileID: 1223564359}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1834424375
 GameObject:
   m_ObjectHideFlags: 0

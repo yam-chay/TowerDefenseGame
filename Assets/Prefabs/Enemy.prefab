@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3078778519190307772}
   - component: {fileID: 3055356322244492398}
   - component: {fileID: 737480600575707219}
-  - component: {fileID: 1266707459646840621}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Untagged
@@ -111,8 +110,10 @@ MonoBehaviour:
   breakDistance: 1.5
   hitEffect: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
   characterData: {fileID: 11400000, guid: c436e5babb790494baf9759fce4025f4, type: 2}
-  knockbackForce: 1
-  knockbackDuration: 0.25
+  attackCooldown: 0.5
+  knockbackForce: 8
+  knockUpForce: 5
+  knockbackDuration: 0.15
   detectionRange: 6
 --- !u!50 &3078778519190307772
 Rigidbody2D:
@@ -200,49 +201,3 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: 0}
   m_Size: {x: 1.4960938, y: 2.171875}
   m_Direction: 0
---- !u!61 &1266707459646840621
-BoxCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 515615748092329628}
-  m_Enabled: 0
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -1}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.4960938, y: 2.171875}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 10.524141, y: 0.21445489}
-  m_EdgeRadius: 0

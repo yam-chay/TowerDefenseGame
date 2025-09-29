@@ -21,7 +21,9 @@ namespace TDLogic
         public CharacterData characterData;
 
         [Header("Combat")]
+        public float attackCooldown = 0.5f;
         public float knockbackForce = 5f;
+        public float knockUpForce = 0.2f;
         public float knockbackDuration = 0.2f;
 
         [Header("Detection")]
@@ -81,14 +83,14 @@ namespace TDLogic
                     if (attackRoutine == null)
                     {
                         animator.SetTrigger("attack");
-                        attackRoutine = StartCoroutine(DoDamage());
+                        attackRoutine = StartCoroutine(AttackRoutine());
                     }
-                    CheckAttackRange();
                     break;
 
                 case EnemyState.Alert:
                     if (alertRoutine == null)
                     {
+                        animator.SetTrigger("alert");
                         alertRoutine = StartCoroutine(AlertRoutine());
                     }
                     break;
@@ -96,14 +98,15 @@ namespace TDLogic
                 case EnemyState.Knockback:
                     if (knockbackRoutine == null)
                     {
-                        Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage, 0);
+                        Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage / 10 * knockbackForce, knockUpForce);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
+                    animator.SetTrigger("isHurt");
                     break;
             }
 
             // Flip sprite based on velocity
-            if (rb.linearVelocityX != 0)
+            if (rb.linearVelocityX != 0 && knockbackRoutine == null)
             {
                 sr.flipX = rb.linearVelocityX < 0;
             }
@@ -150,12 +153,13 @@ namespace TDLogic
             }
         }
 
-        private IEnumerator DoDamage()
+        private IEnumerator AttackRoutine()
         {
             Attack();
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(attackCooldown);
             StopCoroutine(attackRoutine);
             attackRoutine = null;
+            CheckAttackRange();
         }
 
         public void StartPatrol()
@@ -184,22 +188,22 @@ namespace TDLogic
         }
         #endregion
 
-        #region Knockback
-
         private IEnumerator KnockbackRoutine(Vector2 dir)
         {
             rb.linearVelocity = Vector2.zero;
-            rb.AddForce(-dir * knockbackForce, ForceMode2D.Impulse);
-            animator.SetTrigger("isHurt");
-
-            yield return new WaitForSeconds(knockbackDuration);
-
+            rb.freezeRotation = false;
+            rb.AddForce(-dir, ForceMode2D.Impulse);
+            sr.color = Color.red;
+            yield return new WaitForSeconds(knockbackDuration / 2);
+            sr.color = Color.white;
+            yield return new WaitForSeconds(knockbackDuration / 2);
+            transform.rotation = Quaternion.identity;
+            rb.freezeRotation = true;
             rb.linearVelocity = Vector2.zero;
             CheckAttackRange();
             StopCoroutine(knockbackRoutine);
             knockbackRoutine = null;
         }
-        #endregion
 
         public override void TakeDamage(int damage, Transform attacker)
         {
@@ -209,7 +213,6 @@ namespace TDLogic
 
         private IEnumerator AlertRoutine()
         {
-            animator.SetTrigger("alert");
             currentState = EnemyState.Chase;
             yield return new WaitForSeconds(1f);
             StopCoroutine(alertRoutine);

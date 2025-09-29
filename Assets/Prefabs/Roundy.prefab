@@ -104,9 +104,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 882b065714565d348833bb296ac6bc3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  upgradeMenu: {fileID: 7905217446457575070, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
   towerData: {fileID: 11400000, guid: e2d0df289a6bb7a42a8861ba2ddb43be, type: 2}
   hitEffect: {fileID: 5246188739835653494, guid: ae6fc440324899246ae7c7c40f55eaf2, type: 3}
-  upgradeMenu: {fileID: 0}
 --- !u!61 &4381643072428454287
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -145,7 +145,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 4.06, y: 6.04}
+    oldSize: {x: 3.56, y: 5.6}
     newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0

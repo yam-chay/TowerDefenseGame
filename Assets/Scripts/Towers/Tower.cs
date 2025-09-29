@@ -54,9 +54,9 @@ namespace TDLogic
             Destroy(gameObject, 0.1f);
         }
 
-        public void Interact(Transform interactor)
+        public virtual void Interact(Transform interactor)
         {
-            upgradeMenu?.SetActive(true);  
+            upgradeMenu.SetActive(true);  
         }
     }
 }

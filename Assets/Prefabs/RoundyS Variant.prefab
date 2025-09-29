@@ -12,6 +12,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: RoundyS Variant
       objectReference: {fileID: 0}
+    - target: {fileID: 4381643072428454287, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.x
+      value: 3.54
+      objectReference: {fileID: 0}
+    - target: {fileID: 4381643072428454287, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
+      propertyPath: m_SpriteTilingProperty.oldSize.y
+      value: 5.88
+      objectReference: {fileID: 0}
     - target: {fileID: 6569426403413914011, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_Sprite
       value: 
@@ -20,6 +28,10 @@ PrefabInstance:
       propertyPath: towerData
       value: 
       objectReference: {fileID: 11400000, guid: e94e423ef717cbc459ed2d7ce4063a0a, type: 2}
+    - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
+      propertyPath: upgradeMenu
+      value: 
+      objectReference: {fileID: 7905217446457575070, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
     - target: {fileID: 8568341123573218235, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_LocalPosition.x
       value: -21.17

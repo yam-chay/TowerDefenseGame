@@ -152,7 +152,7 @@ namespace TDLogic
         private IEnumerator DamageEffect()
         {
             sr.color = Color.red;
-            yield return new WaitForSeconds(0.1f);
+            yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
             StopCoroutine(damageEffect);
             damageEffect = null;

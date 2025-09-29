@@ -13,6 +13,7 @@ namespace TDLogic
         private SpriteRenderer sr;
         private Animator animator;
         [SerializeField] private Slider slider;
+        [SerializeField] private GameObject popUpText;
 
         [Header("Movement")]
         public float speed = 8;
@@ -20,7 +21,6 @@ namespace TDLogic
         public float deceleration = 15f;    // smooth stopping
         [SerializeField] private float runModifier = 1.8f;
         private bool isRunning = false;
-        private bool isAttackable;
 
 
         public static Player Instance { get; private set; }
@@ -117,10 +117,19 @@ namespace TDLogic
             UtilsClass.Interact(interactList, transform);
         }
 
-        private void ComboAttack(int hitIndex)
+        //used by animator events
+        public void ComboAttack(int hitIndex)
         {
             Attack();
+            PopUpDamage();
             Debug.Log($"{hitIndex} Attack Landed");
+        }
+
+        private void PopUpDamage()
+        {
+            float offsetRange = 0.5f;
+            var offset = new Vector3(transform.position.x + Random.Range(-offsetRange, offsetRange), transform.position.y + Random.Range(-offsetRange, offsetRange), 0);
+            Instantiate(popUpText, offset, Quaternion.identity);
         }
     }
 }

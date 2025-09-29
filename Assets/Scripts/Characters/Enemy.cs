@@ -96,7 +96,7 @@ namespace TDLogic
                 case EnemyState.Knockback:
                     if (knockbackRoutine == null)
                     {
-                        Vector2 dir = new Vector2(targetTransform.GetComponent<IDamagable>().Damage, 0);
+                        Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage, 0);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
                     break;
@@ -204,8 +204,6 @@ namespace TDLogic
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
-
-            Vector2 dir = (transform.position - attacker.position).normalized;
             currentState = EnemyState.Knockback;
         }
 

@@ -11,8 +11,6 @@ namespace TDLogic
         [SerializeField] private float smoothSpeed;
         private Transform target;
 
-        private Vector3 velocity = Vector3.zero;
-
         private void Awake()
         {
             if(Player.Instance != null)
@@ -25,7 +23,7 @@ namespace TDLogic
             if (Player.Instance != null)
             {
                 target = Player.Instance.transform;
-                Vector3 desiredPosition = new Vector3(target.position.x + xOffSet, target.position.y + yOffSet, zOffSet);
+                Vector3 desiredPosition = new(target.position.x + xOffSet, target.position.y + yOffSet, zOffSet);
                 Vector3 smoothedPosition = Vector3.Lerp(mainCamera.transform.position, desiredPosition, smoothSpeed * Time.deltaTime);
                 mainCamera.transform.position = smoothedPosition;
             }

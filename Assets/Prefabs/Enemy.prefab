@@ -111,8 +111,8 @@ MonoBehaviour:
   breakDistance: 1.5
   hitEffect: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
   characterData: {fileID: 11400000, guid: c436e5babb790494baf9759fce4025f4, type: 2}
-  knockbackForce: 1.5
-  knockbackDuration: 0.3
+  knockbackForce: 1
+  knockbackDuration: 0.25
   detectionRange: 6
 --- !u!50 &3078778519190307772
 Rigidbody2D:

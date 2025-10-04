@@ -4,7 +4,6 @@ namespace TDLogic
 {
     public class Soil : MonoBehaviour , IInteractable
     {
-        public Tower currentTower;
         public bool isFree;
         [SerializeField] GameObject upgradeMenu;
 

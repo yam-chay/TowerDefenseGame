@@ -959,6 +959,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: breakDistance
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: detectionRange
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5133743869793949444, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: m_LocalPosition.x
       value: -39.35
@@ -1015,7 +1023,7 @@ GameObject:
   - component: {fileID: 663600853}
   - component: {fileID: 663600852}
   - component: {fileID: 663600854}
-  - component: {fileID: 663600855}
+  - component: {fileID: 663600856}
   m_Layer: 6
   m_Name: TowerSpot
   m_TagString: Untagged
@@ -1132,7 +1140,7 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.525
---- !u!114 &663600855
+--- !u!114 &663600856
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1141,9 +1149,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 663600851}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0d87286feef98054bba811be2781e457, type: 3}
+  m_Script: {fileID: 11500000, guid: 248872c3d288c144b917a1c8165c9ab7, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly::TDLogic.Tower
+  m_EditorClassIdentifier: Assembly::TDLogic.Soil
+  isFree: 0
   upgradeMenu: {fileID: 626913652}
 --- !u!1 &696028463
 GameObject:
@@ -2723,6 +2732,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 325058512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1566034481
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1566034482}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1566034482
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1566034481}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -16.22, y: 1.8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1579087305
 GameObject:
   m_ObjectHideFlags: 0
@@ -4096,6 +4136,14 @@ PrefabInstance:
       propertyPath: m_Color.a
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2668862444899460871, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
+      propertyPath: isFree
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2668862444899460871, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
+      propertyPath: buildPoint
+      value: 
+      objectReference: {fileID: 1566034482}
     - target: {fileID: 2791038626891497135, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
       propertyPath: m_Color.a
       value: 0.6313726
@@ -4302,3 +4350,4 @@ SceneRoots:
   - {fileID: 1223564359}
   - {fileID: 654514381}
   - {fileID: 1417048749}
+  - {fileID: 1566034482}

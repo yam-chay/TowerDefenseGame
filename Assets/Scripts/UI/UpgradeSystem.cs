@@ -12,8 +12,7 @@ namespace TDLogic
         public float originTimeScale;
         public Transform buildPoint;
         public bool isFree;
-        private GameObject objectToSpawn;
-        
+        private GameObject objectToSpawn;        
         void Start()
         {
             originTimeScale = Time.timeScale;

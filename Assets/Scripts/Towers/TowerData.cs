@@ -15,7 +15,6 @@ namespace TDLogic
         public GameObject hitEffect;
         public Sprite towerIcon;
 
-        [Header("UI / Upgrade")]
-        public GameObject upgradeMenu;
+
     }
 }

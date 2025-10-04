@@ -43,14 +43,15 @@ namespace TDLogic
 
         private void Awake()
         {
-            if (Player.Instance != null)
-            {
-                playerTransform = Player.Instance.transform;
-            }
         }
 
         private void Start()
         {
+            if (Player.Instance != null)
+            {
+                playerTransform = Player.Instance.transform;
+            }
+
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
@@ -117,16 +118,19 @@ namespace TDLogic
         #region Patrol / Chase / Attack
         private void CheckForPlayer()
         {
-            float distance = Vector2.Distance(transform.position, playerTransform.position);
+            if (playerTransform != null)
+            {
+                float distance = Vector2.Distance(transform.position, playerTransform.position);
 
-            if (distance <= detectionRange)
-            {
-                targetTransform = playerTransform;
-                currentState = EnemyState.Alert;
-            }
-            else
-            {
-                currentState = EnemyState.Patrol;
+                if (distance <= detectionRange)
+                {
+                    targetTransform = playerTransform;
+                    currentState = EnemyState.Alert;
+                }
+                else
+                {
+                    currentState = EnemyState.Patrol;
+                }
             }
         }
 

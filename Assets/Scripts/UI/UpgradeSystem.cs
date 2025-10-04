@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace TDLogic
 {
@@ -9,6 +10,9 @@ namespace TDLogic
         public GameObject EvolveThree;
         public float SlowMotion;
         public float originTimeScale;
+        public Transform buildPoint;
+        public bool isFree;
+        private GameObject objectToSpawn;
         
         void Start()
         {
@@ -25,18 +29,38 @@ namespace TDLogic
 
         public void ButtonOne()
         {
-            var objectToSpawn = Instantiate(EvolveOne, transform.position, Quaternion.identity);
+            if (isFree)
+            {
+                Destroy(objectToSpawn);  
+            }
+            objectToSpawn = Instantiate(EvolveOne, buildPoint.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
         public void ButtonTwo()
         {
-            var objectToSpawn = Instantiate(EvolveTwo, transform.position, Quaternion.identity);
+            if (isFree)
+            {
+                Destroy(objectToSpawn);
+            }
+            objectToSpawn = Instantiate(EvolveTwo, buildPoint.position, Quaternion.identity);
             gameObject.SetActive(false);
         }
         public void ButtonThree()
         {
-            var objectToSpawn = Instantiate(EvolveThree, transform.position, Quaternion.identity);
+            if (isFree)
+            {
+                Destroy(objectToSpawn);
+            }
+            objectToSpawn = Instantiate(EvolveThree, buildPoint.position, Quaternion.identity);
             gameObject.SetActive(false);
+        }
+
+        private void OnEnable()
+        {
+            if (!objectToSpawn)
+            {
+                isFree = true;
+            }
         }
 
         private void OnDisable()

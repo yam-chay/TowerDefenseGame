@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 1
     aniso: 1
     mipBias: 0
-    wrapU: 1
-    wrapV: 1
-    wrapW: 1
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -103,20 +103,42 @@ TextureImporter:
       name: grass_foreground_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 0
-        width: 691
+        width: 317
         height: 148
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3bdc810aa4f78af70800000000000000
+      spriteID: b1bda8d7fce26bc47a9aac35b9355b6f
       internalID: 9198742197394525619
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: grass_foreground_1
+      rect:
+        serializedVersion: 2
+        x: 374
+        y: 0
+        width: 317
+        height: 148
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39cf670905ec5054a91f260bb0f9be80
+      internalID: 1049428838
       vertices: []
       indices: 
       edges: []
@@ -125,7 +147,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: c12b9ee8cf79be34e856aab3c593c656
     internalID: 0
     vertices: []
     indices: 
@@ -133,9 +155,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":true,"gridCellCount":{"x":2.0,"y":1.0},"gridSpriteSize":{"x":317.0,"y":148.0},"gridSpriteOffset":{"x":2.0,"y":0.0},"gridSpritePadding":{"x":55.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":true,"isAlternate":false}'
+      - key: SpriteEditor.SliceOnImport
+        value: True
     nameFileIdTable:
       grass_foreground_0: 9198742197394525619
+      grass_foreground_1: 1049428838
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

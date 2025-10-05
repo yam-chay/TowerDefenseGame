@@ -24,6 +24,7 @@ namespace TDLogic
         private bool isRunning = false;
 
         private Coroutine damageEffect;
+        private bool isDead = false;
 
         public static Player Instance { get; private set; }
         private void Awake()
@@ -83,43 +84,56 @@ namespace TDLogic
 
         void Update()
         {
-            if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
+            while (!isDead)
             {
-                Heal(10);
+                if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
+                {
+                    Heal(10);
+                }
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    Interact();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Q))
+                {
+                    spawner.Spawn();
+                }
+
+                if (Input.GetKeyDown(KeyCode.Space))
+                {
+                    animator.SetBool("attack", true);
+                }
+
+                if (Input.GetKeyUp(KeyCode.Space))
+                {
+                    animator.SetBool("attack", false);
+                }
+
+                animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
             }
-
-            if (Input.GetKeyDown(KeyCode.E))
-            {
-                Interact();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Q))
-            {
-                spawner.Spawn();
-            }
-
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                animator.SetBool("attack", true);
-            }
-
-
-            if (Input.GetKeyUp(KeyCode.Space))
-            {
-                animator.SetBool("attack", false);
-            }
-
-            animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
-
         }
 
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
-            if (damageEffect == null)
+
+#pragma warning disable IDE0074 // Use compound assignment
+            if (Health <= 0)
+            {
+                //Game Over Screen
+                isDead = true;
+                animator.SetTrigger("isDead");
+                Destroy(gameObject, 0.8f);
+            }
+
+            else if (damageEffect == null)
             {
                 damageEffect = StartCoroutine(DamageEffect());
             }
+#pragma warning restore IDE0074 // Use compound assignment
+
         }
 
         private void Interact()
@@ -151,9 +165,12 @@ namespace TDLogic
 
         private IEnumerator DamageEffect()
         {
+            animator.SetBool("isHit", true);
             sr.color = Color.red;
+            rb.AddForce(new Vector2(-rb.linearVelocityX, 0f) ,ForceMode2D.Impulse); 
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
+            animator.SetBool("isHit", false);
             StopCoroutine(damageEffect);
             damageEffect = null;
         }

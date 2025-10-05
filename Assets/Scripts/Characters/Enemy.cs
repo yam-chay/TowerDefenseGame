@@ -97,7 +97,7 @@ namespace TDLogic
                     break;
 
                 case EnemyState.Knockback:
-                    if (knockbackRoutine == null)
+                    if (knockbackRoutine == null && targetTransform)
                     {
                         Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage / 10 * knockbackForce, knockUpForce);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
@@ -118,7 +118,7 @@ namespace TDLogic
         #region Patrol / Chase / Attack
         private void CheckForPlayer()
         {
-            if (playerTransform != null)
+            if (playerTransform)
             {
                 float distance = Vector2.Distance(transform.position, playerTransform.position);
 
@@ -136,24 +136,30 @@ namespace TDLogic
 
         private void Chase()
         {
-            Vector2 dir = (targetTransform.position - transform.position).normalized;
-            rb.linearVelocity = new Vector2(dir.x * moveSpeed * 2, rb.linearVelocity.y);
+            if (targetTransform)
+            {
+                Vector2 dir = (targetTransform.position - transform.position).normalized;
+                rb.linearVelocity = new Vector2(dir.x * moveSpeed * 2.5f, 0);
+            }
         }
 
         private void CheckAttackRange()
         {
-            float distance = Vector2.Distance(transform.position, targetTransform.position);
-            if (distance <= breakDistance)
+            if (targetTransform)
             {
-                currentState = EnemyState.Attack;
-            }
-            else if (distance >= detectionRange)
-            {
-                currentState = EnemyState.Patrol;
-            }
-            else
-            {
-                currentState = EnemyState.Chase;
+                float distance = Vector2.Distance(transform.position, targetTransform.position);
+                if (distance <= breakDistance)
+                {
+                    currentState = EnemyState.Attack;
+                }
+                else if (distance >= detectionRange)
+                {
+                    currentState = EnemyState.Patrol;
+                }
+                else
+                {
+                    currentState = EnemyState.Chase;
+                }
             }
         }
 

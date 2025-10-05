@@ -1,3 +1,4 @@
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
 namespace TDLogic
@@ -39,7 +40,7 @@ namespace TDLogic
             Debug.Log($"{name} took {damage} damage! Current health: {Health}");
             if (Health <= 0)
             {
-                Die(gameObject);
+                //Die(gameObject);
             }
         }
 
@@ -49,10 +50,10 @@ namespace TDLogic
             Debug.Log($"{name} healed {amount}. Current health: {Health}");
         }
 
-        private protected void Die(GameObject gameObject)
+        public virtual void Die(GameObject gameObject)
         {
             Debug.Log(name + " died!");
-            Destroy(gameObject, 0.1f);
+            Destroy(gameObject, 0.5f);
         }
     }
 }

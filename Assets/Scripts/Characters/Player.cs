@@ -101,7 +101,7 @@ namespace TDLogic
                     spawner.Spawn();
                 }
 
-                if (Input.GetKeyDown(KeyCode.Space))
+                if (Input.GetKeyDown(KeyCode.Space) && !isDead)
                 {
                     animator.SetBool("attack", true);
                 }
@@ -119,21 +119,19 @@ namespace TDLogic
         {
             base.TakeDamage(damage, attacker);
 
-#pragma warning disable IDE0074 // Use compound assignment
             if (Health <= 0)
             {
                 //Game Over Screen
                 isDead = true;
-                animator.SetTrigger("isDead");
-                Destroy(gameObject, 0.8f);
+                speed = 0;
+                animator.SetBool("Attack", false);
+                animator.SetBool("isDead", true);
             }
 
             else if (damageEffect == null)
             {
                 damageEffect = StartCoroutine(DamageEffect());
             }
-#pragma warning restore IDE0074 // Use compound assignment
-
         }
 
         private void Interact()

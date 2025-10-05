@@ -40,7 +40,7 @@ namespace TDLogic
             Debug.Log($"{name} took {damage} damage! Current health: {Health}");
             if (Health <= 0)
             {
-                //Die(gameObject);
+                Die(gameObject);
             }
         }
 
@@ -53,7 +53,7 @@ namespace TDLogic
         public virtual void Die(GameObject gameObject)
         {
             Debug.Log(name + " died!");
-            Destroy(gameObject, 0.5f);
+            Destroy(gameObject, 1f);
         }
     }
 }

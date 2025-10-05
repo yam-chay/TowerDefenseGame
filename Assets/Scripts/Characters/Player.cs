@@ -15,6 +15,7 @@ namespace TDLogic
         private Animator animator;
         [SerializeField] private Slider slider;
         [SerializeField] private GameObject popUpText;
+        [SerializeField] private GameObject gameOver;
 
         [Header("Movement")]
         public float speed = 8;
@@ -124,8 +125,8 @@ namespace TDLogic
                 //Game Over Screen
                 isDead = true;
                 speed = 0;
-                animator.SetBool("Attack", false);
                 animator.SetBool("isDead", true);
+                gameOver.gameObject.SetActive(true);
             }
 
             else if (damageEffect == null)

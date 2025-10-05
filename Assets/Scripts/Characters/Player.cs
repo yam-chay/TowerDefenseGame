@@ -84,7 +84,7 @@ namespace TDLogic
 
         void Update()
         {
-            while (!isDead)
+            if (!isDead)
             {
                 if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
                 {

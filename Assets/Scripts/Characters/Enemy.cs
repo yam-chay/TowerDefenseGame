@@ -44,10 +44,6 @@ namespace TDLogic
 
         private EnemyState currentState;
 
-        private void Awake()
-        {
-        }
-
         private void Start()
         {
             if (Player.Instance != null)

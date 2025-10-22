@@ -133,7 +133,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: cf285409d1147cb408b17548323f07ee, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -192,3 +192,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaa9efe50d5c7d4db41ab7fe0556f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly::TDLogic.Coin
+  bag: {fileID: 0}

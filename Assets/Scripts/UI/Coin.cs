@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace TDLogic
 {
@@ -25,19 +24,19 @@ namespace TDLogic
             if (collision.gameObject.CompareTag("Bag") && !inBag)
             {
                 transform.localScale /= 2.5f;
-                rb.linearVelocity = Vector2.zero;
+                rb.linearVelocity = Vector2.down;
                 inBag = true;
-                animator.SetBool("inBag", true);           
+                animator.SetBool("inBag", true);
             }
         }
 
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Player") && !inBag)
+            if (collision.gameObject.CompareTag("Player"))
             {
-                transform.position = new Vector2(10.5f, 8);
-                rb.linearVelocity = Vector2.zero;
+                transform.position = new Vector2(collision.transform.position.x + 10.5f, collision.transform.position.y + 9);
+                rb.linearVelocity = Vector2.down;
             }
         }
     }

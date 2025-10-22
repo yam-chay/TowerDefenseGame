@@ -4,7 +4,7 @@ namespace TDLogic
 {
     public class Soil : MonoBehaviour , IInteractable
     {
-        public bool isFree;
+        public bool isFree; 
         [SerializeField] GameObject upgradeMenu;
 
         public virtual void Interact(Transform interactor)

@@ -142,7 +142,7 @@ namespace TDLogic
         }
 
         //used by animator events
-        public void ComboAttack(int hitIndex)
+        public void ComboAttack()
         {
             Attack();
             HitEffectPopUp();

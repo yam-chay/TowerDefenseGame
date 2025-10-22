@@ -136,6 +136,7 @@ MonoBehaviour:
   characterData: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
   slider: {fileID: 0}
   popUpText: {fileID: 2800494681234876337, guid: 1a7aadb98f5ab9147a8f35019de75366, type: 3}
+  gameOver: {fileID: 0}
   speed: 4
   acceleration: 40
   deceleration: 15
@@ -152,7 +153,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 0bc950ec69fb8ef4f88ab0428e0e2d7a, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 1
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0

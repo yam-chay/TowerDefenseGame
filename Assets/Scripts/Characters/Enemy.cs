@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Collections;
 using UnityEngine;
 
 namespace TDLogic
@@ -9,7 +10,8 @@ namespace TDLogic
         Alert,
         Chase,
         Attack,
-        Knockback
+        Knockback,
+        Death,
     }
 
     public class Enemy : Character
@@ -18,6 +20,7 @@ namespace TDLogic
         public float moveSpeed = 2f;
         public float breakDistance = 1.5f;
         public GameObject hitEffect;
+        public GameObject hitEffectDMG;
         public CharacterData characterData;
 
         [Header("Combat")]
@@ -103,6 +106,11 @@ namespace TDLogic
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
                     animator.SetTrigger("isHurt");
+                    break;
+
+                case EnemyState.Death:
+                    StopAllCoroutines();
+                    animator.SetTrigger("death");
                     break;
             }
 
@@ -216,9 +224,20 @@ namespace TDLogic
         }
 
         public override void TakeDamage(int damage, Transform attacker)
-        {
+        {            
             base.TakeDamage(damage, attacker);
             currentState = EnemyState.Knockback;
+            HitEffectPopUp();           
+            if (Health <= 0)
+            {
+                 currentState = EnemyState.Death;
+            }
+        }
+
+        private void HitEffectPopUp()
+        {
+            var offset = new Vector3(transform.position.x, transform.position.y, 0);
+            Instantiate(hitEffectDMG, offset, Quaternion.identity, transform.parent);
         }
 
         private IEnumerator AlertRoutine()

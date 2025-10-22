@@ -145,10 +145,10 @@ namespace TDLogic
         public void ComboAttack(int hitIndex)
         {
             Attack();
-            PopUpDamage();
+            HitEffectPopUp();
         }
 
-        private void PopUpDamage()
+        private void HitEffectPopUp()
         {
             float offsetRange = 0.5f;
             float forwardSpace = 1.5f;

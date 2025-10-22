@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public static class UtilsClass
+    public abstract class UtilsClass
     {
         /// <summary>
         /// provide a list of all colliders in radius from position

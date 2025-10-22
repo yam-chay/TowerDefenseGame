@@ -24,9 +24,10 @@ namespace TDLogic
         {
             if (collision.gameObject.CompareTag("Bag") && !inBag)
             {
-                transform.localScale /= 2f;
+                transform.localScale /= 2.5f;
                 rb.linearVelocity = Vector2.zero;
                 inBag = true;
+                animator.SetBool("inBag", true);
             }
         }
     }

@@ -27,7 +27,16 @@ namespace TDLogic
                 transform.localScale /= 2.5f;
                 rb.linearVelocity = Vector2.zero;
                 inBag = true;
-                animator.SetBool("inBag", true);
+                animator.SetBool("inBag", true);           
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Player") && !inBag)
+            {
+                transform.position = new Vector2(10.5f, 8);
+                rb.linearVelocity = Vector2.zero;
             }
         }
     }

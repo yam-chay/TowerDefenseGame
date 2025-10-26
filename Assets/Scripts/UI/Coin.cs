@@ -1,3 +1,4 @@
+using UnityEditor;
 using UnityEngine;
 
 namespace TDLogic
@@ -5,18 +6,27 @@ namespace TDLogic
     public class Coin : MonoBehaviour
     {
         private Rigidbody2D rb;
-        private bool inBag;
         private Animator animator;
+        private bool inBag;
+        private bool spawned;
 
         private void Awake()
         {
+            spawned = true;
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
         }
+
         private void Start()
-        {    
+        {
+            spawned = false;
             inBag = false;
             animator.SetBool("inBag", false);
+        }
+
+        private void OnEnable()
+        {
+            rb.AddForce(new Vector2(5, 6), ForceMode2D.Impulse);
         }
 
         private void OnTriggerEnter2D(Collider2D collision)
@@ -33,9 +43,9 @@ namespace TDLogic
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Player"))
+            if (collision.gameObject.CompareTag("Player") && !spawned)
             {
-                transform.position = new Vector2(collision.transform.position.x + 13, collision.transform.position.y + 10);
+                transform.position = new Vector2(collision.transform.position.x + 13, collision.transform.position.y + 11);
                 rb.linearVelocity = Vector2.down;
             }
 

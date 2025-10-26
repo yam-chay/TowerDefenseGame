@@ -135,9 +135,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
   slider: {fileID: 0}
-  popUpText: {fileID: 2800494681234876337, guid: 1a7aadb98f5ab9147a8f35019de75366, type: 3}
   gameOver: {fileID: 0}
-  speed: 4
+  coin: {fileID: 2955221363049035194, guid: a4f84c2262fb00b40aa3f05aadf799a9, type: 3}
+  coinCounter: 2
+  speed: 2
   acceleration: 40
   deceleration: 15
   runModifier: 2.5

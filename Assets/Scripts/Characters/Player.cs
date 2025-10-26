@@ -9,12 +9,15 @@ namespace TDLogic
     {
         [Header("Data")]
         public CharacterData characterData;
+        private int coins;
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
         private Animator animator;
         [SerializeField] private Slider slider;
         [SerializeField] private GameObject gameOver;
+        [SerializeField] private GameObject coin;
+        [SerializeField] private int coinCounter;
 
         [Header("Movement")]
         public float speed = 8;
@@ -130,7 +133,7 @@ namespace TDLogic
 
             else if (damageEffect == null)
             {
-                damageEffect = StartCoroutine(DamageEffect());
+                damageEffect = StartCoroutine(DamageEffect());                
             }
         }
 
@@ -139,6 +142,7 @@ namespace TDLogic
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
             UtilsClass.Interact(interactList, transform);
         }
+        
 
         //used by animator events
         public void ComboAttack()
@@ -150,12 +154,24 @@ namespace TDLogic
         {
             animator.SetBool("isHit", true);
             sr.color = Color.red;
-            rb.AddForce(new Vector2(-rb.linearVelocityX, 0f) ,ForceMode2D.Impulse); 
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
+            if (coinCounter > 0)
+            {
+                var coiner = Instantiate(coin, new Vector2(transform.position.x , transform.position.y + 1.5f), Quaternion.identity);        
+                rb.AddForce(new Vector2(-rb.linearVelocityX, 0f) ,ForceMode2D.Impulse); 
+            }
             animator.SetBool("isHit", false);
             StopCoroutine(damageEffect);
             damageEffect = null;
+        }
+
+        private void OnCollisionEnter2D(Collision2D collision)
+        {
+            if (collision.gameObject.CompareTag("Coin"))
+            {
+                coinCounter++;
+            }
         }
     }
 }

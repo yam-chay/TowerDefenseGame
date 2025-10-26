@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Collections;
 using UnityEngine;
+using UnityEngine.XR;
 
 namespace TDLogic
 {
@@ -21,13 +22,16 @@ namespace TDLogic
         public float breakDistance = 1.5f;
         public GameObject hitEffect;
         public GameObject hitEffectDMG;
+        public GameObject coins;
         public CharacterData characterData;
+        [SerializeField] private int lootDrop = 2;
 
         [Header("Combat")]
         public float attackCooldown = 0.5f;
         public float knockbackForce = 5f;
         public float knockUpForce = 0.2f;
         public float knockbackDuration = 0.2f;
+        public bool isDead;
 
         [Header("Detection")]
         public float detectionRange = 5f;
@@ -50,6 +54,7 @@ namespace TDLogic
             {
                 playerTransform = Player.Instance.transform;
             }
+            isDead = false;
 
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
@@ -105,8 +110,10 @@ namespace TDLogic
                     break;
 
                 case EnemyState.Death:
+                    Destroy(gameObject.GetComponent<Collider2D>());
                     StopAllCoroutines();
                     animator.SetTrigger("death");
+                    Destroy(gameObject, 1);
                     break;
             }
 
@@ -220,13 +227,22 @@ namespace TDLogic
         }
 
         public override void TakeDamage(int damage, Transform attacker)
-        {            
-            base.TakeDamage(damage, attacker);
+        {
             currentState = EnemyState.Knockback;
-            HitEffectPopUp();           
-            if (Health <= 0)
+            HitEffectPopUp();
+
+            Health -= damage;
+            if (Health <= 0 && !isDead)
             {
-                 currentState = EnemyState.Death;
+                for (int i = 0; i < lootDrop; i++)
+                {
+                    isDead = true;
+                    var coin = Instantiate(coins, transform.position, Quaternion.identity);
+                    coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(6,10)), ForceMode2D.Impulse);
+                }
+
+                rb.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+                currentState = EnemyState.Death;
             }
         }
 

@@ -23,7 +23,7 @@ namespace TDLogic
         {
             if (collision.gameObject.CompareTag("Bag") && !inBag)
             {
-                transform.localScale /= 2.5f;
+                transform.localScale /= 1.5f;
                 rb.linearVelocity = Vector2.down;
                 inBag = true;
                 animator.SetBool("inBag", true);
@@ -35,8 +35,16 @@ namespace TDLogic
         {
             if (collision.gameObject.CompareTag("Player"))
             {
-                transform.position = new Vector2(collision.transform.position.x + 10.5f, collision.transform.position.y + 9);
+                transform.position = new Vector2(collision.transform.position.x + 13, collision.transform.position.y + 10);
                 rb.linearVelocity = Vector2.down;
+            }
+
+
+            if (collision.gameObject.CompareTag("Ground") && inBag)
+            {
+                transform.localScale *= 1.5f;
+                animator.SetBool("inBag", false);
+                inBag = false;
             }
         }
     }

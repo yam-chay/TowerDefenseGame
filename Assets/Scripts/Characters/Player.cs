@@ -14,7 +14,6 @@ namespace TDLogic
         private SpriteRenderer sr;
         private Animator animator;
         [SerializeField] private Slider slider;
-        [SerializeField] private GameObject popUpText;
         [SerializeField] private GameObject gameOver;
 
         [Header("Movement")]
@@ -145,21 +144,6 @@ namespace TDLogic
         public void ComboAttack()
         {
             Attack();
-            HitEffectPopUp();
-        }
-
-        private void HitEffectPopUp()
-        {
-            float offsetRange = 0.5f;
-            float forwardSpace = 1.5f;
-
-            if (sr.flipX == true)
-            {
-                forwardSpace = -forwardSpace;
-            }    
-
-            var offset = new Vector3(transform.position.x + forwardSpace + Random.Range(-offsetRange, offsetRange), transform.position.y + Random.Range(-offsetRange, offsetRange), 0);
-            Instantiate(popUpText, offset, Quaternion.identity);
         }
 
         private IEnumerator DamageEffect()

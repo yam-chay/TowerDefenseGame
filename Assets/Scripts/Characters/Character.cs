@@ -15,13 +15,19 @@ namespace TDLogic
 
         //presents the name of the character
 
-        public virtual void Init(CharacterData characterData)
+        private protected void Init(CharacterData characterData)
         {
             Name = characterData.characterName;
             Health = characterData.health;
             Damage = characterData.damage;
             Range = characterData.range;
         }
+
+        public override string ToString()
+        {
+            return $"this is {name} Character";
+        }
+
 
         private protected void HelloWorld(string name)
         {

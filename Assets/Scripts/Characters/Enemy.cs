@@ -3,16 +3,6 @@ using UnityEngine;
 
 namespace TDLogic
 {
-    public enum EnemyState
-    {
-        Patrol,
-        Alert,
-        Chase,
-        Attack,
-        Knockback,
-        Death,
-    }
-
     public class Enemy : Character
     {
         [Header("Enemy Settings")]
@@ -44,8 +34,17 @@ namespace TDLogic
         private Coroutine alertRoutine;
         private Coroutine knockbackRoutine;
 
+        private enum EnemyState
+        {
+            Patrol,
+            Alert,
+            Chase,
+            Attack,
+            Knockback,
+            Death,
+        }
         private EnemyState currentState;
-
+        
         private void Start()
         {
             if (Player.Instance != null)
@@ -64,6 +63,8 @@ namespace TDLogic
                 Init(characterData);
                 HelloWorld(characterData.characterName);
             }
+
+            Debug.Log(this);
         }
 
         private void FixedUpdate()

@@ -134,6 +134,9 @@ namespace KingdomScratch
             }
         }
 
+        /// <summary>
+        /// death sequence
+        /// </summary>
         private void Die()
         {
             isDead = true;
@@ -142,6 +145,9 @@ namespace KingdomScratch
             gameOverUI.gameObject.SetActive(true);
         }
 
+        /// <summary>
+        /// interaction method
+        /// </summary>
         private void Interact()
         {
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
@@ -149,12 +155,18 @@ namespace KingdomScratch
         }
 
 
-        //used by animator event
+        /// <summary>
+        /// the methode that is called whenever a certain frame ot the attack animation is playing
+        /// </summary>
         public void ComboAttack()
         {
             Attack();
         }
 
+        /// <summary>
+        /// a sequence of the damage effect visuals display
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator DamageEffect()
         {
             animator.SetBool("isHit", true);
@@ -170,7 +182,7 @@ namespace KingdomScratch
             }
             else
             {
-                //death sequence
+                //future death sequence
             }
 
             animator.SetBool("isHit", false);

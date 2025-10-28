@@ -3,67 +3,64 @@ using UnityEngine;
 
 namespace KingdomScratch
 {
+    /// <summary>
+    /// Controls enemy behavior including patrol, chase, attack, and death.
+    /// Inherits logic from Character.
+    /// </summary>
     public class Enemy : Character
     {
         [Header("Enemy Settings")]
-        public float moveSpeed = 2f;
-        public float breakDistance = 1.5f;
-        public GameObject hitEffect;
-        public GameObject hitEffectDMG;
-        public GameObject coins;
-        public CharacterData characterData;
-        [SerializeField] private int lootDrop = 2;
+        [SerializeField] private float moveSpeed = 2f;
+        [SerializeField] private float breakDistance = 1.5f;
+        [SerializeField] private CharacterData characterData;
+        [SerializeField] private int lootDropCount = 2;
+
+        [Header("References")]
+        [SerializeField] private GameObject hitEffect;
+        [SerializeField] private GameObject hitEffectDMG;
+        [SerializeField] private GameObject coins;
 
         [Header("Combat")]
-        public float attackCooldown = 0.5f;
-        public float knockbackForce = 5f;
-        public float knockUpForce = 0.2f;
-        public float knockbackDuration = 0.2f;
         public bool isDead;
+        [SerializeField] private float attackCooldown = 0.5f;
+        [SerializeField] private float knockbackForce = 5f;
+        [SerializeField] private float knockUpForce = 0.2f;
+        [SerializeField] private float knockbackDuration = 0.2f;
 
         [Header("Detection")]
-        public float detectionRange = 5f;
+        [SerializeField] private float detectionRange = 5f;
         private Transform playerTransform;
 
+        //Components
         private SpriteRenderer sr;
         private Transform targetTransform;
         private Animator animator;
         private Rigidbody2D rb;
+
+        //Coroutine
         private Coroutine patrolRoutine;
         private Coroutine attackRoutine;
         private Coroutine alertRoutine;
         private Coroutine knockbackRoutine;
+        private Coroutine deathRoutine;
 
-        private enum EnemyState
-        {
-            Patrol,
-            Alert,
-            Chase,
-            Attack,
-            Knockback,
-            Death,
-        }
         private EnemyState currentState;
-        
+
         private void Start()
         {
-            if (Player.Instance != null)
-            {
-                playerTransform = Player.Instance.transform;
-            }
-            isDead = false;
+            playerTransform = Player.Instance.transform;
 
+            //component initialization 
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
-            currentState = EnemyState.Patrol;
 
-            if (characterData != null)
-            {
-                Init(characterData);
-                //character say hello on console
-                Debug.Log(this);
-            }
+            //intial enemy behaviour
+            currentState = EnemyState.Patrol;
+            Debug.Log(this);
+            isDead = false;
+            Init(characterData);
+            
 
         }
 
@@ -79,14 +76,13 @@ namespace KingdomScratch
                 case EnemyState.Chase:
                     StopPatrol();
                     Chase();
-                    //CheckForPlayer();
                     CheckAttackRange();
                     break;
 
                 case EnemyState.Attack:
                     if (attackRoutine == null)
                     {
-                        animator.SetTrigger("attack");
+                        animator.SetTrigger(AnimatorParams.Attack);
                         attackRoutine = StartCoroutine(AttackRoutine());
                     }
                     break;
@@ -94,7 +90,7 @@ namespace KingdomScratch
                 case EnemyState.Alert:
                     if (alertRoutine == null)
                     {
-                        animator.SetTrigger("alert");
+                        animator.SetTrigger(AnimatorParams.Alert);
                         alertRoutine = StartCoroutine(AlertRoutine());
                     }
                     break;
@@ -105,14 +101,15 @@ namespace KingdomScratch
                         Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage / 10 * knockbackForce, knockUpForce);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
-                    animator.SetTrigger("isHurt");
+                    animator.SetTrigger(AnimatorParams.Hurt);
                     break;
 
                 case EnemyState.Death:
-                    Destroy(gameObject.GetComponent<Collider2D>());
                     StopAllCoroutines();
-                    animator.SetTrigger("death");
-                    Destroy(gameObject, 1);
+                    if (deathRoutine == null)
+                    {
+                        deathRoutine = StartCoroutine(DeathRoutine());
+                    }
                     break;
             }
 
@@ -124,8 +121,43 @@ namespace KingdomScratch
 
             animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
         }
+        private void HitEffectPopUp()
+        {
+            var offset = new Vector3(transform.position.x, transform.position.y, 0);
+            Instantiate(hitEffectDMG, offset, Quaternion.identity, transform.parent);
+        }
 
-        #region Patrol / Chase / Attack
+        public override void TakeDamage(int damage, Transform attacker)
+        {
+            base.TakeDamage(damage, attacker);
+            currentState = EnemyState.Knockback;
+            HitEffectPopUp();
+
+            if (Health <= 0 && !isDead)
+            {
+                currentState = EnemyState.Death;
+            }
+        }
+
+        #region state machine methods
+        public void StartPatrol()
+        {
+            if (patrolRoutine == null)
+            {
+                patrolRoutine = StartCoroutine(PatrolRoutine());
+            }
+        }
+
+        public void StopPatrol()
+        {
+            if (patrolRoutine != null)
+            {
+                StopCoroutine(patrolRoutine);
+                patrolRoutine = null;
+            }
+            rb.linearVelocity = Vector2.zero;
+        }
+
         private void CheckForPlayer()
         {
             if (playerTransform)
@@ -142,6 +174,10 @@ namespace KingdomScratch
                     currentState = EnemyState.Patrol;
                 }
             }
+            else
+            {
+                Debug.LogWarning("player might be dead bro");
+            }    
         }
 
         private void Chase()
@@ -172,6 +208,22 @@ namespace KingdomScratch
                 }
             }
         }
+        #endregion
+
+        #region IEnumerators
+        private IEnumerator PatrolRoutine()
+        {
+            rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), 0);
+            yield return new WaitForSeconds(Random.Range(0.5f, 2f));
+            patrolRoutine = null;
+        }
+        private IEnumerator AlertRoutine()
+        {
+            yield return new WaitForSeconds(1f);
+            currentState = EnemyState.Chase;
+            StopCoroutine(alertRoutine);
+            alertRoutine = null;
+        }
 
         private IEnumerator AttackRoutine()
         {
@@ -181,32 +233,6 @@ namespace KingdomScratch
             attackRoutine = null;
             CheckAttackRange();
         }
-
-        public void StartPatrol()
-        {
-            if (patrolRoutine == null)
-            {
-                patrolRoutine = StartCoroutine(PatrolRoutine());
-            }
-        }
-
-        public void StopPatrol()
-        {
-            if (patrolRoutine != null)
-            {
-                StopCoroutine(patrolRoutine);
-                patrolRoutine = null;
-            }
-            rb.linearVelocity = Vector2.zero;
-        }
-
-        private IEnumerator PatrolRoutine()
-        {
-            rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), 0);
-            yield return new WaitForSeconds(Random.Range(0.5f, 2f));
-            patrolRoutine = null;
-        }
-        #endregion
 
         private IEnumerator KnockbackRoutine(Vector2 dir)
         {
@@ -225,38 +251,20 @@ namespace KingdomScratch
             knockbackRoutine = null;
         }
 
-        public override void TakeDamage(int damage, Transform attacker)
+        private IEnumerator DeathRoutine()
         {
-            base.TakeDamage(damage, attacker);
-            currentState = EnemyState.Knockback;
-            HitEffectPopUp();
-
-            if (Health <= 0 && !isDead)
+            isDead = true;
+            for (int i = 0; i < lootDropCount; i++)
             {
-                for (int i = 0; i < lootDrop; i++)
-                {
-                    isDead = true;
-                    var coin = Instantiate(coins, transform.position, Quaternion.identity);
-                    coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(6,10)), ForceMode2D.Impulse);
-                }
-
-                rb.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
-                currentState = EnemyState.Death;
+                var coin = Instantiate(coins, transform.position, Quaternion.identity);
+                coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(6, 10)), ForceMode2D.Impulse);
             }
+            rb.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
+            Destroy(gameObject.GetComponent<Collider2D>());
+            animator.SetTrigger(AnimatorParams.Death);
+            yield return new WaitForSeconds(1);
+            Destroy(gameObject);
         }
-
-        private void HitEffectPopUp()
-        {
-            var offset = new Vector3(transform.position.x, transform.position.y, 0);
-            Instantiate(hitEffectDMG, offset, Quaternion.identity, transform.parent);
-        }
-
-        private IEnumerator AlertRoutine()
-        {
-            yield return new WaitForSeconds(1f);
-            currentState = EnemyState.Chase;
-            StopCoroutine(alertRoutine);
-            alertRoutine = null;
-        }
+        #endregion
     }
 }

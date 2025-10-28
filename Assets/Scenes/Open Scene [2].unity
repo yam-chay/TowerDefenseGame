@@ -2608,6 +2608,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: lootDropCount
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5133743869793949444, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: m_LocalPosition.x
       value: -8.74
@@ -4498,9 +4502,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: speed
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 224509319}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: runModifier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: healthSlider
       value: 

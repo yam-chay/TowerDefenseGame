@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     public class Roundy : Tower
     {

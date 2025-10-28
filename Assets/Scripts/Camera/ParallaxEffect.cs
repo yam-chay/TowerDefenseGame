@@ -1,21 +1,24 @@
 using UnityEngine;
 
-public class ParallaxBackground : MonoBehaviour
+namespace KingdomScratch
 {
-    public float parallaxEffectMultiplier; // Adjust this for each layer
-    private Transform cameraTransform;
-    private Vector3 lastCameraPosition;
-
-    void Start()
+    public class ParallaxBackground : MonoBehaviour
     {
-        cameraTransform = Camera.main.transform;
-        lastCameraPosition = cameraTransform.position;
-    }
+        public float parallaxEffectMultiplier; // Adjust this for each layer
+        private Transform cameraTransform;
+        private Vector3 lastCameraPosition;
 
-    void LateUpdate()
-    {
-        Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
-        transform.position += new Vector3(deltaMovement.x * parallaxEffectMultiplier, deltaMovement.y * parallaxEffectMultiplier, 0);
-        lastCameraPosition = cameraTransform.position;
+        void Start()
+        {
+            cameraTransform = Camera.main.transform;
+            lastCameraPosition = cameraTransform.position;
+        }
+
+        void LateUpdate()
+        {
+            Vector3 deltaMovement = cameraTransform.position - lastCameraPosition;
+            transform.position += new Vector3(deltaMovement.x * parallaxEffectMultiplier, deltaMovement.y * parallaxEffectMultiplier, 0);
+            lastCameraPosition = cameraTransform.position;
+        }
     }
 }

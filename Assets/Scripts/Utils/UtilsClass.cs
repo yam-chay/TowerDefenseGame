@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     public abstract class UtilsClass
     {

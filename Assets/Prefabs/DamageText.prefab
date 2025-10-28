@@ -51,7 +51,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 079b7f9a5d3c5de4bbe4b4973bd51293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly::TDLogic.HitEffect
-  ttl: 0.7
+  ttl: 0.47
 --- !u!23 &6055471312813167200
 MeshRenderer:
   m_ObjectHideFlags: 0

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     public class Coin : MonoBehaviour
     {

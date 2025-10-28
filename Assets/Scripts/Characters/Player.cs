@@ -2,14 +2,13 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     [RequireComponent(typeof(Rigidbody2D))]
     public class Player : Character
     {
         [Header("Data")]
         public CharacterData characterData;
-        private int coins;
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
@@ -17,7 +16,7 @@ namespace TDLogic
         [SerializeField] private Slider slider;
         [SerializeField] private GameObject gameOver;
         [SerializeField] private GameObject coin;
-        [SerializeField] private int coinCounter;
+        [SerializeField] private int coinCount;
 
         [Header("Movement")]
         public float speed = 8;
@@ -34,7 +33,6 @@ namespace TDLogic
         {
             Instance = this;
         }
-
 
         private void Start()
         {
@@ -156,7 +154,7 @@ namespace TDLogic
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
-            if (coinCounter > 0)
+            if (coinCount > 0)
             {
                 var coiner = Instantiate(coin, new Vector2(transform.position.x , transform.position.y + 1.5f), Quaternion.identity);        
                 rb.AddForce(new Vector2(-rb.linearVelocityX, 0f) ,ForceMode2D.Impulse); 
@@ -170,7 +168,7 @@ namespace TDLogic
         {
             if (collision.gameObject.CompareTag("Coin"))
             {
-                coinCounter++;
+                coinCount++;
             }
         }
     }

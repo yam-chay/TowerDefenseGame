@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 1363297983, guid: 1f2db1299abbb3b4fabe7435d5d4f19c, type: 3}
+    - target: {fileID: 6569426403413914011, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
+      propertyPath: m_SortingOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7536527790256692972, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: towerData
       value: 
@@ -30,15 +34,15 @@ PrefabInstance:
       objectReference: {fileID: 7905217446457575070, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
     - target: {fileID: 8568341123573218235, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.5
+      value: -17.81
       objectReference: {fileID: 0}
     - target: {fileID: 8568341123573218235, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.33
+      value: 0.040000036
       objectReference: {fileID: 0}
     - target: {fileID: 8568341123573218235, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8568341123573218235, guid: a46b824f3bac6284bb1c7daabb75c548, type: 3}
       propertyPath: m_LocalRotation.w

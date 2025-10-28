@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
-    public class Soil : MonoBehaviour , IInteractable
+    public class TowerSpot : MonoBehaviour , IInteractable
     {
         public bool isFree; 
         [SerializeField] GameObject upgradeMenu;

@@ -1,4 +1,4 @@
-namespace TDLogic
+namespace KingdomScratch
 {
     public interface IMovable
     {

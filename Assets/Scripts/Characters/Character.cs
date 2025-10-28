@@ -1,7 +1,6 @@
-using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     /// <summary>
     /// a base class for characters with common properties

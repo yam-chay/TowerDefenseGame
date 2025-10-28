@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     [CreateAssetMenu(fileName = "NewTowerData", menuName = "TDLogic/Tower Data", order = 0)]
     public class TowerData : ScriptableObject

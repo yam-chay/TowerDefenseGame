@@ -1,6 +1,6 @@
 {
-    "name": "TDLogic",
-    "rootNamespace": "TDLogic",
+    "name": "KingdomScratch",
+    "rootNamespace": "KingdomScratch",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

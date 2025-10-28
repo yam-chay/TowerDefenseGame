@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
-    public class HitEffect : MonoBehaviour
+    public class EffectTTl : MonoBehaviour
     {
         [SerializeField] private float ttl;
 

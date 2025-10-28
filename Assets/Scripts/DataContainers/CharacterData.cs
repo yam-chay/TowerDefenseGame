@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace TDLogic
+namespace KingdomScratch
 {
     [CreateAssetMenu(fileName = "newCharacterData", menuName = "TDLogic/Character Data", order = 0)]
     public class CharacterData : ScriptableObject

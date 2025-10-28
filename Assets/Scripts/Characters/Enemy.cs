@@ -227,10 +227,10 @@ namespace KingdomScratch
 
         public override void TakeDamage(int damage, Transform attacker)
         {
+            base.TakeDamage(damage, attacker);
             currentState = EnemyState.Knockback;
             HitEffectPopUp();
 
-            Health -= damage;
             if (Health <= 0 && !isDead)
             {
                 for (int i = 0; i < lootDrop; i++)

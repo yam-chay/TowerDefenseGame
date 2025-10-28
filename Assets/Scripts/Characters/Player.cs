@@ -125,16 +125,21 @@ namespace KingdomScratch
 
             if (Health <= 0)
             {
-                isDead = true;
-                speed = 0;
-                animator.SetBool("isDead", true);
-                gameOverUI.gameObject.SetActive(true);
+                Die();
             }
 
             else if (damageEffect == null)
             {
                 damageEffect = StartCoroutine(DamageEffect());
             }
+        }
+
+        private void Die()
+        {
+            isDead = true;
+            speed = 0;
+            animator.SetBool("isDead", true);
+            gameOverUI.gameObject.SetActive(true);
         }
 
         private void Interact()

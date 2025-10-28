@@ -27,12 +27,6 @@ namespace KingdomScratch
             return $"this is {name} Character";
         }
 
-
-        private protected void HelloWorld(string name)
-        {
-            Debug.Log($"this is {name} Character");
-        }
-
         public virtual void Attack()
         {
             Collider2D[] hitList = UtilsClass.GetTargetsInRadius(transform.position, Range);

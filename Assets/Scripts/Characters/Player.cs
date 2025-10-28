@@ -8,41 +8,58 @@ namespace KingdomScratch
     public class Player : Character
     {
         [Header("Data")]
+        [Tooltip("Character configuration data including health, range, damage and name.")]
         public CharacterData characterData;
+
+        [SerializeField] private Slider healthSlider;
+        [SerializeField] private GameObject gameOverUI;
+        [SerializeField] private GameObject coinPrefab;
+        [SerializeField] private int coinCount;
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
         private Animator animator;
-        [SerializeField] private Slider slider;
-        [SerializeField] private GameObject gameOver;
-        [SerializeField] private GameObject coin;
-        [SerializeField] private int coinCount;
+        private Coroutine damageEffect;
 
         [Header("Movement")]
-        public float speed = 8;
-        public float acceleration = 40f;    // smooth horizontal movement
-        public float deceleration = 15f;    // smooth stopping
-        [SerializeField] private float runModifier = 1.8f;
-        private bool isRunning = false;
 
-        private Coroutine damageEffect;
+        //Base walking speed of the player
+        public float speed = 8f;
+
+        //How quickly the player accelerates to max speed
+        public float acceleration = 40f;
+
+        //How quickly the player slows down when movement input stops
+        public float deceleration = 15f;
+
+        //Run speed multiplier when holding Shift
+        [SerializeField] private float runModifier = 1.8f;
+
+        [Header("Animations Queue")]
+        private bool isRunning = false;
         private bool isDead = false;
 
+        /// <summary>
+        /// Global access to the player instance.
+        /// </summary>
         public static Player Instance { get; private set; }
         private void Awake()
         {
             Instance = this;
+            Init(characterData);
         }
 
         private void Start()
         {
+            //testing tool
             if (Spawner.Instance != null)
             {
                 spawner = Spawner.Instance;
             }
 
-            Init(characterData);
-            HelloWorld(characterData.characterName);
+            //character say hello on console
+            Debug.Log(this);
+
             rb = GetComponent<Rigidbody2D>();
             sr = GetComponent<SpriteRenderer>();
             animator = GetComponent<Animator>();
@@ -50,29 +67,16 @@ namespace KingdomScratch
 
         private void FixedUpdate()
         {
-            slider.value = Health;
-            isRunning = Input.GetKey(KeyCode.LeftShift);
-
-            //horizontal movement
+            // Calculate target velocity
             float targetSpeed = isRunning ? speed * runModifier : speed;
             float targetVelX = Input.GetAxisRaw("Horizontal") * targetSpeed;
-            float smooth;
+            float smooth = Mathf.Abs(targetVelX) > 0.01f ? acceleration : deceleration;
 
-            //decide if player is accelerating or decelerating
-            if (Mathf.Abs(targetVelX) > 0.01f)
-            {
-                smooth = acceleration;
-            }
-            else
-            {
-                smooth = deceleration;
-            }
-
-            //create a smooth float points to move through while accelerating/decelerating 
+            //create a smooth velocity transition taking into account accelerating/decelerating 
             float velX = Mathf.MoveTowards(rb.linearVelocityX, targetVelX, smooth * Time.fixedDeltaTime);
-
-            //move the player to each point 
             rb.linearVelocity = new Vector2(velX, rb.linearVelocityY);
+
+            // Flip sprite based on movement direction
             if (rb.linearVelocityX < 0)
             {
                 sr.flipX = true;
@@ -83,55 +87,53 @@ namespace KingdomScratch
             }
         }
 
+
         void Update()
         {
-            if (!isDead)
-            {
-                if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
-                {
-                    Heal(10);
-                }
+            healthSlider.value = Health;
 
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    Interact();
-                }
+            //check run input
+            isRunning = Input.GetKey(KeyCode.LeftShift);
 
-                if (Input.GetKeyDown(KeyCode.Q))
-                {
-                    spawner.Spawn();
-                }
+            //input system (old)
+            if (isDead) return;
 
-                if (Input.GetKeyDown(KeyCode.Space) && !isDead)
-                {
-                    animator.SetBool("attack", true);
-                }
+            if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
+                Heal(10);
 
-                if (Input.GetKeyUp(KeyCode.Space))
-                {
-                    animator.SetBool("attack", false);
-                }
+            if (Input.GetKeyDown(KeyCode.E))
+                Interact();
 
-                animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
-            }
+            if (Input.GetKeyDown(KeyCode.Q))
+                spawner.Spawn();
+
+            if (Input.GetKeyDown(KeyCode.Space))
+                animator.SetBool("attack", true);
+
+            if (Input.GetKeyUp(KeyCode.Space))
+                animator.SetBool("attack", false);
+
+            animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
         }
 
+        /// <summary>
+        /// Handles incoming damage and triggers death or hit reactions.
+        /// </summary>
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
 
             if (Health <= 0)
             {
-                //Game Over Screen
                 isDead = true;
                 speed = 0;
                 animator.SetBool("isDead", true);
-                gameOver.gameObject.SetActive(true);
+                gameOverUI.gameObject.SetActive(true);
             }
 
             else if (damageEffect == null)
             {
-                damageEffect = StartCoroutine(DamageEffect());                
+                damageEffect = StartCoroutine(DamageEffect());
             }
         }
 
@@ -140,9 +142,9 @@ namespace KingdomScratch
             Collider2D[] interactList = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
             UtilsClass.Interact(interactList, transform);
         }
-        
 
-        //used by animator events
+
+        //used by animator event
         public void ComboAttack()
         {
             Attack();
@@ -154,11 +156,18 @@ namespace KingdomScratch
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
+
             if (coinCount > 0)
             {
-                var coiner = Instantiate(coin, new Vector2(transform.position.x , transform.position.y + 1.5f), Quaternion.identity);        
-                rb.AddForce(new Vector2(-rb.linearVelocityX, 0f) ,ForceMode2D.Impulse); 
+                Instantiate(coinPrefab, new Vector2(transform.position.x, transform.position.y + 1.5f), Quaternion.identity);
+                rb.AddForce(new Vector2(-rb.linearVelocityX, 0f), ForceMode2D.Impulse);
+                coinCount--;
             }
+            else
+            {
+                //death sequence
+            }
+
             animator.SetBool("isHit", false);
             StopCoroutine(damageEffect);
             damageEffect = null;

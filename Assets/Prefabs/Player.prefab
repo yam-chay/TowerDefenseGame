@@ -82,7 +82,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 7210623073648630082, guid: 2fa13a990968451418c7d3a51afc8399, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -134,10 +134,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterData: {fileID: 11400000, guid: 48416941825422344b843e8277abb73c, type: 2}
-  slider: {fileID: 0}
-  gameOver: {fileID: 0}
-  coin: {fileID: 2955221363049035194, guid: a4f84c2262fb00b40aa3f05aadf799a9, type: 3}
-  coinCounter: 2
+  healthSlider: {fileID: 0}
+  gameOverUI: {fileID: 0}
+  coinPrefab: {fileID: 2955221363049035194, guid: a4f84c2262fb00b40aa3f05aadf799a9, type: 3}
+  coinCount: 0
   speed: 2
   acceleration: 40
   deceleration: 15

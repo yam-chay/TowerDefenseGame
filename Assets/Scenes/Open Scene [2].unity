@@ -4498,13 +4498,13 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: slider
-      value: 
-      objectReference: {fileID: 1701850972}
-    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: gameOver
+      propertyPath: gameOverUI
       value: 
       objectReference: {fileID: 224509319}
+    - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
+      propertyPath: healthSlider
+      value: 
+      objectReference: {fileID: 1701850972}
     - target: {fileID: 2951166351008772509, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -4548,10 +4548,6 @@ PrefabInstance:
     - target: {fileID: 4964091540521193110, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 5997099433202934758, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
-      propertyPath: m_SortingOrder
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8677,7 +8673,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1311018073254511676, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 449.59497
+      value: 449.595
       objectReference: {fileID: 0}
     - target: {fileID: 1311018073254511676, guid: d02bcf0ad5020094b9bbd53276b4f36a, type: 3}
       propertyPath: m_AnchoredPosition.y

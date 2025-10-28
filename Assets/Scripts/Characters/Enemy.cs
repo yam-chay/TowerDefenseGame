@@ -61,10 +61,10 @@ namespace KingdomScratch
             if (characterData != null)
             {
                 Init(characterData);
-                HelloWorld(characterData.characterName);
+                //character say hello on console
+                Debug.Log(this);
             }
 
-            Debug.Log(this);
         }
 
         private void FixedUpdate()

@@ -16,8 +16,8 @@ namespace KingdomScratch
         [SerializeField] private int lootDropCount = 2;
 
         [Header("References")]
-        [SerializeField] private GameObject hitEffect;
-        [SerializeField] private GameObject hitEffectDMG;
+        [SerializeField] private GameObject hitVFX;
+        [SerializeField] private GameObject damageText;
         [SerializeField] private GameObject coins;
 
         [Header("Combat")]
@@ -69,12 +69,18 @@ namespace KingdomScratch
             switch (currentState)
             {
                 case EnemyState.Patrol:
-                    StartPatrol();
+                    if (patrolRoutine == null)
+                    {
+                        patrolRoutine = StartCoroutine(PatrolRoutine());
+                    }                    
                     CheckForPlayer();
                     break;
 
                 case EnemyState.Chase:
-                    StopPatrol();
+                    if (patrolRoutine != null)
+                    {
+                        StopCoroutine(patrolRoutine);
+                    }
                     Chase();
                     CheckAttackRange();
                     break;
@@ -82,7 +88,7 @@ namespace KingdomScratch
                 case EnemyState.Attack:
                     if (attackRoutine == null)
                     {
-                        animator.SetTrigger(AnimatorParams.Attack);
+                        animator.SetTrigger(EnemyAnimatorParams.Attack);
                         attackRoutine = StartCoroutine(AttackRoutine());
                     }
                     break;
@@ -90,7 +96,7 @@ namespace KingdomScratch
                 case EnemyState.Alert:
                     if (alertRoutine == null)
                     {
-                        animator.SetTrigger(AnimatorParams.Alert);
+                        animator.SetTrigger(EnemyAnimatorParams.Alert);
                         alertRoutine = StartCoroutine(AlertRoutine());
                     }
                     break;
@@ -101,7 +107,7 @@ namespace KingdomScratch
                         Vector2 dir = new(targetTransform.GetComponent<IDamagable>().Damage / 10 * knockbackForce, knockUpForce);
                         knockbackRoutine = StartCoroutine(KnockbackRoutine(dir));
                     }
-                    animator.SetTrigger(AnimatorParams.Hurt);
+                    animator.SetTrigger(EnemyAnimatorParams.Hurt);
                     break;
 
                 case EnemyState.Death:
@@ -121,17 +127,22 @@ namespace KingdomScratch
 
             animator.SetFloat("speed", Mathf.Abs(rb.linearVelocityX));
         }
-        private void HitEffectPopUp()
+
+        /// <summary>
+        /// instantiate the visuals of the enemy getting hit
+        /// </summary>
+        private void HitVFX()
         {
             var offset = new Vector3(transform.position.x, transform.position.y, 0);
-            Instantiate(hitEffectDMG, offset, Quaternion.identity, transform.parent);
+            Instantiate(damageText, offset, Quaternion.identity, transform.parent);
         }
 
+        //overrided to add state handling while taking damage.
         public override void TakeDamage(int damage, Transform attacker)
         {
             base.TakeDamage(damage, attacker);
             currentState = EnemyState.Knockback;
-            HitEffectPopUp();
+            HitVFX();
 
             if (Health <= 0 && !isDead)
             {
@@ -139,25 +150,10 @@ namespace KingdomScratch
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         #region state machine methods
-        public void StartPatrol()
-        {
-            if (patrolRoutine == null)
-            {
-                patrolRoutine = StartCoroutine(PatrolRoutine());
-            }
-        }
-
-        public void StopPatrol()
-        {
-            if (patrolRoutine != null)
-            {
-                StopCoroutine(patrolRoutine);
-                patrolRoutine = null;
-            }
-            rb.linearVelocity = Vector2.zero;
-        }
-
         private void CheckForPlayer()
         {
             if (playerTransform)
@@ -260,8 +256,8 @@ namespace KingdomScratch
                 coin.GetComponent<Rigidbody2D>().AddForce(new Vector2(Random.Range(-0.5f, 0.5f), Random.Range(6, 10)), ForceMode2D.Impulse);
             }
             rb.AddForce(new Vector2(0, 5), ForceMode2D.Impulse);
-            Destroy(gameObject.GetComponent<Collider2D>());
-            animator.SetTrigger(AnimatorParams.Death);
+            GetComponent<Collider2D>().enabled = false;
+            animator.SetTrigger(EnemyAnimatorParams.Death);
             yield return new WaitForSeconds(1);
             Destroy(gameObject);
         }

@@ -22,9 +22,9 @@ AnimationClip:
     curve:
     - time: 0
       value: {fileID: 4412474313605401588, guid: d7f8a93c0b504b8419d35bfbaba53029, type: 3}
-    - time: 0.083333336
+    - time: 0.1
       value: {fileID: -3333415558226922670, guid: d198b4c83b865ad4b96824de7eedc525, type: 3}
-    - time: 0.13333334
+    - time: 0.15
       value: {fileID: 8688314491363891470, guid: c867713c218ce5c4f886be5b336a04d4, type: 3}
     - time: 0.21666667
       value: {fileID: 6508966277429383760, guid: 538eebdab44ecc74f952e1b1a69368a2, type: 3}
@@ -97,7 +97,7 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.083333336
+  - time: 0.1
     functionName: ComboAttack
     data: 
     objectReferenceParameter: {fileID: 0}

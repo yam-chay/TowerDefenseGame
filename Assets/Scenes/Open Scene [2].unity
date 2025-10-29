@@ -2609,6 +2609,14 @@ PrefabInstance:
       value: Enemy
       objectReference: {fileID: 0}
     - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: hitVFX
+      value: 
+      objectReference: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
+      propertyPath: damageText
+      value: 
+      objectReference: {fileID: 6117922426228357587, guid: fe294ec9d18296446ab0598ca4f65584, type: 3}
+    - target: {fileID: 2065526402810076961, guid: 58f9e7c7c188d824da2bb8cf42ba1884, type: 3}
       propertyPath: lootDropCount
       value: 5
       objectReference: {fileID: 0}
@@ -4511,7 +4519,7 @@ PrefabInstance:
       objectReference: {fileID: 224509319}
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: runModifier
-      value: 2
+      value: 2.2
       objectReference: {fileID: 0}
     - target: {fileID: 1469894318547893896, guid: 2a465dc4ed61c514c8e7761027779672, type: 3}
       propertyPath: healthSlider

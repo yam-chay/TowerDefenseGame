@@ -6,22 +6,15 @@ namespace KingdomScratch
     public class Roundy : Tower
     {
         [Header("Tower")]
-        [SerializeField] public TowerData towerData;
+        public TowerData towerData;
         [SerializeField] private GameObject hitEffect;
-        private Coroutine damageRoutine;
 
         void Start()
         {
-            damageRoutine = StartCoroutine(DoDamage());
+            StartCoroutine(DoDamage());
             HelloWorld(towerData.name);
             Init(towerData);
         }
-
-        private void Update()
-        {
-            
-        }
-
 
         public void Attack()
         {

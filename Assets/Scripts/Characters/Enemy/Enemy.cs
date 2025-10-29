@@ -73,7 +73,7 @@ namespace KingdomScratch
                     {
                         patrolRoutine = StartCoroutine(PatrolRoutine());
                     }                    
-                    CheckForPlayer();
+                    DetectChase();
                     break;
 
                 case EnemyState.Chase:
@@ -88,7 +88,6 @@ namespace KingdomScratch
                 case EnemyState.Attack:
                     if (attackRoutine == null)
                     {
-                        animator.SetTrigger(EnemyAnimatorParams.Attack);
                         attackRoutine = StartCoroutine(AttackRoutine());
                     }
                     break;
@@ -131,7 +130,7 @@ namespace KingdomScratch
         /// <summary>
         /// instantiate the visuals of the enemy getting hit
         /// </summary>
-        private void HitVFX()
+        private void DamageTextVFX()
         {
             var offset = new Vector3(transform.position.x, transform.position.y, 0);
             Instantiate(damageText, offset, Quaternion.identity, transform.parent);
@@ -142,7 +141,7 @@ namespace KingdomScratch
         {
             base.TakeDamage(damage, attacker);
             currentState = EnemyState.Knockback;
-            HitVFX();
+            DamageTextVFX();
 
             if (Health <= 0 && !isDead)
             {
@@ -150,11 +149,12 @@ namespace KingdomScratch
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         #region state machine methods
-        private void CheckForPlayer()
+
+        /// <summary>
+        /// detect if target (player) is inside the range of chasing for this object (enemy)
+        /// </summary>
+        private void DetectChase()
         {
             if (playerTransform)
             {
@@ -176,6 +176,9 @@ namespace KingdomScratch
             }    
         }
 
+        /// <summary>
+        /// move the object (enemy) to chase the target (player)
+        /// </summary>
         private void Chase()
         {
             if (targetTransform)
@@ -185,6 +188,9 @@ namespace KingdomScratch
             }
         }
 
+        /// <summary>
+        /// check if the target (player) is in attack range for this object (enemy)
+        /// </summary>
         private void CheckAttackRange()
         {
             if (targetTransform)
@@ -207,20 +213,31 @@ namespace KingdomScratch
         #endregion
 
         #region IEnumerators
+        /// <summary>
+        /// A patrol behaviour to walk left and right in random interval and speeds
+        /// </summary>
         private IEnumerator PatrolRoutine()
         {
             rb.linearVelocity = new Vector2(moveSpeed * Random.Range(-1.5f, 1.5f), 0);
             yield return new WaitForSeconds(Random.Range(0.5f, 2f));
             patrolRoutine = null;
         }
+
+        /// <summary>
+        /// an alert visuals routine to give the player (user) a feedback and hint before the next action
+        /// </summary>        
         private IEnumerator AlertRoutine()
         {
+            animator.SetTrigger(EnemyAnimatorParams.Attack);
             yield return new WaitForSeconds(1f);
             currentState = EnemyState.Chase;
             StopCoroutine(alertRoutine);
             alertRoutine = null;
         }
 
+        /// <summary>
+        /// an attack behaviour sto let this object (enemy) attack with intervals and check each time for its attack range
+        /// </summary>
         private IEnumerator AttackRoutine()
         {
             Attack();
@@ -230,6 +247,10 @@ namespace KingdomScratch
             CheckAttackRange();
         }
 
+        /// <summary>
+        /// A knockback behaviour that make this object (enemy) get a knockbac from any given direction
+        /// </summary>
+        /// <param name="dir"></param>
         private IEnumerator KnockbackRoutine(Vector2 dir)
         {
             rb.linearVelocity = Vector2.zero;
@@ -247,6 +268,10 @@ namespace KingdomScratch
             knockbackRoutine = null;
         }
 
+        /// <summary>
+        /// The behaviour of this object (enemy) death sequence
+        /// </summary>
+        /// <returns></returns>
         private IEnumerator DeathRoutine()
         {
             isDead = true;

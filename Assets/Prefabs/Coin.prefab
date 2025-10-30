@@ -192,3 +192,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdaa9efe50d5c7d4db41ab7fe0556f1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly::TDLogic.Coin
+  coinBag: {fileID: 1723004227025046221, guid: e48e96a92b773a94ba114f5ecd02b703, type: 3}

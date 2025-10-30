@@ -8,6 +8,7 @@ TagManager:
   - Bag
   - Ground
   - Coin
+  - CoinBag
   layers:
   - Default
   - TransparentFX

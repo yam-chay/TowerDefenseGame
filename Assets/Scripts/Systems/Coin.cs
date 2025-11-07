@@ -5,6 +5,7 @@ namespace KingdomScratch
     public class Coin : MonoBehaviour
     {
         [SerializeField] private Transform coinBag;
+        [SerializeField] private Transform dropPoint;
         private Rigidbody2D rb;
         private Animator animator;
         private bool inBag;
@@ -53,6 +54,7 @@ namespace KingdomScratch
                 rb.linearVelocity = Vector2.down;
                 inBag = false;
                 animator.SetBool("inBag", false);
+                transform.parent = null;
             }
         }
 
@@ -62,9 +64,10 @@ namespace KingdomScratch
         {
             if (collision.gameObject.CompareTag("Player") && !spawned)
             {
-                transform.position = new Vector2(collision.transform.position.x + 13, collision.transform.position.y + 11);
+                transform.position = dropPoint.position;
                 rb.linearVelocity = Vector2.down;
             }
+            transform.parent = coinBag;
         }
     }
 }

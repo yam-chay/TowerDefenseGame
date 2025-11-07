@@ -74,7 +74,7 @@ namespace KingdomScratch
             }
             else
             {
-                rb.AddForce(Vector2.one, ForceMode2D.Impulse);
+                rb.AddForce(Vector2.right * 40, ForceMode2D.Force);
             }
         }
 

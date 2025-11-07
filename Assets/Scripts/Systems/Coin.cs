@@ -47,7 +47,6 @@ namespace KingdomScratch
         {
             if (collision.gameObject.CompareTag("Bag") && inBag)
             {
-                transform.parent = null;
                 if (inBag)
                 {
                     transform.localScale *= 1.5f;

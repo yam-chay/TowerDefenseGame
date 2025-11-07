@@ -241,6 +241,7 @@ namespace KingdomScratch
         private IEnumerator AttackRoutine()
         {
             Attack();
+            animator.SetTrigger(EnemyAnimatorParams.Attack);
             yield return new WaitForSeconds(attackCooldown);
             StopCoroutine(attackRoutine);
             attackRoutine = null;

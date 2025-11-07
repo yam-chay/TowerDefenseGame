@@ -38,6 +38,7 @@ namespace KingdomScratch
         [Header("Animations Queue")]
         private bool isRunning = false;
         private bool isDead = false;
+        private bool isHurt = false;
 
         /// <summary>
         /// Global access to the player instance.
@@ -67,6 +68,62 @@ namespace KingdomScratch
 
         private void FixedUpdate()
         {
+            if (!isHurt)
+            {
+                Move();
+            }
+            else
+            {
+                rb.AddForce(Vector2.one, ForceMode2D.Impulse);
+            }
+        }
+
+        void Update()
+        {
+            healthSlider.value = Health;
+
+            //check run input
+            isRunning = Input.GetKey(KeyCode.LeftShift);
+
+            //input system (old)
+            if (isDead)
+            {
+                return;
+            }
+
+            if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
+            {
+                Heal(10);
+            }
+
+            if (Input.GetKeyDown(KeyCode.E))
+            {
+                Interact();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                spawner.Spawn();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                animator.SetBool("attack", true);
+            }
+
+            if (Input.GetKeyUp(KeyCode.Space))
+            {
+                animator.SetBool("attack", false);
+            }
+
+            animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
+        }
+
+        /// <summary>
+        /// allows the player to move smoothly with some math
+        /// </summary>
+        private void Move()
+        {
             // Calculate target velocity
             float targetSpeed = isRunning ? speed * runModifier : speed;
             float targetVelX = Input.GetAxisRaw("Horizontal") * targetSpeed;
@@ -87,35 +144,6 @@ namespace KingdomScratch
             }
         }
 
-
-        void Update()
-        {
-            healthSlider.value = Health;
-
-            //check run input
-            isRunning = Input.GetKey(KeyCode.LeftShift);
-
-            //input system (old)
-            if (isDead) return;
-
-            if (Input.GetKeyDown(KeyCode.H) && Health < characterData.health)
-                Heal(10);
-
-            if (Input.GetKeyDown(KeyCode.E))
-                Interact();
-
-            if (Input.GetKeyDown(KeyCode.Q))
-                spawner.Spawn();
-
-            if (Input.GetKeyDown(KeyCode.Space))
-                animator.SetBool("attack", true);
-
-            if (Input.GetKeyUp(KeyCode.Space))
-                animator.SetBool("attack", false);
-
-            animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));
-        }
-
         /// <summary>
         /// Handles incoming damage and triggers death or hit reactions.
         /// </summary>
@@ -130,6 +158,7 @@ namespace KingdomScratch
 
             else if (damageEffect == null)
             {
+                isHurt = true;
                 damageEffect = StartCoroutine(DamageEffect());
             }
         }
@@ -173,10 +202,9 @@ namespace KingdomScratch
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
-
             if (coinCount > 0)
             {
-                Instantiate(coinPrefab, new Vector2(transform.position.x, transform.position.y + 1.5f), Quaternion.identity);
+                Instantiate(coinPrefab, new Vector2(transform.position.x, transform.position.y + 2), Quaternion.identity);
                 rb.AddForce(new Vector2(-rb.linearVelocityX, 0f), ForceMode2D.Impulse);
                 coinCount--;
             }
@@ -184,7 +212,8 @@ namespace KingdomScratch
             {
                 //future death sequence
             }
-
+            yield return new WaitForSeconds(0.35f);
+            isHurt = false;
             animator.SetBool("isHit", false);
             StopCoroutine(damageEffect);
             damageEffect = null;

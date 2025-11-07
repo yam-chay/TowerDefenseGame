@@ -34,7 +34,6 @@ namespace KingdomScratch
         {
             if (collision.gameObject.CompareTag("Bag") && !inBag)
             {
-                transform.parent = coinBag;
                 if (!inBag)
                 {
                     transform.localScale /= 1.5f;

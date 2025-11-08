@@ -109,7 +109,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0.05
   m_AngularDamping: 0
-  m_GravityScale: 1.9
+  m_GravityScale: 1.6
   m_Material: {fileID: 6200000, guid: 09931ac76c1103e41a7ce86a67e12a33, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
@@ -193,3 +193,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly::TDLogic.Coin
   coinBag: {fileID: 0}
+  dropPoint: {fileID: 0}
+  coinPool: {fileID: 0}

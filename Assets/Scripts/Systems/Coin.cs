@@ -4,30 +4,28 @@ namespace KingdomScratch
 {
     public class Coin : MonoBehaviour
     {
-        [SerializeField] private Transform coinBag;
-        [SerializeField] private Transform dropPoint;
+        [SerializeField] public Transform coinBag;
+        [SerializeField] public Transform dropPoint;
+        [SerializeField] public Transform coinPool;
         private Rigidbody2D rb;
         private Animator animator;
         private bool inBag;
-        private bool spawned;
 
         private void Awake()
         {
-            spawned = true;
             animator = GetComponent<Animator>();
             rb = GetComponent<Rigidbody2D>();
         }
 
         private void Start()
         {
-
-            spawned = false;
             inBag = false;
             animator.SetBool("inBag", false);
         }
 
         private void OnEnable()
         {
+
             rb.AddForce(new Vector2(5, 6), ForceMode2D.Impulse);
         }
 
@@ -37,7 +35,7 @@ namespace KingdomScratch
             {
                 if (!inBag)
                 {
-                    transform.localScale /= 1.5f;
+                    transform.localScale /= 1.7f;
                 }
                 inBag = true;
                 animator.SetBool("inBag", true);
@@ -49,12 +47,12 @@ namespace KingdomScratch
             {
                 if (inBag)
                 {
-                    transform.localScale *= 1.5f;
+                    transform.localScale *= 1.7f;
                 }
-                rb.linearVelocity = Vector2.down;
+                transform.parent = coinPool;
+                rb.AddForce(Vector2.down * 3, ForceMode2D.Impulse);
                 inBag = false;
                 animator.SetBool("inBag", false);
-                transform.parent = null;
             }
         }
 
@@ -62,12 +60,12 @@ namespace KingdomScratch
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (collision.gameObject.CompareTag("Player") && !spawned)
+            if (collision.gameObject.CompareTag("Player"))
             {
                 transform.position = dropPoint.position;
                 rb.linearVelocity = Vector2.down;
+                transform.parent = coinBag;
             }
-            transform.parent = coinBag;
         }
     }
 }

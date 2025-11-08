@@ -72,10 +72,6 @@ namespace KingdomScratch
             {
                 Move();
             }
-            else
-            {
-                rb.AddForce(Vector2.right * 40, ForceMode2D.Force);
-            }
         }
 
         void Update()
@@ -198,6 +194,7 @@ namespace KingdomScratch
         /// <returns></returns>
         private IEnumerator DamageEffect()
         {
+            rb.AddForce(Vector2.right * 20, ForceMode2D.Impulse);
             animator.SetBool("isHit", true);
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);

@@ -108,16 +108,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 2.5
   breakDistance: 1.5
-  hitEffect: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
-  hitEffectDMG: {fileID: 6117922426228357587, guid: fe294ec9d18296446ab0598ca4f65584, type: 3}
-  coins: {fileID: 2955221363049035194, guid: a4f84c2262fb00b40aa3f05aadf799a9, type: 3}
   characterData: {fileID: 11400000, guid: c436e5babb790494baf9759fce4025f4, type: 2}
-  lootDrop: 2
+  lootDropCount: 5
+  hitVFX: {fileID: 5355760275035068577, guid: b50f84884c3b25f4595425fcd7bf1b40, type: 3}
+  damageText: {fileID: 6117922426228357587, guid: fe294ec9d18296446ab0598ca4f65584, type: 3}
+  coins: {fileID: 2955221363049035194, guid: a4f84c2262fb00b40aa3f05aadf799a9, type: 3}
+  isDead: 0
   attackCooldown: 0.8
   knockbackForce: 8
   knockUpForce: 5
   knockbackDuration: 0.15
-  isDead: 0
   detectionRange: 6
 --- !u!50 &3078778519190307772
 Rigidbody2D:
@@ -134,7 +134,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 1.9
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2

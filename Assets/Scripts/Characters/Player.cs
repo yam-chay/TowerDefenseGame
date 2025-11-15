@@ -14,7 +14,7 @@ namespace KingdomScratch
         [SerializeField] private Slider healthSlider;
         [SerializeField] private GameObject gameOverUI;
         [SerializeField] private GameObject coinPrefab;
-        [SerializeField] private int coinCount;
+        [SerializeField] private CoinBag coinBag;
         private Spawner spawner;
         private Rigidbody2D rb;
         private SpriteRenderer sr;
@@ -199,29 +199,14 @@ namespace KingdomScratch
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
-            if (coinCount > 0)
-            {
-                Instantiate(coinPrefab, new Vector2(transform.position.x, transform.position.y + 2), Quaternion.identity);
-                rb.AddForce(new Vector2(-rb.linearVelocityX, 0f), ForceMode2D.Impulse);
-                coinCount--;
-            }
-            else
-            {
-                //future death sequence
-            }
+            coinBag.RemoveCoin();
+            var coinRb = Instantiate(coinPrefab, transform.position + Vector3.up * 2, Quaternion.identity).GetComponent<Rigidbody2D>();
+            coinRb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
             yield return new WaitForSeconds(0.35f);
             isHurt = false;
             animator.SetBool("isHit", false);
             StopCoroutine(damageEffect);
             damageEffect = null;
-        }
-
-        private void OnCollisionEnter2D(Collision2D collision)
-        {
-            if (collision.gameObject.CompareTag("Coin"))
-            {
-                coinCount++;
-            }
         }
     }
 }

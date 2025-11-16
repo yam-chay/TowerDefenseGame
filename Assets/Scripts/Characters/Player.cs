@@ -199,7 +199,7 @@ namespace KingdomScratch
             sr.color = Color.red;
             yield return new WaitForSeconds(0.15f);
             sr.color = Color.white;
-            coinBag.RemoveCoin();
+            coinBag.UseCoins(1);
             var coinRb = Instantiate(coinPrefab, transform.position + Vector3.up * 2, Quaternion.identity).GetComponent<Rigidbody2D>();
             coinRb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
             yield return new WaitForSeconds(0.35f);

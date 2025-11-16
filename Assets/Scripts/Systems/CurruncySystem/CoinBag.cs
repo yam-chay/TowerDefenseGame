@@ -36,9 +36,9 @@ namespace KingdomScratch
 
         public void UseCoins(int amount)
         {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i <= amount - 1; i++)
             {
-                Destroy(coins[i]);
+                Destroy(coins[i].gameObject);
                 coins.Remove(coins[i]);
             }
         }

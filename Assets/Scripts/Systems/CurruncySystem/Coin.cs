@@ -14,7 +14,7 @@ namespace KingdomScratch
 
         private void Start()
         {
-            dropPositionOffset = new Vector3(0, 3.5f, 0);
+            dropPositionOffset = new Vector3(0, 4, 0);
             coinScaleOffset = 1.9f;
             rb = GetComponent<Rigidbody2D>();
             animator = GetComponent<Animator>();

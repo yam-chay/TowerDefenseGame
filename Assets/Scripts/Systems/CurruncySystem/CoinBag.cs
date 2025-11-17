@@ -5,7 +5,7 @@ namespace KingdomScratch
 {
     public class CoinBag : MonoBehaviour
     {
-        [SerializeField] private List<Coin> coins = new();
+        [SerializeField] public List<Coin> coins = new();
         [SerializeField] private int coinCount;
 
         private void Start()
@@ -36,10 +36,17 @@ namespace KingdomScratch
 
         public void UseCoins(int amount)
         {
-            for (int i = 0; i <= amount - 1; i++)
+            for (int i = 0; i < amount; i++)
             {
-                Destroy(coins[i].gameObject);
-                coins.Remove(coins[i]);
+                if (coins.Count > 0)
+                {
+                    Destroy(coins[i].gameObject);
+                    coins.Remove(coins[i]);
+                }
+                else
+                {
+                    Player.Instance.Die();
+                }
             }
         }
 

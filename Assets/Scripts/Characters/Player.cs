@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
@@ -20,6 +21,12 @@ namespace KingdomScratch
         private SpriteRenderer sr;
         private Animator animator;
         private Coroutine damageEffect;
+
+        [Header("Interaction")]
+        [SerializeField] private float holdTimePerCoin = 0.4f;
+        private Coroutine coinUseRoutine;
+        private IInteractable interactionTarget;
+        private int currentInsertedCoins;
 
         [Header("Movement")]
 
@@ -94,7 +101,21 @@ namespace KingdomScratch
 
             if (Input.GetKeyDown(KeyCode.E))
             {
-                Interact();
+                DetectInteractable();
+
+                if (interactionTarget != null)
+                {
+                    coinUseRoutine = StartCoroutine(CoinUseRoutine());
+                }
+            }
+
+            if (Input.GetKeyUp(KeyCode.E))
+            {
+                if (coinUseRoutine != null)
+                {
+                    StopCoroutine(coinUseRoutine);
+                    coinUseRoutine = null;
+                }
             }
 
             if (Input.GetKeyDown(KeyCode.Q))
@@ -152,7 +173,7 @@ namespace KingdomScratch
                 Die();
             }
 
-            else if (damageEffect == null)
+            else if (damageEffect == null && !isDead)
             {
                 isHurt = true;
                 damageEffect = StartCoroutine(DamageEffect());
@@ -162,7 +183,7 @@ namespace KingdomScratch
         /// <summary>
         /// death sequence
         /// </summary>
-        private void Die()
+        public void Die()
         {
             isDead = true;
             speed = 0;
@@ -209,9 +230,76 @@ namespace KingdomScratch
             damageEffect = null;
         }
 
-        private void SpendCoin()
+        private void DetectInteractable()
         {
+            interactionTarget = null;
 
+            var nearbyObjects = UtilsClass.GetTargetsInRadius(transform.position, characterData.range);
+
+            foreach (var obj in nearbyObjects)
+            {
+                if (obj.TryGetComponent(out IInteractable interactable))
+                {
+                    interactionTarget = interactable;
+                    return;
+                }
+            }
         }
+
+        private IEnumerator CoinUseRoutine()
+        {
+            int needed = interactionTarget.RequiredCoins;
+
+            while (true)
+            {
+                // === HOLDING E → FILL COINS ===
+                if (Input.GetKey(KeyCode.E))
+                {
+                    if (currentInsertedCoins < needed && coinBag.coins.Count > 0)
+                    {
+                        yield return new WaitForSeconds(holdTimePerCoin);
+
+                        // insert
+                        coinBag.UseCoins(1);
+                        interactionTarget.OnCoinInserted(currentInsertedCoins);
+                        currentInsertedCoins++;
+
+                        // Finished!
+                        if (currentInsertedCoins >= needed)
+                        {
+                            interactionTarget.Interact(transform);
+                            break;
+                        }
+                    }
+                }
+
+                // === NOT HOLDING E → UNFILL COINS ===
+                else
+                {
+                    if (currentInsertedCoins > 0)
+                    {
+                        yield return new WaitForSeconds(0.08f);
+
+                        currentInsertedCoins--;
+                        interactionTarget.OnCoinRemoved(currentInsertedCoins);
+
+                        // refund
+                        //coinBag.AddCoin(currentInsertedCoins);
+                    }
+                    else
+                    {
+                        // no progress left -> stop routine
+                        break;
+                    }
+                }
+
+                yield return null;
+            }
+
+            coinUseRoutine = null;
+        }
+
+
+
     }
 }

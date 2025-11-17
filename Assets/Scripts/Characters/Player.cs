@@ -208,5 +208,10 @@ namespace KingdomScratch
             StopCoroutine(damageEffect);
             damageEffect = null;
         }
+
+        private void SpendCoin()
+        {
+
+        }
     }
 }

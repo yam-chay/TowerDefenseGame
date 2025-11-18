@@ -12,6 +12,11 @@ namespace KingdomScratch
         private Animator animator;
         private bool inBag;
 
+        public Coin()
+        {
+            
+        }
+
         private void Start()
         {
             dropPositionOffset = new Vector3(0, 4, 0);

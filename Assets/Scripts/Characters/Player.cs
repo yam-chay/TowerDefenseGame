@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -109,15 +108,6 @@ namespace KingdomScratch
                 }
             }
 
-            if (Input.GetKeyUp(KeyCode.E))
-            {
-                if (coinUseRoutine != null)
-                {
-                    StopCoroutine(coinUseRoutine);
-                    coinUseRoutine = null;
-                }
-            }
-
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 spawner.Spawn();
@@ -166,19 +156,22 @@ namespace KingdomScratch
         /// </summary>
         public override void TakeDamage(int damage, Transform attacker)
         {
-            base.TakeDamage(damage, attacker);
-
-            if (Health <= 0)
+            if (attacker.CompareTag("Enemy"))
             {
-                Die();
-            }
+                base.TakeDamage(damage, attacker);
+                if (Health <= 0)
+                {
+                    Die();
+                }
 
-            else if (damageEffect == null && !isDead)
-            {
-                isHurt = true;
-                damageEffect = StartCoroutine(DamageEffect());
+                else if (damageEffect == null && !isDead)
+                {
+                    isHurt = true;
+                    damageEffect = StartCoroutine(DamageEffect());
+                }
             }
         }
+
 
         /// <summary>
         /// death sequence
@@ -230,6 +223,9 @@ namespace KingdomScratch
             damageEffect = null;
         }
 
+        /// <summary>
+        /// Responsible for using E to interact
+        /// </summary>
         private void DetectInteractable()
         {
             interactionTarget = null;
@@ -246,6 +242,9 @@ namespace KingdomScratch
             }
         }
 
+        /// <summary>
+        /// Runs the coin usage mechanic
+        /// </summary>
         private IEnumerator CoinUseRoutine()
         {
             int needed = interactionTarget.RequiredCoins;
@@ -257,12 +256,12 @@ namespace KingdomScratch
                 {
                     if (currentInsertedCoins < needed && coinBag.coins.Count > 0)
                     {
-                        yield return new WaitForSeconds(holdTimePerCoin);
 
                         // insert
                         coinBag.UseCoins(1);
                         interactionTarget.OnCoinInserted(currentInsertedCoins);
                         currentInsertedCoins++;
+                        yield return new WaitForSeconds(holdTimePerCoin);
 
                         // Finished!
                         if (currentInsertedCoins >= needed)
@@ -278,14 +277,17 @@ namespace KingdomScratch
                 {
                     if (currentInsertedCoins > 0)
                     {
-                        yield return new WaitForSeconds(0.08f);
-
-                        currentInsertedCoins--;
-                        interactionTarget.OnCoinRemoved(currentInsertedCoins);
-
-                        // refund
-                        //coinBag.AddCoin(currentInsertedCoins);
+                        for (int i = 0; i < currentInsertedCoins; i++)
+                        {
+                            Debug.Log("coin removes");
+                            currentInsertedCoins--;                            
+                            yield return new WaitForSeconds(0.1f);
+                            interactionTarget.OnCoinRemoved(currentInsertedCoins);
+                            var coinRb = Instantiate(coinPrefab, transform.position + Vector3.up * 2, Quaternion.identity).GetComponent<Rigidbody2D>();
+                            coinRb.AddForce(Vector2.up * 5, ForceMode2D.Impulse);
+                        }
                     }
+
                     else
                     {
                         // no progress left -> stop routine

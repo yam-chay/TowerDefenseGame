@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace KingdomScratch
 {
-    public class TowerSpot : MonoBehaviour , IInteractable
+    public class TowerSpot : MonoBehaviour, IInteractable
     {
-        [SerializeField] private bool isFree; 
+        [SerializeField] private bool isFree;
         public int RequiredCoins => requiredCoins;
         [SerializeField] private int requiredCoins = 3;
         [SerializeField] private GameObject upgradeMenu;
@@ -16,8 +16,9 @@ namespace KingdomScratch
         public void Interact(Transform interactor)
         {
             for (int i = 0; i < coinSlots.Length; i++)
-            {
+            {                
                 coinSlots[i].gameObject.SetActive(false);
+                coinSlots[i].SetTrigger("UnFill");
             }
             upgradeMenu.SetActive(true);
             isFree = false;
@@ -39,8 +40,8 @@ namespace KingdomScratch
 
         public void OnCoinRemoved(int index)
         {
-            if (index < coinSlots.Length)
-            {            
+            if (index <= coinSlots.Length)
+            {
                 coinSlots[index].SetTrigger("UnFill");
             }
         }
@@ -69,7 +70,7 @@ namespace KingdomScratch
                 {
                     StopCoroutine(detectRoutine);
                     detectRoutine = null;
-                }    
+                }
                 detectRoutine = StartCoroutine(OnCoinDetect(false));
             }
         }

@@ -12,10 +12,6 @@ namespace KingdomScratch
         private Animator animator;
         private bool inBag;
 
-        public Coin()
-        {
-            
-        }
 
         private void Start()
         {

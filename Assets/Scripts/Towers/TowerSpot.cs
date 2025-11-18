@@ -18,7 +18,7 @@ namespace KingdomScratch
             for (int i = 0; i < coinSlots.Length; i++)
             {                
                 coinSlots[i].gameObject.SetActive(false);
-                coinSlots[i].SetTrigger("UnFill");
+                coinSlots[i].SetBool("isFilling" , false);
             }
             upgradeMenu.SetActive(true);
             isFree = false;
@@ -28,7 +28,7 @@ namespace KingdomScratch
         {
             if (index < coinSlots.Length)
             {
-                coinSlots[index].SetTrigger("Fill");
+                coinSlots[index].SetBool("isFilling", true);
             }
         }
 
@@ -42,7 +42,7 @@ namespace KingdomScratch
         {
             if (index <= coinSlots.Length)
             {
-                coinSlots[index].SetTrigger("UnFill");
+                coinSlots[index].SetBool("isFilling", false);
             }
         }
 
@@ -69,9 +69,9 @@ namespace KingdomScratch
                 if (detectRoutine != null)
                 {
                     StopCoroutine(detectRoutine);
+                    detectRoutine = StartCoroutine(OnCoinDetect(false));
                     detectRoutine = null;
                 }
-                detectRoutine = StartCoroutine(OnCoinDetect(false));
             }
         }
 

@@ -579,7 +579,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 106520714}
         m_TargetAssemblyTypeName: KingdomScratch.SceneLoader, KingdomScratch
-        m_MethodName: StartGame
+        m_MethodName: LoadNextScene
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -601,6 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9127bf873af5d394593af91aa5bb3b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: KingdomScratch::KingdomScratch.SceneLoader
+  pauseScreen: {fileID: 0}
 --- !u!1 &151414901
 GameObject:
   m_ObjectHideFlags: 0
@@ -1308,6 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9127bf873af5d394593af91aa5bb3b43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: KingdomScratch::KingdomScratch.SceneLoader
+  pauseScreen: {fileID: 0}
 --- !u!114 &541379816
 MonoBehaviour:
   m_ObjectHideFlags: 0

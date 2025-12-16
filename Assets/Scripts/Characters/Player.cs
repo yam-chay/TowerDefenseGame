@@ -54,6 +54,7 @@ namespace KingdomScratch
         public static Player Instance { get; private set; }
         private void Awake()
         {
+            Time.timeScale = 1f; 
             Instance = this;
             Init(characterData);
         }

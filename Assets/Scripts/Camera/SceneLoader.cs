@@ -23,5 +23,10 @@ namespace KingdomScratch
             int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
             SceneManager.LoadScene(currentSceneIndex + 1);
         }
+        public void StartGame()
+        {
+            SceneManager.LoadScene(1);
+        }
     }
+
 }

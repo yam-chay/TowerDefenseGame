@@ -23,9 +23,11 @@ namespace KingdomScratch
 
         [Header("Interaction")]
         [SerializeField] private float holdTimePerCoin = 0.4f;
+        [SerializeField] private GameObject pauseScreen;
         private Coroutine coinUseRoutine;
         private IInteractable interactionTarget;
         private int currentInsertedCoins;
+
 
         [Header("Movement")]
 
@@ -121,6 +123,20 @@ namespace KingdomScratch
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 animator.SetBool("attack", false);
+            }
+            
+            if (Input.GetKeyUp(KeyCode.Escape))
+            {
+                if(pauseScreen.activeSelf)
+                {
+                    Time.timeScale = 1f;
+                    pauseScreen.SetActive(false);
+                }
+                else
+                {
+                    Time.timeScale = 0f;
+                    pauseScreen.SetActive(true);
+                }
             }
 
             animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));

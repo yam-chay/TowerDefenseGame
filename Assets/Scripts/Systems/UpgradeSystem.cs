@@ -1,14 +1,16 @@
+using KingdomScratch;
 using UnityEngine;
 
 namespace TDLogic
 {
     public class UpgradeSystem : MonoBehaviour
     {
-        public GameObject EvolveOne;
-        public GameObject EvolveTwo;
-        public GameObject EvolveThree;
+        public GameObject Tower1;
+        public GameObject Tower2;
+        public GameObject Tower3;
         public float SlowMotion;
         public float originTimeScale;
+        public float spawnOffset;
         public Transform buildPoint;
         public bool isFree;
         private GameObject objectToSpawn;        
@@ -31,7 +33,9 @@ namespace TDLogic
             {
                 Destroy(objectToSpawn);  
             }
-            objectToSpawn = Instantiate(EvolveOne, buildPoint.position, Quaternion.identity);
+            objectToSpawn = Instantiate(Tower1, buildPoint.position + (Vector3.up * spawnOffset), Quaternion.identity);
+            var parentObject = buildPoint.GetComponentInParent<TowerSpot>();
+            parentObject.transform.parent = objectToSpawn.transform; 
             gameObject.SetActive(false);
         }
         public void ButtonTwo()
@@ -40,7 +44,9 @@ namespace TDLogic
             {
                 Destroy(objectToSpawn);
             }
-            objectToSpawn = Instantiate(EvolveTwo, buildPoint.position, Quaternion.identity);
+            objectToSpawn = Instantiate(Tower2, buildPoint.position + (Vector3.up * spawnOffset), Quaternion.identity);
+            var parentObject = buildPoint.GetComponentInParent<TowerSpot>();
+            parentObject.transform.parent = objectToSpawn.transform;
             gameObject.SetActive(false);
         }
         public void ButtonThree()
@@ -49,7 +55,9 @@ namespace TDLogic
             {
                 Destroy(objectToSpawn);
             }
-            objectToSpawn = Instantiate(EvolveThree, buildPoint.position, Quaternion.identity);
+            objectToSpawn = Instantiate(Tower3, buildPoint.position + (Vector3.up * spawnOffset), Quaternion.identity);
+            var parentObject = buildPoint.GetComponentInParent<TowerSpot>();
+            parentObject.transform.parent = objectToSpawn.transform;
             gameObject.SetActive(false);
         }
 

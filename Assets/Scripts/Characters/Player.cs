@@ -11,7 +11,6 @@ namespace KingdomScratch
         [Tooltip("Character configuration data including health, range, damage and name.")]
         public CharacterData characterData;
 
-        [SerializeField] private Slider healthSlider;
         [SerializeField] private GameObject gameOverUI;
         [SerializeField] private GameObject coinPrefab;
         [SerializeField] private CoinBag coinBag;
@@ -23,7 +22,6 @@ namespace KingdomScratch
 
         [Header("Interaction")]
         [SerializeField] private float holdTimePerCoin = 0.4f;
-        [SerializeField] private GameObject pauseScreen;
         private Coroutine coinUseRoutine;
         private IInteractable interactionTarget;
         private int currentInsertedCoins;
@@ -85,8 +83,6 @@ namespace KingdomScratch
 
         void Update()
         {
-            healthSlider.value = Health;
-
             //check run input
             isRunning = Input.GetKey(KeyCode.LeftShift);
 
@@ -128,16 +124,7 @@ namespace KingdomScratch
             
             if (Input.GetKeyUp(KeyCode.Escape))
             {
-                if(pauseScreen.activeSelf)
-                {
-                    Time.timeScale = 1f;
-                    pauseScreen.SetActive(false);
-                }
-                else
-                {
-                    Time.timeScale = 0f;
-                    pauseScreen.SetActive(true);
-                }
+                //pause screen
             }
 
             animator.SetFloat("velocity", Mathf.Abs(rb.linearVelocityX));

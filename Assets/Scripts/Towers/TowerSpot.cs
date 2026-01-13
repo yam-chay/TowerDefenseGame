@@ -8,7 +8,7 @@ namespace KingdomScratch
         [SerializeField] private bool isFree;
         public int RequiredCoins => requiredCoins;
         [SerializeField] private int requiredCoins = 3;
-        [SerializeField] private GameObject upgradeMenu;
+        //[SerializeField] private GameObject upgradeMenu;
         [SerializeField] private Animator[] coinSlots; // slot fill anim
         private Coroutine detectRoutine;
 
@@ -20,7 +20,7 @@ namespace KingdomScratch
                 coinSlots[i].gameObject.SetActive(false);
                 coinSlots[i].SetBool("isFilling" , false);
             }
-            upgradeMenu.SetActive(true);
+            //upgradeMenu.SetActive(true);
             isFree = false;
         }
 
@@ -35,7 +35,7 @@ namespace KingdomScratch
         private void Start()
         {
             isFree = true;
-            upgradeMenu.SetActive(false);
+            //upgradeMenu.SetActive(false);
         }
 
         public void OnCoinRemoved(int index)

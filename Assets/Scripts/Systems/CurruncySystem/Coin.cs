@@ -26,11 +26,6 @@ namespace KingdomScratch
             if (CoinBag.Instance != null)
             {
                 coinBag = CoinBag.Instance;
-            }
-
-            if (coinBag != null)
-            {
-                // Observe bag changes
                 coinBag.OnCoinAdded += HandleCoinAdded;
                 coinBag.OnCoinRemoved += HandleCoinRemoved;
             }

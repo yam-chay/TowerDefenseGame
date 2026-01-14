@@ -258,7 +258,7 @@ namespace KingdomScratch
                 // === HOLDING E → FILL COINS ===
                 if (Input.GetKey(KeyCode.E))
                 {
-                    if (currentInsertedCoins < needed && coinBag.coins.Count > 0)
+                    if (currentInsertedCoins < needed && coinBag.CoinCount > 0)
                     {
 
                         // insert
